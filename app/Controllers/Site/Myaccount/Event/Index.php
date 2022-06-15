@@ -119,7 +119,7 @@ class Index extends BaseController
 		if ($this->request->getMethod()=='post'){
 			$requestData 			= $this->request->getPost();
 			$requestData['type'] 	= '1';
-			echo "<pre>";print_r($requestData);die;
+
 			if(isset($requestData['start_date'])) $requestData['start_date'] 	= formatdate($requestData['start_date']);
     		if(isset($requestData['end_date'])) $requestData['end_date'] 		= formatdate($requestData['end_date']);
             $result = $this->event->action($requestData);
@@ -135,7 +135,7 @@ class Index extends BaseController
 		
 		$data['userid'] 	= $userid;
 		$data['statuslist'] = $this->config->status1;
-		$data['questiontag'] = view('site/common/questiontag/questiontag');
+		$data['questionmodal'] = view('site/common/questionmodal/questionmodal1');
 		return view('site/myaccount/event/action', $data);
 	}
 	

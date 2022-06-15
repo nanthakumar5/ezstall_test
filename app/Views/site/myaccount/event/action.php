@@ -148,30 +148,35 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 									<p>Will you be selling feed at this event? </p>
 
 									<div>
-										<button name="feed" class="btn btn-primary sellingfeed" id="yesfeed" value="1"> Yes </button>
-										<button name="feed" class="btn btn-danger sellingfeed" id="nofeed" value="2"> No </button>
+										<button class="btn btn-primary questionmodal_feed" value="1"> Yes </button>
+										<button name="feed" class="btn btn-danger questionmodal_feed" value="2"> No </button>
+										<input type="hidden" value="" name="feed_flag">
+
 									</div>
 								</div>
 								<div class="d-flex justify-content-between flex-wrap">
 									<p>Will you be selling shavings at this event?</p>
 									<div>
-										<button name="shavings" id="yesshavings" class="btn btn-primary sellingshavings" value="1"> Yes </button>
-										<button name="shavings" id="noshavings" class="btn btn-danger sellingshavings" value="2"> No </button>
+										<button class="btn btn-primary questionmodal_shaving" value="1"> Yes </button>
+										<button class="btn btn-danger questionmodal_shaving" value="2"> No </button>
+										<input type="hidden" value="" class="shaving_flag" name="shaving_flag">
 									</div>
 								</div>
 								<div class="d-flex justify-content-between flex-wrap">
 									<p>Will you have RV Hookups at this event? </p>
 									<div>
-										<button name="rvhookups" id="yeshookups" class="btn btn-primary rvhookups" value="1"> Yes</button>
-										<button name="rvhookups" id="nohookups" class="btn btn-danger rvhookups" value="2"> No</button>
+										<button class="btn btn-primary questionmodal_rvhookups" value="1"> Yes</button>
+										<button class="btn btn-danger questionmodal_rvhookups" value="2"> No</button>
+										<input type="hidden" value="" class="rv_flag" name="rv_flag">
 									</div>
 								</div>
 								<div class="d-flex justify-content-between flex-wrap">
 									<p>How will you be charging for your stalls? </p>
 									<div>
-										<button name="chargingstalls" id="week" class="btn btn-primary chargingstalls" value="1">Per Week</button>
-										<button name="chargingstalls" id="month" class="btn btn-primary chargingstalls" value="2">Per Month</button>
-										<button name="chargingstalls" id="flatrate" class="btn btn-primary chargingstalls" value="3">Flat Rate</button>
+										<button class="btn btn-primary questionmodal_chargingstalls" value="1">Per Week</button>
+										<button class="btn btn-primary questionmodal_chargingstalls" value="2">Per Month</button>
+										<button class="btn btn-primary questionmodal_chargingstalls" value="3">Flat Rate</button>
+										<input type="hidden" value="" class="charging_flag" name="charging_flag">
 									</div>
 								</div>
 							</div>
@@ -261,7 +266,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 </section>
 <?php $this->endSection(); ?>
 <?php $this->section('js') ?>
-<?php echo $questiontag; ?>
+<?php echo $questionmodal; ?>
 
 <script>
 	var barn				 	= $.parseJSON('<?php echo addslashes(json_encode($barn)); ?>'); 
@@ -274,7 +279,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 	
 	$(function(){
 
-		$('#myModal').modal('show'); 
+		$('#questionmodal').modal('show'); 
 
 		uidatepicker("#start_date, #end_date");
 		fileupload([".image_file"], ['.image_input', '.image_source','.image_msg']);
@@ -330,66 +335,36 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 
 	});
 	
+	$('.questionmodal_shaving').click(function(e){ 
+        questionpopup1(1, 'shaving', ['.addshavings', '.shaving_flag'], $(this).val())
+    });
+	    
+    $('.questionmodal_feed').click(function(e){ 
+        questionpopup1(1, 'feed', ['.addfeed', '.feed_flag'], $(this).val())
+    });
 
-	$('.sellingfeed').click(function(e){ 
-		e.preventDefault();
-		var feed = $(this).val();
-		if(feed=='1'){
-			$(".addfeed").show(); 
-			$('#nofeed').removeClass("btn btn-success").addClass("btn btn-danger");
-			$('#yesfeed').removeClass("btn btn-primary").addClass("btn btn-success");
-		}
-		else{
-			$('#yesfeed').removeClass("btn btn-success").addClass("btn btn-primary");
-			$('#nofeed').removeClass("btn btn-danger").addClass("btn btn-success");
-			$(".addfeed").hide();
-			
-		}
-	});
+    $('.questionmodal_rvhookups').click(function(e){ 
+        questionpopup1(1, 'rvhookups', ['.addrvhookups', '.rv_flag'], $(this).val())
+    });
 
-	$('.sellingshavings').click(function(e){ 
-		e.preventDefault();
-		var shavings = $(this).val();
-		if(shavings=='1'){
-			$(".addshavings").show(); 
-			$('#noshavings').removeClass("btn btn-success").addClass("btn btn-danger");
-			$('#yesshavings').removeClass("btn btn-primary").addClass("btn btn-success");
-		}
-		else{
-			$('#yesshavings').removeClass("btn btn-success").addClass("btn btn-primary");
-			$('#noshavings').removeClass("btn btn-danger").addClass("btn btn-success");
-			$(".addshavings").hide();			
-		}
-	});
-
-	$('.rvhookups').click(function(e){ 
-		e.preventDefault();
-		var rvhookups = $(this).val();
-		if(rvhookups=='1'){
-			$(".addrvhookups").show(); 
-			$('#nohookups').removeClass("btn btn-success").addClass("btn btn-danger");
-			$('#yeshookups').removeClass("btn btn-primary").addClass("btn btn-success");
-		}
-		else{
-			$('#yeshookups').removeClass("btn btn-success").addClass("btn btn-primary");
-			$('#nohookups').removeClass("btn btn-danger").addClass("btn btn-success");
-			$(".addrvhookups").hide();
-		}
-	});
-
-	$('.chargingstalls').click(function(e){ 
-		e.preventDefault();
-		var chargingstalls = $(this).val();
-		if(chargingstalls=='1'){
-			$('#week').removeClass("btn btn-primary").addClass("btn btn-success");
-		}
-		else if(chargingstalls=='2'){
-			$('#month').removeClass("btn btn-primary").addClass("btn btn-success");
-		}
-		else{
-			$('#flatrate').removeClass("btn btn-primary").addClass("btn btn-success");
-		}
-	});
+    $('.questionmodal_chargingstalls').click(function(e){ 
+        questionpopup1(2, 'chargingstalls', ['addrvhookups', '.charging_flag'], $(this).val())
+    });
+	    
+    function questionpopup1(type, name, selector, value){ 
+        $('.questionmodal_'+name).removeClass("btn btn-success").addClass("btn btn-danger");
+        $('.questionmodal_'+name+'[value="'+value+'"]').removeClass("btn btn-danger").addClass("btn btn-success");
+        
+        if(type=='1'){
+            if(value=='1'){
+                $(selector[0]).show(); 
+                $(selector[1]).val(value);    
+            }else{
+                $(selector[0]).hide();
+                $(selector[1]).val(value);        
+            }
+        }
+    }
 
 	$('#eventSubmit').click(function(e){
 		var totalstall 		= $('.dash-stall-base').length
