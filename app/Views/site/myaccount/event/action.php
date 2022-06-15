@@ -24,7 +24,6 @@ $barn        			= isset($result['barn']) ? $result['barn'] : [];
 $pageaction 			= $id=='' ? 'Add' : 'Update';
 ?>
 
-
 <section class="content">
 	<div class="d-flex justify-content-between align-items-center flex-wrap">
 		<div align="left" class="m-0"><h3>Events</h3></div>
@@ -141,21 +140,113 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 							</div>
 						</div>	
 					</div>
-					<div class="container row mt-5 dash-barn-style mx-auto">
-						<div class="row align-items-center mb-4 p-0 addbarn">
-							<div class="col-md-3">
-								<p class="fs-2 fw-bold mb-0 barntfont">Barn</p>
-							</div>
-							<div class="col-md-9 t-right p-0 respsm">
-								<input type="hidden" value="" name="barnvalidation" id="barnvalidation">
-								<a href="javascript:void(0);" class="btn btn-info bulkbtn_barn">Add Bulk Barn</a>
-								<input type="file" class="bulkfile_barn" style="display:none;">
-								<button class="btn-stall barnbtn">Add Barn</button>
+
+					<div class="card">
+						<div class="card-body">
+							<div>
+								<div class="d-flex justify-content-between flex-wrap">
+									<p>Will you be selling feed at this event? </p>
+
+									<div>
+										<button name="feed" class="btn btn-primary sellingfeed" id="yesfeed" value="1"> Yes </button>
+										<button name="feed" class="btn btn-danger sellingfeed" id="nofeed" value="2"> No </button>
+									</div>
+								</div>
+								<div class="d-flex justify-content-between flex-wrap">
+									<p>Will you be selling shavings at this event?</p>
+									<div>
+										<button name="shavings" id="yesshavings" class="btn btn-primary sellingshavings" value="1"> Yes </button>
+										<button name="shavings" id="noshavings" class="btn btn-danger sellingshavings" value="2"> No </button>
+									</div>
+								</div>
+								<div class="d-flex justify-content-between flex-wrap">
+									<p>Will you have RV Hookups at this event? </p>
+									<div>
+										<button name="rvhookups" id="yeshookups" class="btn btn-primary rvhookups" value="1"> Yes</button>
+										<button name="rvhookups" id="nohookups" class="btn btn-danger rvhookups" value="2"> No</button>
+									</div>
+								</div>
+								<div class="d-flex justify-content-between flex-wrap">
+									<p>How will you be charging for your stalls? </p>
+									<div>
+										<button name="chargingstalls" id="week" class="btn btn-primary chargingstalls" value="1">Per Week</button>
+										<button name="chargingstalls" id="month" class="btn btn-primary chargingstalls" value="2">Per Month</button>
+										<button name="chargingstalls" id="flatrate" class="btn btn-primary chargingstalls" value="3">Flat Rate</button>
+									</div>
+								</div>
 							</div>
 						</div>
-						<ul class="nav nav-pills flex-column col-md-3 barntab" role="tablist"></ul>
-						<div class="tab-content col-md-9 stalltab"></div>
 					</div>
+					<div class="card-body p-0">
+						<div class="container row mt-5 dash-barn-style mx-auto">
+							<div class="row align-items-center mb-4 p-0 addbarn">
+								<div class="col-md-3">
+									<p class="fs-2 fw-bold mb-0 barntfont">Barn</p>
+								</div>
+								<div class="col-md-9 t-right p-0 respsm">
+									<input type="hidden" value="" name="barnvalidation" id="barnvalidation">
+									<a href="javascript:void(0);" class="btn btn-info bulkbtn_barn">Add Bulk Barn</a>
+									<input type="file" class="bulkfile_barn" style="display:none;">
+									<button class="btn-stall barnbtn" value="4" name="tst" id="tes">Add Barn</button>
+								</div>
+							</div>
+							<ul class="nav nav-pills flex-column col-md-3 barntab" role="tablist"></ul>
+							<div class="tab-content col-md-9 stalltab"></div>
+						</div>
+					</div>
+					<div class="card-body p-0 addfeed" style="display: none;">
+						<div class="container row mt-5 dash-barn-style mx-auto">
+							<div class="row align-items-center mb-4 p-0 addfeed">
+								<div class="col-md-3">
+									<h4 class="fw-bold mb-0 barntfontfeed">Feed</h4>
+								</div>
+								<div class="col-md-9 t-right p-0 respsm">
+								<button class="btn-stall feedbtn">Add feed</button>
+								</div>
+							</div>
+
+							<div class="row" >
+								<ul class="nav nav-pills flex-column feedlist" role="tablist"></ul>
+								<div class="tab-content col-md-9 feedstalltab"></div>
+							</div>
+						</div>
+					</div>
+					<div class="card-body p-0  addshavings" style="display: none;">
+						<div class="container row mt-5 dash-barn-style mx-auto">
+							<div class="row align-items-center mb-4 p-0">
+								<div class="col-md-3">
+									<h4 class="fw-bold mb-0 barntfontshavings">Shavings</h4>
+								</div>
+								<div class="col-md-9 t-right p-0 respsm">
+									<button class="btn-stall shavingsbtn">Add Shavings</button>
+								</div>
+							</div>
+							<div class="row" >
+								<ul class="nav nav-pills flex-column shavingslist" role="tablist"></ul>
+								<div class="tab-content col-md-9 shavingsstalltab"></div>
+							</div>
+						</div>
+					</div>
+					<div class="card-body p-0  addrvhookups" style="display: none;">
+						<div class="container row mt-5 dash-barn-style mx-auto">
+							<div class="row align-items-center mb-4 p-0">
+								<div class="col-md-3">
+									<h4 class="fw-bold mb-0 barntfont">RV Hookups</h4>
+								</div>
+								<div class="col-md-9 t-right p-0 respsm">
+									<input type="hidden" value="" name="rvhookupsvalidation" id="rvhookupsvalidation">
+									<a href="javascript:void(0);" class="btn btn-info addbulkrvhookups">Add Bulk Rv Hookups</a>
+									<input type="file" class="bulkrvfile" style="display:none;">
+									<button class="btn-stall addrvhookupsbtn">Add Rv Hookups</button>
+								</div>
+							</div>
+							<div class="row">
+								<ul class="nav nav-pills flex-column col-md-3 rvhookupslist" role="tablist"></ul>
+								<div class="tab-content col-md-9 rvhookupstab"></div>
+							</div>
+						</div>
+					</div>
+
 					<div class="col-md-12 mt-4">
 						<input type="hidden" name="actionid" value="<?php echo $id; ?>">
 						<input type="hidden" name="userid" value="<?php echo $userid; ?>">
@@ -170,6 +261,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 </section>
 <?php $this->endSection(); ?>
 <?php $this->section('js') ?>
+<?php echo $questiontag; ?>
 
 <script>
 	var barn				 	= $.parseJSON('<?php echo addslashes(json_encode($barn)); ?>'); 
@@ -181,6 +273,9 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 	var occupiedstallcount 	 	= '<?php echo (isset($occupied)) ? count($occupied) : 0; ?>';
 	
 	$(function(){
+
+		$('#myModal').modal('show'); 
+
 		uidatepicker("#start_date, #end_date");
 		fileupload([".image_file"], ['.image_input', '.image_source','.image_msg']);
 		fileupload([".eventflyer_file", ['jpg','jpeg','png','gif','tiff','tif','pdf']], ['.eventflyer_input', '.eventflyer_source','.eventflyer_msg']);
@@ -229,9 +324,73 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 		);
 
 		barnstall('barn', [['.barnbtn'], ['.barntab', '.stalltab'], [0, 0], ['#barnvalidation']], [barn, occupied, reserved])
+		barnstall('rvhookups', [['.addrvhookupsbtn'], ['.rvhookupslist', '.rvhookupstab'], [0, 0], ['#rvhookupsvalidation']], [barn, occupied, reserved])
+		products('feed', [['.feedbtn'], ['.feedlist'], [0]])
+		products('shavings', [['.shavingsbtn'], ['.shavingslist'], [0]])
+
+	});
+	
+
+	$('.sellingfeed').click(function(e){ 
+		e.preventDefault();
+		var feed = $(this).val();
+		if(feed=='1'){
+			$(".addfeed").show(); 
+			$('#nofeed').removeClass("btn btn-success").addClass("btn btn-danger");
+			$('#yesfeed').removeClass("btn btn-primary").addClass("btn btn-success");
+		}
+		else{
+			$('#yesfeed').removeClass("btn btn-success").addClass("btn btn-primary");
+			$('#nofeed').removeClass("btn btn-danger").addClass("btn btn-success");
+			$(".addfeed").hide();
+			
+		}
 	});
 
-	
+	$('.sellingshavings').click(function(e){ 
+		e.preventDefault();
+		var shavings = $(this).val();
+		if(shavings=='1'){
+			$(".addshavings").show(); 
+			$('#noshavings').removeClass("btn btn-success").addClass("btn btn-danger");
+			$('#yesshavings').removeClass("btn btn-primary").addClass("btn btn-success");
+		}
+		else{
+			$('#yesshavings').removeClass("btn btn-success").addClass("btn btn-primary");
+			$('#noshavings').removeClass("btn btn-danger").addClass("btn btn-success");
+			$(".addshavings").hide();			
+		}
+	});
+
+	$('.rvhookups').click(function(e){ 
+		e.preventDefault();
+		var rvhookups = $(this).val();
+		if(rvhookups=='1'){
+			$(".addrvhookups").show(); 
+			$('#nohookups').removeClass("btn btn-success").addClass("btn btn-danger");
+			$('#yeshookups').removeClass("btn btn-primary").addClass("btn btn-success");
+		}
+		else{
+			$('#yeshookups').removeClass("btn btn-success").addClass("btn btn-primary");
+			$('#nohookups').removeClass("btn btn-danger").addClass("btn btn-success");
+			$(".addrvhookups").hide();
+		}
+	});
+
+	$('.chargingstalls').click(function(e){ 
+		e.preventDefault();
+		var chargingstalls = $(this).val();
+		if(chargingstalls=='1'){
+			$('#week').removeClass("btn btn-primary").addClass("btn btn-success");
+		}
+		else if(chargingstalls=='2'){
+			$('#month').removeClass("btn btn-primary").addClass("btn btn-success");
+		}
+		else{
+			$('#flatrate').removeClass("btn btn-primary").addClass("btn btn-success");
+		}
+	});
+
 	$('#eventSubmit').click(function(e){
 		var totalstall 		= $('.dash-stall-base').length
 		var result 			= parseInt(totalstall) - parseInt(occupiedstallcount);

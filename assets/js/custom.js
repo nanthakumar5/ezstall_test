@@ -2,7 +2,7 @@ function baseurl(){
 	var base = window.location;
 
 	if(base.host=='localhost'){
-		return base.protocol + "//" + base.host + "/nantha/ezstall/";
+		return base.protocol + "//" + base.host + "/ezstall/";
 	}else{
 		return base.protocol + "//" + base.host + "/ezstall/";
 	}
@@ -706,16 +706,16 @@ function products(productsname, productsitem=[]){
 		
 		var data='\
 		<div class="row mb-2 dash-stall-base">\
-			<div class="col-md-6 mb-3">\
+			<div class="col-md-6 mb-4">\
 				<input type="text" id="product_'+productsname+'_'+productIndex+'_name" name="'+productsname+'['+productIndex+'][name]" class="form-control fs-7" placeholder="Name" value="'+productName+'">\
 			</div>\
-			<div class="col-md-2 mb-3">\
+			<div class="col-md-2 mb-4">\
 				<input type="text" id="product_'+productsname+'_'+productIndex+'_quantity" name="'+productsname+'['+productIndex+'][quantity]" class="form-control fs-7" placeholder="Quantity" value="'+productQuantity+'">\
 			</div>\
-			<div class="col-md-2 mb-3">\
+			<div class="col-md-2 mb-4">\
 				<input type="text" id="product_'+productsname+'_'+productIndex+'_price" name="'+productsname+'['+productIndex+'][price]" class="form-control fs-7" placeholder="Price" value="'+productPrice+'">\
 			</div>\
-			<div class="col-md-1 mb-3 delete">\
+			<div class="col-md-1 mb-4 delete">\
 				<a href="javascript:void(0);" class="dash-stall-remove fs-7 productremovebtn_'+productsname+'"><i class="fas fa-times text-white"></i></a>\
 				<input type="hidden" name="'+productsname+'['+productIndex+'][id]" value="'+productId+'">\
 				<input type="hidden" name="'+productsname+'['+productIndex+'][status]" value="1">\
