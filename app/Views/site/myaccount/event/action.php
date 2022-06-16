@@ -377,13 +377,13 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
     function questionpopup1(type, name, value){ 
         $('.questionmodal_'+name).removeClass("btn btn-success").addClass("btn");
         $('.questionmodal_'+name+'[value="'+value+'"]').removeClass("btn").addClass("btn btn-success");
-        $('.'+name'_flag').val(value);   
+        $('.'+name+'_flag').val(value);   
         
         if(type=='1'){
             if(value=='1'){
-                $('.'+name'_wrapper').show();  
+                $('.'+name+'_wrapper').show();  
             }else{
-                $('.'+name'_wrapper').hide();      
+                $('.'+name+'_wrapper').hide();      
             }
         }
     }
