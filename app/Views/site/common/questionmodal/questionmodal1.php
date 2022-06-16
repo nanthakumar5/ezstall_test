@@ -49,12 +49,12 @@
         Thank You Fill out your custom event form with your stalls,
           and let your customers rest EZ!
           <div align="center" class="mt-3">
-            <button type="button" class="btn btn-success questionmodalsubmit model_btn"  data-bs-dismiss="modal">Go</button>
+            <button type="button" class="btn questionmodalsubmit model_btn"  data-bs-dismiss="modal">Go</button>
           </div>
       </div>
-      <div class="d-flex justify-content-between">
-        <a href="javascript:void(0);" class="modalcarousel_prev displaynone"><i class="fas fa-chevron-left"></i></a>
-        <a href="javascript:void(0);" class="modalcarousel_next" align="right"><i class="fas fa-chevron-right"></i></a>
+      <div class="d-flex">
+        <a href="javascript:void(0);" class="model_arrow_left modalcarousel_prev displaynone"><i class="fas fa-chevron-left"></i></a>
+        <a href="javascript:void(0);" class="model_arrow_right modalcarousel_next" align="right"><i class="fas fa-chevron-right"></i></a>
       </div>
     </div>
   </div>

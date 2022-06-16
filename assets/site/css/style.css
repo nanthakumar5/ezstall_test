@@ -4634,3 +4634,18 @@ span.num_btn.stallcount {
     border: 3px solid grey;
     padding: 5px 30px;
 }
+
+
+.model_arrow_right {
+    position: absolute;
+    top: 40%;
+    right: 5%;
+    font-size: 25px;
+}
+
+.model_arrow_left {
+    position: absolute;
+    top: 40%;
+    left: 5%;
+    font-size: 25px;
+}
