@@ -230,10 +230,10 @@ class Event extends BaseModel
 			}
 		}
 		 
-		if(isset($data['barn']) && count($data['barn']) > '0') 				$this->barnstallaction($data['barn'], $eventinsertid, '1');
-		if(isset($data['rvhookups']) && count($data['rvhookups']) > '0')	$this->barnstallaction($data['rvhookups'], $eventinsertid, '2');
-		if(isset($data['feed']) && count($data['feed']) > '0') 				$this->productsaction($data['feed'], $eventinsertid, '1');
-		if(isset($data['shavings']) && count($data['shavings']) > '0') 		$this->productsaction($data['shavings'], $eventinsertid, '2');
+		if(isset($data['barn']) && count($data['barn']) > '0') 				$this->barnstallaction($data['barn'], [$eventinsertid, $data['type'], '1']);
+		if(isset($data['rvhookups']) && count($data['rvhookups']) > '0')	$this->barnstallaction($data['rvhookups'], [$eventinsertid, $data['type'], '2']);
+		if(isset($data['feed']) && count($data['feed']) > '0') 				$this->productsaction($data['feed'], [$eventinsertid, '1']);
+		if(isset($data['shavings']) && count($data['shavings']) > '0') 		$this->productsaction($data['shavings'], [$eventinsertid, '2']);
 		
 		if(isset($eventinsertid) && $this->db->transStatus() === FALSE){
 			$this->db->transRollback();
@@ -265,19 +265,19 @@ class Event extends BaseModel
 		}
 	}
 	
-	public function barnstallaction($data, $eventid, $type)
+	public function barnstallaction($data, $extras)
 	{
 		$barnidcolumn = array_filter(array_column($data, 'id'));
 		if(count($barnidcolumn)){
-			$this->db->table('barn')->whereNotIn('id', $barnidcolumn)->update(['status' => '0'], ['event_id' => $eventid]);
+			$this->db->table('barn')->whereNotIn('id', $barnidcolumn)->update(['status' => '0'], ['event_id' => $extras[0]]);
 		}
 		
 		foreach($data as $barndata){
 			$barnid       		= $barndata['id']!='' ? $barndata['id'] : '';
-			$barn['event_id'] 	= $eventid;
+			$barn['event_id'] 	= $extras[0];
 			$barn['name']     	= $barndata['name'];
 			$barn['status']     = '1';
-			$barn['type']		= $type;
+			$barn['type']		= $extras[2];
 			
 			if($barnid==''){
 				$this->db->table('barn')->insert($barn);
@@ -295,12 +295,12 @@ class Event extends BaseModel
 				
 				foreach($barndata['stall'] as $stalldata){
 					$stallid        	 	= $stalldata['id']!='' ? $stalldata['id'] : '';
-					$stall['event_id'] 	 	= $eventid;
+					$stall['event_id'] 	 	= $extras[0];
 					$stall['barn_id']    	= $barninsertid;
 					$stall['name']       	= $stalldata['name'];
 					$stall['price']      	= $stalldata['price'];
 					$stall['status']     	= $stalldata['status'];
-					$stall['type']		 	= $type;
+					$stall['type']		 	= $extras[2];
 					
 
 					if(isset($stalldata['image']) && $stalldata['image']!=''){
@@ -309,7 +309,7 @@ class Event extends BaseModel
 					}
 					
 					if($stallid==''){
-						if($data['type'] == '2'){ 
+						if($extras[1] == '2'){ 
 							$stall['start_date']  	= date('Y-m-d');
 							$stall['end_date'] 	  	= date('Y-m-d', strtotime('+1 year', strtotime($stall['start_date'])));
 						}
@@ -323,20 +323,20 @@ class Event extends BaseModel
 		}
 	}
 	
-	public function productsaction($data, $eventid, $type)
+	public function productsaction($data, $extras)
 	{
 		$productsidcolumn = array_filter(array_column($data, 'id'));
 		if(count($productsidcolumn)){
-			$this->db->table('products')->whereNotIn('id', $productsidcolumn)->update(['status' => '0'], ['event_id' => $eventid]);
+			$this->db->table('products')->whereNotIn('id', $productsidcolumn)->update(['status' => '0'], ['event_id' => $extras[0]]);
 		}
 
 		foreach($data as $productsdata){
 			$productsid        	 			= $productsdata['id']!='' ? $productsdata['id'] : '';
-			$productsdata['event_id'] 		= $eventid;
+			$productsdata['event_id'] 		= $extras[0];
 			$productsdata['name']       	= $productsdata['name'];
 			$productsdata['price']      	= $productsdata['price'];
 			$productsdata['status']     	= $productsdata['status'];
-			$productsdata['type']     		= $type;
+			$productsdata['type']     		= $extras[1];
 			
 			
 			if($productsid==''){
