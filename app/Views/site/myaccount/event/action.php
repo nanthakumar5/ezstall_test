@@ -165,17 +165,17 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 								<div class="d-flex justify-content-between flex-wrap">
 									<p>Will you have RV Hookups at this event? </p>
 									<div>
-										<button class="btn questionmodal_rvhookups model_btn" value="1"> Yes</button>
-										<button class="btn questionmodal_rvhookups model_btn" value="2"> No</button>
+										<button class="btn questionmodal_rv model_btn" value="1"> Yes</button>
+										<button class="btn questionmodal_rv model_btn" value="2"> No</button>
 										<input type="hidden" value="" class="rv_flag" name="rv_flag">
 									</div>
 								</div>
 								<div class="d-flex justify-content-between flex-wrap">
 									<p>How will you be charging for your stalls? </p>
 									<div>
-										<button class="btn questionmodal_chargingstalls model_btn" value="1">Per Week</button>
-										<button class="btn questionmodal_chargingstalls model_btn" value="2">Per Month</button>
-										<button class="btn questionmodal_chargingstalls model_btn" value="3">Flat Rate</button>
+										<button class="btn questionmodal_charging model_btn" value="1">Per Week</button>
+										<button class="btn questionmodal_charging model_btn" value="2">Per Month</button>
+										<button class="btn questionmodal_charging model_btn" value="3">Flat Rate</button>
 										<input type="hidden" value="" class="charging_flag" name="charging_flag">
 									</div>
 								</div>
@@ -207,7 +207,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 							<div class="tab-content col-md-9 stalltab"></div>
 						</div>
 					</div>
-					<div class="card-body p-0 addfeed" style="display: none;">
+					<div class="card-body p-0 feed_wrapper" style="display: none;">
 						<div class="container row mt-5 dash-barn-style mx-auto">
 							<div class="row align-items-center mb-4 p-0 addfeed">
 								<div class="col-md-3">
@@ -224,7 +224,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 							</div>
 						</div>
 					</div>
-					<div class="card-body p-0  addshavings" style="display: none;">
+					<div class="card-body p-0 shaving_wrapper" style="display: none;">
 						<div class="container row mt-5 dash-barn-style mx-auto">
 							<div class="row align-items-center mb-4 p-0">
 								<div class="col-md-3">
@@ -240,7 +240,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 							</div>
 						</div>
 					</div>
-					<div class="card-body p-0  addrvhookups" style="display: none;">
+					<div class="card-body p-0 rv_wrapper" style="display: none;">
 						<div class="container row mt-5 dash-barn-style mx-auto">
 							<div class="row align-items-center mb-4 p-0">
 								<div class="col-md-3">
@@ -259,7 +259,6 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 							</div>
 						</div>
 					</div>
-
 					<div class="col-md-12 mt-4">
 						<input type="hidden" name="actionid" value="<?php echo $id; ?>">
 						<input type="hidden" name="userid" value="<?php echo $userid; ?>">
@@ -279,11 +278,8 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 <script>
 	var barn				 	= $.parseJSON('<?php echo addslashes(json_encode($barn)); ?>'); 
 	var statuslist		 		= $.parseJSON('<?php echo addslashes(json_encode($statuslist)); ?>');
-	var barnIndex        		= '0';
-	var stallIndex       		= '0';
 	var occupied 	 			= $.parseJSON('<?php echo json_encode((isset($occupied)) ? $occupied : []); ?>');
 	var reserved 	 			= $.parseJSON('<?php echo json_encode((isset($reserved)) ? explode(",", implode(",", array_keys($reserved))) : []); ?>');
-	var occupiedstallcount 	 	= '<?php echo (isset($occupied)) ? count($occupied) : 0; ?>';
 	var id                      = '<?php echo $id ?>';
 	
 	$(function(){
@@ -337,6 +333,8 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 				ignore : []
 			}
 		);
+		
+		$('#mobile').inputmask("(999) 999-9999");
 
 		barnstall('barn', [['.barnbtn'], ['.barntab', '.stalltab'], [0, 0], ['#barnvalidation']], [barn, occupied, reserved])
 		barnstall('rvhookups', [['.addrvhookupsbtn'], ['.rvhookupslist', '.rvhookupstab'], [0, 0], ['#rvhookupsvalidation']], [barn, occupied, reserved])
@@ -345,65 +343,53 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 
 	});
 	
+	jQuery.validator.addMethod("phoneUS", function(mobile, element) {
+		mobile = mobile.replace(/\s+/g, "");
+		return this.optional(element) || mobile.length > 9 && 
+		mobile.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+	}, "Please specify a valid phone number");
+	
 	$('.questionmodal_shaving').click(function(e){ 
 		e.preventDefault();
-        questionpopup1(1, 'shaving', ['.addshavings', '.shaving_flag'], $(this).val())
+        questionpopup1(1, 'shaving', $(this).val())
     });
 	    
     $('.questionmodal_feed').click(function(e){ 
     	e.preventDefault();
-        questionpopup1(1, 'feed', ['.addfeed', '.feed_flag'], $(this).val())
+        questionpopup1(1, 'feed', $(this).val())
     });
 
-    $('.questionmodal_rvhookups').click(function(e){ 
+    $('.questionmodal_rv').click(function(e){ 
     	e.preventDefault();
-        questionpopup1(1, 'rvhookups', ['.addrvhookups', '.rv_flag'], $(this).val())
+        questionpopup1(1, 'rv', $(this).val())
     });
 
-    $('.questionmodal_chargingstalls').click(function(e){ 
+    $('.questionmodal_charging').click(function(e){ 
     	e.preventDefault();
-        questionpopup1(2, 'chargingstalls', '.charging_flag', $(this).val())
+        questionpopup1(2, 'charging', $(this).val())
     });
 
     $('.questionmodal_notification').click(function(e){ 
     	e.preventDefault();
-        questionpopup1(2, 'notification', '.notification_flag', $(this).val())
+        questionpopup1(2, 'notification', $(this).val())
     });
 	    
-    function questionpopup1(type, name, selector, value){ 
+    function questionpopup1(type, name, value){ 
         $('.questionmodal_'+name).removeClass("btn btn-success").addClass("btn");
         $('.questionmodal_'+name+'[value="'+value+'"]').removeClass("btn").addClass("btn btn-success");
+        $('.'+name'_flag').val(value);   
         
         if(type=='1'){
             if(value=='1'){
-                $(selector[0]).show(); 
-                $(selector[1]).val(value);    
+                $('.'+name'_wrapper').show();  
             }else{
-                $(selector[0]).hide();
-                $(selector[1]).val(value);        
+                $('.'+name'_wrapper').hide();      
             }
-        }else{
-        	if(value!=''){
-        		$(selector).val(value);
-        	} 
         }
     }
 
 	$('#eventSubmit').click(function(e){
-		var totalstall 		= $('.dash-stall-base').length
-		var result 			= parseInt(totalstall) - parseInt(occupiedstallcount);
 		tabvalidation();
 	});
-	
-	$(function(){
-			$('#mobile').inputmask("(999) 999-9999");
-		});
-
-		jQuery.validator.addMethod("phoneUS", function(mobile, element) {
-		    mobile = mobile.replace(/\s+/g, "");
-		    return this.optional(element) || mobile.length > 9 && 
-		    mobile.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
-		}, "Please specify a valid phone number");
-
 </script>
 <?php $this->endSection(); ?>

@@ -25,16 +25,16 @@
       <div class="modal-body modalcarousel displaynone">
         Will you have RV Hookups at this event?
         <div align="center" class="mt-3">
-          <button type="button" class="btn questionmodal_rvhookups model_btn" value="1">Yes</button>
-          <button type="button" class="btn questionmodal_rvhookups model_btn" value="2">No</button>
+          <button type="button" class="btn questionmodal_rv model_btn" value="1">Yes</button>
+          <button type="button" class="btn questionmodal_rv model_btn" value="2">No</button>
         </div>
       </div>
       <div class="modal-body modalcarousel displaynone">
         How will you be charging for your stalls?
         <div class="d-flex flex-wrap flex-column align-items-center">
-          <button type="button" class="btn questionmodal_chargingstalls model_btn m-2 w-50" value="1">Per Week</button>
-          <button type="button" class="btn questionmodal_chargingstalls model_btn m-2 w-50" value="2">Per Month</button>
-          <button type="button" class="btn questionmodal_chargingstalls model_btn m-2 w-50" value="3">Flat Rate</button>
+          <button type="button" class="btn questionmodal_charging model_btn m-2 w-50" value="1">Per Week</button>
+          <button type="button" class="btn questionmodal_charging model_btn m-2 w-50" value="2">Per Month</button>
+          <button type="button" class="btn questionmodal_charging model_btn m-2 w-50" value="3">Flat Rate</button>
         </div>
       </div>
       <div class="modal-body modalcarousel displaynone">
