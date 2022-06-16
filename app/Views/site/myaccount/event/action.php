@@ -284,7 +284,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 	
 	$(function(){
 		if(id==""){
-			$('#questionmodal').modal('show'); 
+			$('#questionmodal').modal('show', {backdrop: 'static', keyboard: false}); 
 		}
 
 		uidatepicker("#start_date, #end_date");
