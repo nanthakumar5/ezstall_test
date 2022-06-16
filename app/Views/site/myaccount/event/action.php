@@ -150,7 +150,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 									<div>
 										<button class="btn btn-primary questionmodal_feed" value="1"> Yes </button>
 										<button name="feed" class="btn btn-danger questionmodal_feed" value="2"> No </button>
-										<input type="hidden" value="" name="feed_flag">
+										<input type="hidden" value="" class="feed_flag" name="feed_flag">
 
 									</div>
 								</div>
@@ -177,6 +177,14 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 										<button class="btn btn-primary questionmodal_chargingstalls" value="2">Per Month</button>
 										<button class="btn btn-primary questionmodal_chargingstalls" value="3">Flat Rate</button>
 										<input type="hidden" value="" class="charging_flag" name="charging_flag">
+									</div>
+								</div>
+								<div class="d-flex justify-content-between flex-wrap">
+									<p>Send a text message to users when their stall is unlocked and ready for use? </p>
+									<div>
+										<button class="btn btn-primary questionmodal_notification" value="1"> Yes</button>
+										<button class="btn btn-danger questionmodal_notification" value="2"> No</button>
+										<input type="hidden" value="" class="notification_flag" name="notification_flag">
 									</div>
 								</div>
 							</div>
@@ -276,10 +284,12 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 	var occupied 	 			= $.parseJSON('<?php echo json_encode((isset($occupied)) ? $occupied : []); ?>');
 	var reserved 	 			= $.parseJSON('<?php echo json_encode((isset($reserved)) ? explode(",", implode(",", array_keys($reserved))) : []); ?>');
 	var occupiedstallcount 	 	= '<?php echo (isset($occupied)) ? count($occupied) : 0; ?>';
+	var id                      = '<?php echo $id ?>';
 	
 	$(function(){
-
-		$('#questionmodal').modal('show'); 
+		if(id==""){
+			$('#questionmodal').modal('show'); 
+		}
 
 		uidatepicker("#start_date, #end_date");
 		fileupload([".image_file"], ['.image_input', '.image_source','.image_msg']);
@@ -336,19 +346,28 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 	});
 	
 	$('.questionmodal_shaving').click(function(e){ 
+		e.preventDefault();
         questionpopup1(1, 'shaving', ['.addshavings', '.shaving_flag'], $(this).val())
     });
 	    
     $('.questionmodal_feed').click(function(e){ 
+    	e.preventDefault();
         questionpopup1(1, 'feed', ['.addfeed', '.feed_flag'], $(this).val())
     });
 
     $('.questionmodal_rvhookups').click(function(e){ 
+    	e.preventDefault();
         questionpopup1(1, 'rvhookups', ['.addrvhookups', '.rv_flag'], $(this).val())
     });
 
     $('.questionmodal_chargingstalls').click(function(e){ 
-        questionpopup1(2, 'chargingstalls', ['addrvhookups', '.charging_flag'], $(this).val())
+    	e.preventDefault();
+        questionpopup1(2, 'chargingstalls', '.charging_flag', $(this).val())
+    });
+
+    $('.questionmodal_notification').click(function(e){ 
+    	e.preventDefault();
+        questionpopup1(2, 'notification', '.notification_flag', $(this).val())
     });
 	    
     function questionpopup1(type, name, selector, value){ 
@@ -363,6 +382,10 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
                 $(selector[0]).hide();
                 $(selector[1]).val(value);        
             }
+        }else{
+        	if(value!=''){
+        		$(selector).val(value);
+        	} 
         }
     }
 

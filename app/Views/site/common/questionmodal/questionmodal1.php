@@ -1,50 +1,82 @@
+<style>
+.modal-content {
+    border: 3px solid grey;
+    padding: 15px;
+    text-align: center;
+}
+</style>
 <div class="modal" id="questionmodal">
-  <div class="modal-dialog">
+  <div class="modal-dialog" style="top: 35%;">
     <div class="modal-content">
-      <div class="modal-body">
+      <div class="modal-body modalcarousel active first">
         Will you be selling feed at this event?
-        <div align="right">
-          <button type="button" class="btn btn-primary questionmodal_feed" value="1" style="border-radius: 100%;margin-top: 10px;">Yes</button>
-          <button type="button" class="btn btn-secondary questionmodal_feed" value="2">No</button>
+        <div align="center" class="mt-3">
+          <button type="button" class="btn questionmodal_feed model_btn" value="1">Yes</button>
+          <button type="button" class="btn questionmodal_feed model_btn" value="2">No</button>
        </div>
       </div>
-      <div class="modal-body">
+      <div class="modal-body modalcarousel displaynone">
         Will you be selling shavings at this event? 
-        <div align="right">
-          <button type="button" class="btn btn-primary questionmodal_shaving" value="1" style="border-radius: 100%;margin-top: 10px;" >Yes</button>
-          <button type="button" class="btn btn-secondary questionmodal_shaving" value="2">No</button>
+        <div align="center"  class="mt-3">
+          <button type="button" class="btn questionmodal_shaving model_btn" value="1" >Yes</button>
+          <button type="button" class="btn questionmodal_shaving model_btn" value="2">No</button>
         </div>
       </div>
-      <div class="modal-body">
+      <div class="modal-body modalcarousel displaynone">
         Will you have RV Hookups at this event?
-        <div align="right">
-          <button type="button" class="btn btn-primary questionmodal_rvhookups" value="1" style="border-radius: 100%;margin-top: 10px;">Yes</button>
-          <button type="button" class="btn btn-secondary questionmodal_rvhookups" value="2">No</button>
+        <div align="center" class="mt-3">
+          <button type="button" class="btn questionmodal_rvhookups model_btn" value="1">Yes</button>
+          <button type="button" class="btn questionmodal_rvhookups model_btn" value="2">No</button>
         </div>
       </div>
-      <div class="modal-body">
+      <div class="modal-body modalcarousel displaynone">
         How will you be charging for your stalls?
-          <div>
-            <button type="button" class="btn btn-primary questionmodal_chargingstalls" value="1">Per Week</button>
-            <button type="button" class="btn btn-primary questionmodal_chargingstalls" value="2">Per Month</button>
-            <button type="button" class="btn btn-primary questionmodal_chargingstalls" value="3">Flat Rate</button>
-          </div>
+        <div class="d-flex flex-wrap flex-column align-items-center">
+          <button type="button" class="btn questionmodal_chargingstalls model_btn m-2 w-50" value="1">Per Week</button>
+          <button type="button" class="btn questionmodal_chargingstalls model_btn m-2 w-50" value="2">Per Month</button>
+          <button type="button" class="btn questionmodal_chargingstalls model_btn m-2 w-50" value="3">Flat Rate</button>
+        </div>
       </div>
-      <div class="modal-body">
+      <div class="modal-body modalcarousel displaynone">
         Send a text message to users when their
         stall is unlocked and ready for use?
-        <div align="right">
-          <button type="button" class="btn btn-primary questionmodal_notificaion" value="1" style="border-radius: 100%;margin-top: 10px;">Yes</button>
-          <button type="button" class="btn btn-secondary questionmodal_notificaion" value="2" >No</button>
+        <div align="center" class="mt-3">
+          <button type="button" class="btn questionmodal_notification model_btn" value="1">Yes</button>
+          <button type="button" class="btn questionmodal_notification model_btn" value="2" >No</button>
         </div>
       </div>
-      <div class="modal-body">
+      <div class="modal-body modalcarousel displaynone last">
         Thank You Fill out your custom event form with your stalls,
           and let your customers rest EZ!
-          <div align="right">
-            <button type="button" class="btn btn-success questionmodalsubmit"  style="border-radius: 100%;margin-top: 10px;"  data-bs-dismiss="modal">Go</button>
+          <div align="center" class="mt-3">
+            <button type="button" class="btn btn-success questionmodalsubmit model_btn"  data-bs-dismiss="modal">Go</button>
           </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <a href="javascript:void(0);" class="modalcarousel_prev displaynone"><i class="fas fa-chevron-left"></i></a>
+        <a href="javascript:void(0);" class="modalcarousel_next" align="right"><i class="fas fa-chevron-right"></i></a>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  $('.modalcarousel_next').click(function(){
+    var nextsibling = $('.modalcarousel.active').next('.modalcarousel');
+    $('.modalcarousel').addClass('displaynone').removeClass('active');
+    nextsibling.addClass('active').removeClass('displaynone');
+    
+    $('.modalcarousel_prev').removeClass('displaynone');
+    if(nextsibling.hasClass('last')) $('.modalcarousel_next').addClass('displaynone');
+  })
+  $('.modalcarousel_prev').click(function(){
+    var prevsibling = $('.modalcarousel.active').prev('.modalcarousel');
+    $('.modalcarousel').addClass('displaynone').removeClass('active');
+    prevsibling.addClass('active').removeClass('displaynone');
+    
+    $('.modalcarousel_next').removeClass('displaynone');
+    if(prevsibling.hasClass('first')) $('.modalcarousel_prev').addClass('displaynone');
+  })
+
+</script>
+

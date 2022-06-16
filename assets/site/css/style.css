@@ -12,6 +12,7 @@ body {
 .displaynone{
     display:none;
 }
+
 .cancelcolor{
     color: red;
     font-weight: 600;
@@ -4627,4 +4628,9 @@ span.num_btn.stallcount {
     height: 50px;
     width: 50px;
     object-fit: cover;
+}
+
+.model_btn {
+    border: 3px solid grey;
+    padding: 5px 30px;
 }

@@ -168,7 +168,7 @@ class Event extends BaseModel
     }
 	
 	public function action($data)
-	{ 	//echo "<pre>";print_r($data);die;
+	{ 	
 		$this->db->transStart();
 
 		$datetime			= date('Y-m-d H:i:s');
@@ -177,18 +177,25 @@ class Event extends BaseModel
 		
 		$request['user_id'] = $userid;
 		$request['status'] 	= '1';
-		if(isset($data['name']) && $data['name']!='')      		        		$request['name'] 			= $data['name'];
-		if(isset($data['description']) && $data['description']!='')     		$request['description']     = $data['description'];
-		if(isset($data['location']) && $data['location']!='')           		$request['location'] 		= $data['location'];
-		if(isset($data['mobile']) && $data['mobile']!='')      	        		$request['mobile'] 			= $data['mobile'];
-		if(isset($data['start_date']) && $data['start_date']!='')       		$request['start_date']		= date('Y-m-d', strtotime($data['start_date']));
-		if(isset($data['end_date']) && $data['end_date']!='')           		$request['end_date'] 		= date('Y-m-d', strtotime($data['end_date']));
-		if(isset($data['start_time']) && $data['start_time']!='')       		$request['start_time'] 		= $data['start_time'];
-		if(isset($data['end_time']) && $data['end_time']!='')           		$request['end_time'] 		= $data['end_time'];
-		if(isset($data['stalls_price']) && $data['stalls_price']!='')   		$request['stalls_price']	= $data['stalls_price'];
-		if(isset($data['rvspots_price']) && $data['rvspots_price']!='') 		$request['rvspots_price'] 	= $data['rvspots_price'];
-		if(isset($data['status']) && $data['status']!='')      		    		$request['status'] 			= $data['status'];
-		if(isset($data['type']) && $data['type']!='')    		 				$request['type'] 			= $data['type'];
+		if(isset($data['name']) && $data['name']!='')      		        		$request['name'] 				= $data['name'];
+		if(isset($data['description']) && $data['description']!='')     		$request['description']    	 	= $data['description'];
+		if(isset($data['location']) && $data['location']!='')           		$request['location'] 			= $data['location'];
+		if(isset($data['mobile']) && $data['mobile']!='')      	        		$request['mobile'] 				= $data['mobile'];
+		if(isset($data['start_date']) && $data['start_date']!='')       		$request['start_date']			= date('Y-m-d', strtotime($data['start_date']));
+		if(isset($data['end_date']) && $data['end_date']!='')           		$request['end_date'] 			= date('Y-m-d', strtotime($data['end_date']));
+		if(isset($data['start_time']) && $data['start_time']!='')       		$request['start_time'] 			= $data['start_time'];
+		if(isset($data['end_time']) && $data['end_time']!='')           		$request['end_time'] 			= $data['end_time'];
+		if(isset($data['stalls_price']) && $data['stalls_price']!='')   		$request['stalls_price']		= $data['stalls_price'];
+		if(isset($data['rvspots_price']) && $data['rvspots_price']!='') 		$request['rvspots_price'] 		= $data['rvspots_price'];
+
+		if(isset($data['feed_flag']) && $data['feed_flag']!='') 				$request['feed_flag'] 			= $data['feed_flag'];
+		if(isset($data['shaving_flag']) && $data['shaving_flag']!='') 			$request['shaving_flag'] 		= $data['shaving_flag'];
+		if(isset($data['rv_flag']) && $data['rv_flag']!='') 					$request['rv_flag'] 			= $data['rv_flag'];
+		if(isset($data['charging_flag']) && $data['charging_flag']!='') 		$request['charging_flag'] 		= $data['charging_flag'];
+		if(isset($data['notification_flag']) && $data['notification_flag']!='') $request['notification_flag'] 	= $data['notification_flag'];
+
+		if(isset($data['status']) && $data['status']!='')      		    		$request['status'] 				= $data['status'];
+		if(isset($data['type']) && $data['type']!='')    		 				$request['type'] 				= $data['type'];
 		
 		if(isset($data['image']) && $data['image']!=''){
  			$request['image'] = $data['image'];		
@@ -237,6 +244,7 @@ class Event extends BaseModel
 				$barn['event_id'] 	= $eventinsertid;
 				$barn['name']     	= $barndata['name'];
 				$barn['status']     = '1';
+				$barn['type']		= '1';
 				
 				if($barnid==''){
 					$this->db->table('barn')->insert($barn);
@@ -253,12 +261,13 @@ class Event extends BaseModel
         			}
 					
         			foreach($barndata['stall'] as $stalldata){
-        				$stallid        	 = $stalldata['id']!='' ? $stalldata['id'] : '';
-        				$stall['event_id'] 	 = $eventinsertid;
-        				$stall['barn_id']    = $barninsertid;
-        				$stall['name']       = $stalldata['name'];
-        				$stall['price']      = $stalldata['price'];
-        				$stall['status']     = $stalldata['status'];
+        				$stallid        	 	= $stalldata['id']!='' ? $stalldata['id'] : '';
+        				$stall['event_id'] 	 	= $eventinsertid;
+        				$stall['barn_id']    	= $barninsertid;
+        				$stall['name']       	= $stalldata['name'];
+        				$stall['price']      	= $stalldata['price'];
+        				$stall['status']     	= $stalldata['status'];
+        				$stall['type']		 	= '1';
         				
 
         				if(isset($stalldata['image']) && $stalldata['image']!=''){
@@ -279,6 +288,111 @@ class Event extends BaseModel
         			}
         		}
 			}
+		}
+
+		if(isset($data['rvhookups']) && count($data['rvhookups']) > '0'){
+			$rvidcolumn = array_filter(array_column($data['rvhookups'], 'id'));
+			if(count($rvidcolumn)){
+				$this->db->table('barn')->whereNotIn('id', $rvidcolumn)->update(['status' => '0'], ['event_id' => $eventinsertid]);
+			}
+			
+			foreach($data['rvhookups'] as $rvdata){
+				$rvid       		= $rvdata['id']!='' ? $rvdata['id'] : '';
+				$barn['event_id'] 	= $eventinsertid;
+				$barn['name']     	= $rvdata['name'];
+				$barn['status']     = '1';
+				$barn['type']		= '2';
+				
+				if($rvid==''){
+					$this->db->table('barn')->insert($barn);
+					$barninsertid = $this->db->insertID();
+				}else {
+				   $this->db->table('barn')->update($barn, ['id' => $barnid]);
+				   $barninsertid = $barnid;
+				}	
+				
+				if(isset($rvdata['stall']) && count($rvdata['stall']) > 0){ 
+        			$rvidcolumn = array_filter(array_column($rvdata['stall'], 'id'));
+        			if(count($rvidcolumn)){
+        				$this->db->table('stall')->whereNotIn('id', $rvidcolumn)->update(['status' => '0'], ['barn_id' => $barninsertid]);
+        			}
+					
+        			foreach($rvdata['stall'] as $rvstalldata){
+        				$rvstallid        	 	= $rvstalldata['id']!='' ? $rvstalldata['id'] : '';
+        				$rvstall['event_id'] 	= $eventinsertid;
+        				$rvstall['barn_id']    	= $barninsertid;
+        				$rvstall['name']       	= $rvstalldata['name'];
+        				$rvstall['price']      	= $rvstalldata['price'];
+        				$rvstall['status']     	= $rvstalldata['status'];
+        				$rvstall['type']		= '2';
+        				
+
+        				if(isset($rvstalldata['image']) && $rvstalldata['image']!=''){
+				 			$rvstall['image'] = $rvstalldata['image'];		
+							filemove($rvstalldata['image'], './assets/uploads/stall');		
+						}
+        				
+        				if($rvstallid==''){
+        					if($data['type'] == '2'){ 
+								$rvstall['start_date']  	= date('Y-m-d');
+								$rvstall['end_date'] 	  	= date('Y-m-d', strtotime('+1 year', strtotime($rvstall['start_date'])));
+							}
+        					
+        					$this->db->table('stall')->insert($rvstall);
+        				}else {
+        				   $this->db->table('stall')->update($rvstall, ['id' => $rvstallid]);
+        				}	
+        			}
+        		}
+			}
+		}
+
+		if(isset($data['feed']) && count($data['feed']) > '0'){
+			$feedidcolumn = array_filter(array_column($data['feed'], 'id'));
+			if(count($feedidcolumn)){
+				$this->db->table('products')->whereNotIn('id', $feedidcolumn)->update(['status' => '0'], ['event_id' => $eventinsertid]);
+			}
+
+			foreach($data['feed'] as $productsdata){
+				$productsid        	 			= $productsdata['id']!='' ? $productsdata['id'] : '';
+				$productsdata['event_id'] 		= $eventinsertid;
+				$productsdata['name']       	= $productsdata['name'];
+				$productsdata['price']      	= $productsdata['price'];
+				$productsdata['status']     	= $productsdata['status'];
+				$productsdata['type']     		= '1';
+
+				
+				if($productsid==''){
+					$this->db->table('products')->insert($productsdata);
+				}else {
+				   $this->db->table('products')->update($productsdata, ['id' => $productsid]);
+				}	
+			}
+
+		}
+
+		if(isset($data['shavings']) && count($data['shavings']) > '0'){
+			$feedidcolumn = array_filter(array_column($data['shavings'], 'id'));
+			if(count($feedidcolumn)){
+				$this->db->table('products')->whereNotIn('id', $feedidcolumn)->update(['status' => '0'], ['event_id' => $eventinsertid]);
+			}
+
+			foreach($data['shavings'] as $productsdata){
+				$productsid        	 			= $productsdata['id']!='' ? $productsdata['id'] : '';
+				$productsdata['event_id'] 		= $eventinsertid;
+				$productsdata['name']       	= $productsdata['name'];
+				$productsdata['price']      	= $productsdata['price'];
+				$productsdata['status']     	= $productsdata['status'];
+				$productsdata['type']     		= '2';
+				
+				
+				if($productsid==''){
+					$this->db->table('products')->insert($productsdata);
+				}else {
+				   $this->db->table('products')->update($productsdata, ['id' => $productsid]);
+				}	
+			}
+
 		}
 		
 		if(isset($eventinsertid) && $this->db->transStatus() === FALSE){
