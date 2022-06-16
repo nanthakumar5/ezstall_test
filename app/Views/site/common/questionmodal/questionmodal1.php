@@ -5,7 +5,7 @@
     text-align: center;
 }
 </style>
-<div class="modal" id="questionmodal">
+<div class="modal" id="questionmodal" data-bs-backdrop="static">
   <div class="modal-dialog" style="top: 35%;">
     <div class="modal-content">
       <div class="modal-body modalcarousel active first">
@@ -77,7 +77,7 @@
     $('.modalcarousel_next').removeClass('displaynone');
     if(prevsibling.hasClass('first')) $('.modalcarousel_prev').addClass('displaynone');
   })
-  $('.questionmodal_btn').click(function(){
+  /*$('.questionmodal_btn').click(function(){
     var nextsibling = $(this).parent().parent().next('.modalcarousel');
     $('.modalcarousel').addClass('displaynone').removeClass('active');
     nextsibling.addClass('active').removeClass('displaynone');
@@ -85,6 +85,6 @@
     $('.modalcarousel_prev').removeClass('displaynone');
     if(nextsibling.hasClass('last')) $('.modalcarousel_next').addClass('displaynone');
   })
-
+  */
 </script>
 
