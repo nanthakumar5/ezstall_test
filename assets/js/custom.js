@@ -686,10 +686,20 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 }
 
 
-function products(productsname, productsitem=[]){
+function products(productsname, productsitem=[], productsresult=[]){ 
 	var selector_btn1 	= productsitem[0][0];
 	var product_append 	= productsitem[1][0];
 	var productIndex 	= productsitem[2][0];
+
+	var productsresult 	= productsresult[0] ? productsresult[0] : [];
+	var occupied 		= productsresult[1] ? productsresult[1] : [];
+	var reserved 		= productsresult[2] ? productsresult[2] : [];
+
+	if(productsresult.length > 0){
+		$(productsresult).each(function(i, v){
+			productsdata(v);
+		});
+	}
 	
 	/* START ADD EDIT PRODUCTS */
 	$(selector_btn1).click(function(e){
@@ -700,9 +710,12 @@ function products(productsname, productsitem=[]){
 	function productsdata(result=[])
 	{  
 		var productId       		= result['id'] ? result['id'] : '';
-		var productName     		= result['name'] ? result['name'] : '';
+		var productName     		= result['name'] ? result['name'] : ''; 
 		var productQuantity    		= result['quantity'] ? result['quantity'] : '';
 		var productPrice    		= result['price'] ? result['price'] : '';
+
+		if($.inArray(productId, occupied) !== -1)	availability = '<span class="red-box"></span>';
+		if($.inArray(productId, reserved) !== -1)	availability = '<span class="yellow-box"></span>';
 		
 		var data='\
 		<div class="row mb-2 dash-stall-base">\

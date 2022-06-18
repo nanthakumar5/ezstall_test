@@ -105,7 +105,8 @@ class Index extends BaseController
 		}
 		
 		if($id!=''){
-			$result = $this->event->getEvent('row', ['event', 'barn', 'stall'],['id' => $id, 'status' => ['1'], 'userid' => $userid, 'type' => '1']);
+			$result = $this->event->getEvent('row', ['event', 'barn', 'stall', 'products'],['id' => $id, 'status' => ['1'], 'userid' => $userid, 'type' => '1']);
+
 			if($result){				
 				$data['occupied'] 	= getOccupied($id);
 				$data['reserved'] 	= getReserved($id);

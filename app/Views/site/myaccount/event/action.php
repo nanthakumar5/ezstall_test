@@ -2,6 +2,7 @@
 
 <?php $this->section('content') ?>
 <?php
+//echo "<pre>";print_r($result);die;
 $id 					= isset($result['id']) ? $result['id'] : '';
 $name 					= isset($result['name']) ? $result['name'] : '';
 $description 		    = isset($result['description']) ? $result['description'] : '';
@@ -21,6 +22,14 @@ $eventflyer 			= filedata($eventflyer, base_url().'/assets/uploads/eventflyer/')
 $stallmap      			= isset($result['stallmap']) ? $result['stallmap'] : '';
 $stallmap 				= filedata($stallmap, base_url().'/assets/uploads/stallmap/');
 $barn        			= isset($result['barn']) ? $result['barn'] : [];
+$rvhookups        		= isset($result['rvhookups']) ? $result['rvhookups'] : [];
+$rv 					= isset($result['rv_flag']) ? $result['rv_flag'] : '';
+$feed 					= isset($result['feed']) ? $result['feed'] : '';
+$feed_flag 				= isset($result['feed_flag']) ? $result['feed_flag'] : '';
+$shaving 				= isset($result['shaving']) ? $result['shaving'] : '';
+$shaving_flag 			= isset($result['shaving_flag']) ? $result['shaving_flag'] : '';
+$charging_flag 			= isset($result['charging_flag']) ? $result['charging_flag'] : '';
+$notification_flag 		= isset($result['notification_flag']) ? $result['notification_flag'] : '';
 $pageaction 			= $id=='' ? 'Add' : 'Update';
 ?>
 
@@ -144,46 +153,46 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 					<div class="card">
 						<div class="card-body">
 							<div>
-								<div class="d-flex justify-content-between flex-wrap">
+								<div class="d-flex justify-content-between flex-wrap align-items-center my-3">
 									<p>Will you be selling feed at this event? </p>
 
 									<div>
-										<button class="btn questionmodal_feed model_btn" value="1"> Yes </button>
-										<button name="feed" class="btn questionmodal_feed model_btn" value="2"> No </button>
+										<button class="btn questionmodal_feed event_btn" value="1"> Yes </button>
+										<button name="feed" class="btn questionmodal_feed event_btn" value="2"> No </button>
 										<input type="hidden" value="" class="feed_flag" name="feed_flag">
 
 									</div>
 								</div>
-								<div class="d-flex justify-content-between flex-wrap">
+								<div class="d-flex justify-content-between flex-wrap align-items-center my-3">
 									<p>Will you be selling shavings at this event?</p>
 									<div>
-										<button class="btn questionmodal_shaving model_btn" value="1"> Yes </button>
-										<button class="btn questionmodal_shaving model_btn" value="2"> No </button>
+										<button class="btn questionmodal_shaving event_btn" value="1"> Yes </button>
+										<button class="btn questionmodal_shaving event_btn" value="2"> No </button>
 										<input type="hidden" value="" class="shaving_flag" name="shaving_flag">
 									</div>
 								</div>
-								<div class="d-flex justify-content-between flex-wrap">
+								<div class="d-flex justify-content-between flex-wrap align-items-center my-3">
 									<p>Will you have RV Hookups at this event? </p>
 									<div>
-										<button class="btn questionmodal_rv model_btn" value="1"> Yes</button>
-										<button class="btn questionmodal_rv model_btn" value="2"> No</button>
+										<button class="btn questionmodal_rv event_btn" value="1"> Yes</button>
+										<button class="btn questionmodal_rv event_btn" value="2"> No</button>
 										<input type="hidden" value="" class="rv_flag" name="rv_flag">
 									</div>
 								</div>
-								<div class="d-flex justify-content-between flex-wrap">
+								<div class="d-flex justify-content-between flex-wrap align-items-center my-3">
 									<p>How will you be charging for your stalls? </p>
 									<div>
-										<button class="btn questionmodal_charging model_btn" value="1">Per Week</button>
-										<button class="btn questionmodal_charging model_btn" value="2">Per Month</button>
-										<button class="btn questionmodal_charging model_btn" value="3">Flat Rate</button>
+										<button class="btn questionmodal_charging event_btn" value="1">Per Week</button>
+										<button class="btn questionmodal_charging event_btn" value="2">Per Month</button>
+										<button class="btn questionmodal_charging event_btn" value="3">Flat Rate</button>
 										<input type="hidden" value="" class="charging_flag" name="charging_flag">
 									</div>
 								</div>
-								<div class="d-flex justify-content-between flex-wrap">
+								<div class="d-flex justify-content-between flex-wrap align-items-center my-3">
 									<p>Send a text message to users when their stall is unlocked and ready for use? </p>
 									<div>
-										<button class="btn questionmodal_notification model_btn" value="1"> Yes</button>
-										<button class="btn questionmodal_notification model_btn" value="2"> No</button>
+										<button class="btn questionmodal_notification event_btn" value="1"> Yes</button>
+										<button class="btn questionmodal_notification event_btn" value="2"> No</button>
 										<input type="hidden" value="" class="notification_flag" name="notification_flag">
 									</div>
 								</div>
@@ -275,13 +284,21 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 <?php $this->section('js') ?>
 <?php echo $questionmodal; ?>
 
-<script>
-	var barn				 	= $.parseJSON('<?php echo addslashes(json_encode($barn)); ?>'); 
+<script> 
+	var barn				 	= $.parseJSON('<?php echo addslashes(json_encode($barn)); ?>');
+	var rvhookups				= $.parseJSON('<?php echo addslashes(json_encode($rvhookups)); ?>');
+	var feed				 	= $.parseJSON('<?php echo addslashes(json_encode($feed)); ?>');
+	var shaving					= $.parseJSON('<?php echo addslashes(json_encode($shaving)); ?>');
 	var statuslist		 		= $.parseJSON('<?php echo addslashes(json_encode($statuslist)); ?>');
 	var occupied 	 			= $.parseJSON('<?php echo json_encode((isset($occupied)) ? $occupied : []); ?>');
 	var reserved 	 			= $.parseJSON('<?php echo json_encode((isset($reserved)) ? explode(",", implode(",", array_keys($reserved))) : []); ?>');
 	var id                      = '<?php echo $id ?>';
-	
+	var rv				 		= '<?php echo $rv ?>';
+	var feed_flag				= '<?php echo $feed_flag ?>';
+	var shaving_flag			= '<?php echo $shaving_flag ?>';
+	var charging_flag			= '<?php echo $charging_flag ?>';
+	var notification_flag		= '<?php echo $notification_flag ?>';
+
 	$(function(){
 		if(id==""){
 			$('#questionmodal').modal('show'); 
@@ -337,9 +354,9 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 		$('#mobile').inputmask("(999) 999-9999");
 
 		barnstall('barn', [['.barnbtn'], ['.barntab', '.stalltab'], [0, 0], ['#barnvalidation']], [barn, occupied, reserved])
-		barnstall('rvhookups', [['.addrvhookupsbtn'], ['.rvhookupslist', '.rvhookupstab'], [0, 0], ['#rvhookupsvalidation']], [barn, occupied, reserved])
-		products('feed', [['.feedbtn'], ['.feedlist'], [0]])
-		products('shavings', [['.shavingsbtn'], ['.shavingslist'], [0]])
+		barnstall('rvhookups', [['.addrvhookupsbtn'], ['.rvhookupslist', '.rvhookupstab'], [0, 0], ['#rvhookupsvalidation']], [rvhookups, occupied, reserved])
+		products('feed', [['.feedbtn'], ['.feedlist'], [0]], [feed, occupied, reserved])
+		products('shavings', [['.shavingsbtn'], ['.shavingslist'], [0]], [shaving, occupied, reserved])
 
 	});
 	
@@ -348,7 +365,13 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 		return this.optional(element) || mobile.length > 9 && 
 		mobile.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
 	}, "Please specify a valid phone number");
-	
+
+	questionpopup1(1, 'rv', rv)
+	questionpopup1(1, 'feed', feed_flag)
+	questionpopup1(1, 'shaving', shaving_flag)
+	questionpopup1(1, 'charging', charging_flag)
+	questionpopup1(1, 'notification', notification_flag)
+
 	$('.questionmodal_shaving').click(function(e){ 
 		e.preventDefault();
         questionpopup1(1, 'shaving', $(this).val())
@@ -375,8 +398,8 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
     });
 	    
     function questionpopup1(type, name, value){ 
-        $('.questionmodal_'+name).removeClass("btn btn-success").addClass("btn");
-        $('.questionmodal_'+name+'[value="'+value+'"]').removeClass("btn").addClass("btn btn-success");
+        $('.questionmodal_'+name).removeClass("btn-stall").addClass("event_btn");
+        $('.questionmodal_'+name+'[value="'+value+'"]').removeClass("event_btn").addClass("btn-stall");
         $('.'+name+'_flag').val(value);   
         
         if(type=='1'){

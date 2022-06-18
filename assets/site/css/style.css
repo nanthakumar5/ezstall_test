@@ -4649,3 +4649,14 @@ span.num_btn.stallcount {
     left: 5%;
     font-size: 25px;
 }
+
+.event_btn {
+    background-color: #e1e1e1;
+    font-weight: 500;
+    color: #707070;
+}
+
+.eve-btn-success {
+    background-color: #40cf40;
+    color: #fff !important;
+}
