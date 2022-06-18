@@ -105,7 +105,7 @@ class Index extends BaseController
 		}
 		
 		if($id!=''){
-			$result = $this->event->getEvent('row', ['event', 'barn', 'stall', 'products'],['id' => $id, 'status' => ['1'], 'userid' => $userid, 'type' => '1']);
+			$result = $this->event->getEvent('row', ['event', 'barn', 'stall', 'rvbarn', 'rvstall', 'feed', 'shaving'],['id' => $id, 'status' => ['1'], 'userid' => $userid, 'type' => '1']);
 
 			if($result){				
 				$data['occupied'] 	= getOccupied($id);
@@ -134,8 +134,7 @@ class Index extends BaseController
 			}
         } 
 		
-		$data['userid'] 	= $userid;
-		$data['statuslist'] = $this->config->status1;
+		$data['userid'] = $userid;
 		$data['questionmodal'] = view('site/common/questionmodal/questionmodal1');
 		return view('site/myaccount/event/action', $data);
 	}

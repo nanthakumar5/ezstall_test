@@ -2,7 +2,6 @@
 
 <?php $this->section('content') ?>
 <?php
-//echo "<pre>";print_r($result);die;
 $id 					= isset($result['id']) ? $result['id'] : '';
 $name 					= isset($result['name']) ? $result['name'] : '';
 $description 		    = isset($result['description']) ? $result['description'] : '';
@@ -21,15 +20,15 @@ $eventflyer      		= isset($result['eventflyer']) ? $result['eventflyer'] : '';
 $eventflyer 			= filedata($eventflyer, base_url().'/assets/uploads/eventflyer/');
 $stallmap      			= isset($result['stallmap']) ? $result['stallmap'] : '';
 $stallmap 				= filedata($stallmap, base_url().'/assets/uploads/stallmap/');
-$barn        			= isset($result['barn']) ? $result['barn'] : [];
-$rvhookups        		= isset($result['rvhookups']) ? $result['rvhookups'] : [];
-$rv 					= isset($result['rv_flag']) ? $result['rv_flag'] : '';
-$feed 					= isset($result['feed']) ? $result['feed'] : '';
 $feed_flag 				= isset($result['feed_flag']) ? $result['feed_flag'] : '';
-$shaving 				= isset($result['shaving']) ? $result['shaving'] : '';
 $shaving_flag 			= isset($result['shaving_flag']) ? $result['shaving_flag'] : '';
+$rv_flag 				= isset($result['rv_flag']) ? $result['rv_flag'] : '';
 $charging_flag 			= isset($result['charging_flag']) ? $result['charging_flag'] : '';
 $notification_flag 		= isset($result['notification_flag']) ? $result['notification_flag'] : '';
+$barn        			= isset($result['barn']) ? $result['barn'] : [];
+$rvbarn        			= isset($result['rvbarn']) ? $result['rvbarn'] : [];
+$feed 					= isset($result['feed']) ? $result['feed'] : '';
+$shaving 				= isset($result['shaving']) ? $result['shaving'] : '';
 $pageaction 			= $id=='' ? 'Add' : 'Update';
 ?>
 
@@ -257,14 +256,14 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 								</div>
 								<div class="col-md-9 t-right p-0 respsm">
 									<input type="hidden" value="" name="rvhookupsvalidation" id="rvhookupsvalidation">
-									<a href="javascript:void(0);" class="btn btn-info addbulkrvhookups">Add Bulk Rv Hookups</a>
-									<input type="file" class="bulkrvfile" style="display:none;">
-									<button class="btn-stall addrvhookupsbtn">Add Rv Hookups</button>
+									<a href="javascript:void(0);" class="btn btn-info bulkbtn_rvhookups">Add Bulk Rv Hookups</a>
+									<input type="file" class="bulkfile_rvhookups" style="display:none;">
+									<button class="btn-stall rvhookupsbtn">Add Rv Hookups</button>
 								</div>
 							</div>
 							<div class="row">
-								<ul class="nav nav-pills flex-column col-md-3 rvhookupslist" role="tablist"></ul>
-								<div class="tab-content col-md-9 rvhookupstab"></div>
+								<ul class="nav nav-pills flex-column col-md-3 rvhookupsbarntab" role="tablist"></ul>
+								<div class="tab-content col-md-9 rvhookupsstalltab"></div>
 							</div>
 						</div>
 					</div>
@@ -286,16 +285,15 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 
 <script> 
 	var barn				 	= $.parseJSON('<?php echo addslashes(json_encode($barn)); ?>');
-	var rvhookups				= $.parseJSON('<?php echo addslashes(json_encode($rvhookups)); ?>');
+	var rvbarn					= $.parseJSON('<?php echo addslashes(json_encode($rvbarn)); ?>');
 	var feed				 	= $.parseJSON('<?php echo addslashes(json_encode($feed)); ?>');
 	var shaving					= $.parseJSON('<?php echo addslashes(json_encode($shaving)); ?>');
-	var statuslist		 		= $.parseJSON('<?php echo addslashes(json_encode($statuslist)); ?>');
-	var occupied 	 			= $.parseJSON('<?php echo json_encode((isset($occupied)) ? $occupied : []); ?>');
-	var reserved 	 			= $.parseJSON('<?php echo json_encode((isset($reserved)) ? explode(",", implode(",", array_keys($reserved))) : []); ?>');
+	var occupied 	 			= $.parseJSON('<?php echo json_encode((isset($occupied)) ? array_filter($occupied) : []); ?>');
+	var reserved 	 			= $.parseJSON('<?php echo json_encode((isset($reserved)) ? array_filter(explode(",", implode(",", array_keys($reserved)))) : []); ?>');
 	var id                      = '<?php echo $id ?>';
-	var rv				 		= '<?php echo $rv ?>';
 	var feed_flag				= '<?php echo $feed_flag ?>';
 	var shaving_flag			= '<?php echo $shaving_flag ?>';
+	var rv_flag				 	= '<?php echo $rv_flag ?>';
 	var charging_flag			= '<?php echo $charging_flag ?>';
 	var notification_flag		= '<?php echo $notification_flag ?>';
 
@@ -304,12 +302,13 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 			$('#questionmodal').modal('show'); 
 		}
 
+		$('#mobile').inputmask("(999) 999-9999");
 		uidatepicker("#start_date, #end_date");
 		fileupload([".image_file"], ['.image_input', '.image_source','.image_msg']);
 		fileupload([".eventflyer_file", ['jpg','jpeg','png','gif','tiff','tif','pdf']], ['.eventflyer_input', '.eventflyer_source','.eventflyer_msg']);
 		fileupload([".stallmap_file", ['jpg','jpeg','png','gif','tiff','tif','pdf']], ['.stallmap_input', '.stallmap_source','.stallmap_msg']);
 		fileupload([".stall_file"], ['.stall_input', '.stall_source','.stall_msg']);
-
+		
 		validation(
 			'#form',
 			{
@@ -323,7 +322,6 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 					required	: 	true
 				},					
 				mobile       : {
-					phoneUs     :   true,
 					required	: 	true
 				},
 				start_date   : {
@@ -351,27 +349,18 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 			}
 		);
 		
-		$('#mobile').inputmask("(999) 999-9999");
-
+		questionpopup1(1, 'rv', rv_flag)
+		questionpopup1(1, 'feed', feed_flag)
+		questionpopup1(1, 'shaving', shaving_flag)
+		questionpopup1(2, 'charging', charging_flag)
+		questionpopup1(2, 'notification', notification_flag)
+		
 		barnstall('barn', [['.barnbtn'], ['.barntab', '.stalltab'], [0, 0], ['#barnvalidation']], [barn, occupied, reserved])
-		barnstall('rvhookups', [['.addrvhookupsbtn'], ['.rvhookupslist', '.rvhookupstab'], [0, 0], ['#rvhookupsvalidation']], [rvhookups, occupied, reserved])
-		products('feed', [['.feedbtn'], ['.feedlist'], [0]], [feed, occupied, reserved])
-		products('shavings', [['.shavingsbtn'], ['.shavingslist'], [0]], [shaving, occupied, reserved])
-
+		barnstall('rvhookups', [['.rvhookupsbtn'], ['.rvhookupsbarntab', '.rvhookupsstalltab'], [0, 0], ['#rvhookupsvalidation']], [rvbarn, occupied, reserved])
+		products('feed', [['.feedbtn'], ['.feedlist'], [0]], [feed])
+		products('shavings', [['.shavingsbtn'], ['.shavingslist'], [0]], [shaving])
 	});
 	
-	jQuery.validator.addMethod("phoneUS", function(mobile, element) {
-		mobile = mobile.replace(/\s+/g, "");
-		return this.optional(element) || mobile.length > 9 && 
-		mobile.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
-	}, "Please specify a valid phone number");
-
-	questionpopup1(1, 'rv', rv)
-	questionpopup1(1, 'feed', feed_flag)
-	questionpopup1(1, 'shaving', shaving_flag)
-	questionpopup1(1, 'charging', charging_flag)
-	questionpopup1(1, 'notification', notification_flag)
-
 	$('.questionmodal_shaving').click(function(e){ 
 		e.preventDefault();
         questionpopup1(1, 'shaving', $(this).val())
@@ -414,5 +403,18 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 	$('#eventSubmit').click(function(e){
 		tabvalidation();
 	});
+	
+	function tabvalidation(){
+		$(document).find('.requiredtab').remove();	
+		
+		setTimeout(function(){
+			$(document).find('.dash-stall-base').each(function(){;
+				if($(this).find('input.error_class_1').length){
+					var tabid = $(this).parent().attr('id');
+					$(document).find('a[data-bs-target="#'+tabid+'"] input').after('<span class="requiredtab">*</span>');
+				}
+			})
+		}, 100);
+	}
 </script>
 <?php $this->endSection(); ?>

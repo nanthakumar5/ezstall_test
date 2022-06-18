@@ -2,9 +2,9 @@ function baseurl(){
 	var base = window.location;
 
 	if(base.host=='localhost'){
-		return base.protocol + "//" + base.host + "/ezstall/";
+		return base.protocol + "//" + base.host + "/nantha/ezstall2/";
 	}else{
-		return base.protocol + "//" + base.host + "/ezstall/";
+		return base.protocol + "//" + base.host + "/ezstall2/";
 	}
 }
 
@@ -358,7 +358,7 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 	function barndata(result=[], type=''){ 
 		var barnId   	= result['id'] ? result['id'] : '';
 		var barnName 	= result['name'] ? result['name'] : 'Barn';
-		var stall		= result['stall'] ? result['stall'] : [];
+		var stall		= result['stall'] ? result['stall'] : (result['rvstall'] ? result['rvstall'] : []);
 		
 		var activeclass = $.trim($(barn_append).html())=='' ? 'active' : '';
 		
@@ -668,21 +668,6 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 		$('#bulkstallmodal_'+barnstallname).modal('hide');
 	});
 	/* END STALL BULK UPLOAD */
-	
-	/* START VALIDATION */
-	function tabvalidation(){
-		$(document).find('.requiredtab').remove();	
-		
-		setTimeout(function(){
-			$(document).find('.dash-stall-base').each(function(){;
-				if($(this).find('input.error_class_1').length){
-					var tabid = $(this).parent().attr('id');
-					$(document).find('a[data-bs-target="#'+tabid+'"] input').after('<span class="requiredtab">*</span>');
-				}
-			})
-		}, 100);
-	}
-	/* END VALIDATION */
 }
 
 
@@ -692,8 +677,6 @@ function products(productsname, productsitem=[], productsresult=[]){
 	var productIndex 	= productsitem[2][0];
 
 	var productsresult 	= productsresult[0] ? productsresult[0] : [];
-	var occupied 		= productsresult[1] ? productsresult[1] : [];
-	var reserved 		= productsresult[2] ? productsresult[2] : [];
 
 	if(productsresult.length > 0){
 		$(productsresult).each(function(i, v){
@@ -713,9 +696,6 @@ function products(productsname, productsitem=[], productsresult=[]){
 		var productName     		= result['name'] ? result['name'] : ''; 
 		var productQuantity    		= result['quantity'] ? result['quantity'] : '';
 		var productPrice    		= result['price'] ? result['price'] : '';
-
-		if($.inArray(productId, occupied) !== -1)	availability = '<span class="red-box"></span>';
-		if($.inArray(productId, reserved) !== -1)	availability = '<span class="yellow-box"></span>';
 		
 		var data='\
 		<div class="row mb-2 dash-stall-base">\
