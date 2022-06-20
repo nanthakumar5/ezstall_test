@@ -173,6 +173,108 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 				</div> 
 				<div class="sticky-top checkout col-md-3 mt-4 h-100"></div>
 			</div>
+			<?php if($detail['rv_flag'] =='1') { ?>
+				<div class="row m-0 p-0">
+					<div class="col-md-9 tabook">
+						<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-5 ">
+							<!-- <h3 class="fw-bold mb-4">Book Your Rvhookups</h3> -->
+							<div class="infoPanel form_check bookyourstalls">
+							</div>
+
+							<?php 
+							$tabbtn = '';
+							$tabcontent = ''; 
+							foreach ($detail['rvbarn'] as $rvkey => $rvdata) { 
+								$rvid = $rvdata['id'];
+								$rvname = $rvdata['name'];
+								$rvactive = $rvkey=='0' ? ' show active' : '';
+								$tabbtn .= '<button class="nav-link'.$barnactive.'" data-bs-toggle="tab" data-bs-target="#barn'.$rvid.'" type="button" role="tab" aria-controls="barn'.$rvid.'" aria-selected="true">'.$rvname.'</button>';
+
+								$tabcontent .= '<div class="tab-pane fade'.$rvactive.'" id="barn'.$rvid.'" role="tabpanel" aria-labelledby="nav-home-tab">
+								<ul class="list-group">';
+								foreach($rvdata['rvstall'] as $rvstalldata){
+									$boxcolor  = 'green-box';
+									$checkboxstatus = '';
+
+									if($cartevent=='1' || $checkevent['status']=='0'){
+										$checkboxstatus = 'disabled';
+									}
+
+									$tabcontent .= 	'<li class="list-group-item">
+									<input class="form-check-input stallid me-1" data-price="'.$rvstalldata['price'].'" data-barnid="'.$rvstalldata['barn_id'].'" value="'.$rvstalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
+									'.$rvstalldata['name'].'
+									<span class="'.$boxcolor.' stallavailability" data-stallid="'.$rvstalldata['id'].'" ></span>
+									</li>';
+								}
+								$tabcontent .= '</ul></div>';
+							}
+							?>
+
+							<div class="barn-nav mt-4">
+								<nav>
+									<div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
+										<?php echo $tabbtn; ?>
+									</div>
+								</nav>
+								<div class="tab-content" id="nav-tabContent">
+									<?php echo $tabcontent; ?>
+									<div class="row">
+										<div class="btm-color">
+											<p><span class="green-circle"></span>Available</p>
+											<p><span class="yellow-circle"></span>Reserved</p>
+											<p><span class="red-circle"></span>Occupied</p>
+										</div>
+									</div>
+								</div>    
+							</div>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
+			<?php if($detail['feed_flag'] =='1') { ?>
+				<div class="row m-0 p-0">
+					<div class="col-md-9 tabook">
+						<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-5 ">
+							<table border="1">
+								<tr>
+									<td>Product Name</td>
+									<td>Product Price</td>
+									<td>Product Quantity</td>
+								</tr>
+								<?php foreach ($detail['feed'] as $feed) { ?>
+									<tr>
+										<td><?php echo $feed['name'];?></td>
+										<td><?php echo $feed['price'];?></td>
+										<td><input type="number" id="feedid" name="feedname"></td>
+									</tr>
+								<?php } ?>
+							</table>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
+			<?php if($detail['shaving_flag'] =='1') { ?>
+				<div class="row m-0 p-0">
+					<div class="col-md-9 tabook">
+						<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-5 ">
+							<table border="1">
+								<tr>
+									<td>Product Name</td>
+									<td>Product Price</td>
+									<td>Product Quantity</td>
+								</tr>
+								<?php foreach ($detail['shaving'] as $shaving) { ?>
+									<tr>
+										<td><?php echo $shaving['name'];?></td>
+										<td><?php echo $shaving['price'];?></td>
+										<td><input type="number" id="shavingid" name="shavingname"></td>
+									</tr>
+								<?php } ?>
+							</table>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
 		</div>
 	</section>
 </body>

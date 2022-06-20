@@ -50,7 +50,7 @@ class Index extends BaseController
 	
 	public function detail($id)
     {  	
-		$event = $this->event->getEvent('row', ['event', 'barn', 'stall'],['id' => $id, 'type' =>'1']);
+		$event = $this->event->getEvent('row', ['event', 'barn', 'stall', 'rvbarn', 'rvstall', 'feed', 'shaving'],['id' => $id, 'type' =>'1']);
 		$data['checkevent'] 		= checkEvent($event);
 		$data['detail']  			= $event;
 		$data['settings']  			= getSettings();

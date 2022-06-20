@@ -78,7 +78,7 @@ class Index extends BaseController
 		}
 		
 		if($id!=''){
-			$result = $this->event->getEvent('row', ['event', 'barn', 'stall'],['id' => $id, 'status' => ['1'], 'userid' => $userid, 'type' => '2']);
+			$result = $this->event->getEvent('row',  ['event', 'barn', 'stall', 'rvbarn', 'rvstall', 'feed', 'shaving'],['id' => $id, 'status' => ['1'], 'userid' => $userid, 'type' => '2']);
 			if($result){				
 				$data['occupied'] 	= getOccupied($id);
 				$data['reserved'] 	= getReserved($id);
@@ -116,6 +116,7 @@ class Index extends BaseController
 		$data['statuslist'] 	= $this->config->status1;
 		$data['currencysymbol'] = $this->config->currencysymbol;
 		$data['stripe'] 		= view('site/common/stripe/stripe1');
+		$data['questionmodal'] 	= view('site/common/questionmodal/questionmodal1');
 		$data['settings'] 		= $settings;
 		
 		return view('site/myaccount/facility/action', $data);
