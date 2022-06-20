@@ -2,7 +2,7 @@ function baseurl(){
 	var base = window.location;
 
 	if(base.host=='localhost'){
-		return base.protocol + "//" + base.host + "/nantha/ezstall2/";
+		return base.protocol + "//" + base.host + "/ezstall2/";
 	}else{
 		return base.protocol + "//" + base.host + "/ezstall2/";
 	}
@@ -448,7 +448,7 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 				<input type="hidden" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][image]" class="stall_image_input_'+barnstallname+'_'+stallIndex+'" value="'+stallImage+'">\
 			</div>\
 			<div class="col-md-1 mb-3 delete">\
-				<input type="hidden" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][id]" value="'+stallId+'">\
+				<input type="hidden" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][id]" value="'+stallId+'" class="stall_id">\
 				<input type="hidden" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][status]" value="1">\
 				'+availability+'\
 			</div>\
