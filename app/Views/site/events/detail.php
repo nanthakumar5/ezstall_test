@@ -234,8 +234,8 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 			<?php if($detail['feed_flag'] =='1') { ?>
 				<div class="row m-0 p-0">
 					<div class="col-md-9 tabook">
-						<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-5 ">
-							<table border="1">
+						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-5 ">
+							<table class="table-bordered">
 								<tr>
 									<td>Product Name</td>
 									<td>Product Price</td>
@@ -256,8 +256,8 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 			<?php if($detail['shaving_flag'] =='1') { ?>
 				<div class="row m-0 p-0">
 					<div class="col-md-9 tabook">
-						<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-5 ">
-							<table border="1">
+						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-5 ">
+							<table class="table-bordered">
 								<tr>
 									<td>Product Name</td>
 									<td>Product Price</td>

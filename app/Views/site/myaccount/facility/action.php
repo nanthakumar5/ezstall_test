@@ -213,7 +213,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 						<input type="hidden" name="actionid" value="<?php echo $id; ?>">
 						<input type="hidden" name="userid" value="<?php echo $userid; ?>">
 						<input type="hidden" name="type" value="1">
-						<button class="btn btn-danger facilitypayment" id="facilitySubmit" value="Submit">Submit</button>
+						<button class="btn btn-danger facilitypayment"  type="button">Submit</button>
 						<a href="<?php echo base_url(); ?>/myaccount/facility" class="btn btn-dark">Back</a>
 					</div>
 				</div>
@@ -224,7 +224,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 
 	<div class="modal fade" id="myModal" role="dialog">
 		<div class="modal-dialog">
-			<div class="modal-content">
+			<div class="modal-content" style="text-align: left !important;">
 				<div class="modal-header">
 					<h4 class="modal-title">Stall</h4>
 					<button type="button" class="close" data-bs-dismiss="modal">&times;</button>
@@ -381,9 +381,33 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
         }
     }
 
-	$('#facilitySubmit').click(function(e){
+    $('.facilitypayment').click(function(){ 
 		tabvalidation();
-	});
+		
+		if($('#form').valid()){
+			if($(document).find('.stall_id[value=""]').length==0){
+				$('#form').submit();
+			}else{
+				$('#stripeFormModal').modal('show');
+			}
+		}
+	})
+
+	$('#stripeFormModal').on('shown.bs.modal', function () { 
+		var eventdata = [];
+		var formdata = $('#form').serializeArray();
+		$.each(formdata, function(i, field){
+			if(field.name=='description'){ field.value = tinymce.get("description").getContent(); }
+			eventdata.push('<input type="hidden" name="'+field.name+'" value="'+field.value+'">')
+		});
+		
+		$('.stripeextra').remove();
+		var price = $(document).find('.stall_id[value=""]').length * parseFloat(stallpercost);
+		var data = 	'<div class="stripeextra"><input type="hidden" value="'+price+'" name="price">'+eventdata.join("")+'</div>';
+		$('.stripetotal').text('(Total - '+currencysymbol+price+')');
+
+		$('.stripepaybutton').append(data);
+	})
 
 	function tabvalidation(){
 		$(document).find('.requiredtab').remove();	
