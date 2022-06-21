@@ -65,7 +65,7 @@ class Cart extends BaseModel
     }
 	
 	public function action($data)
-	{    
+	{   
 		$this->db->transStart();
 
 		$ip = $data['ip'];
@@ -73,12 +73,15 @@ class Cart extends BaseModel
 		
 		if(isset($data['user_id'])&& $data['user_id']!='') 	 	       	$request['user_id'] 		= $data['user_id'];
 		if(isset($data['stall_id'])&& $data['stall_id']!='')           	$request['stall_id'] 	    = $data['stall_id'];
+		if(isset($data['product_id'])&& $data['product_id']!='')           	$request['product_id'] 	    = $data['product_id'];
+		if(isset($data['quantity'])&& $data['quantity']!='')           	$request['quantity'] 	    = $data['quantity'];
 		if(isset($data['event_id'])&& $data['event_id']!='')           	$request['event_id'] 	    = $data['event_id'];
 		if(isset($data['barn_id'])&& $data['barn_id']!='')           	$request['barn_id'] 	    = $data['barn_id'];
 		if(isset($data['price'])&& $data['price']!='')     				$request['price'] 	        = $data['price'];
 		if(isset($data['startdate'])&& $data['startdate']!='')         	$request['check_in'] 	    = date('Y-m-d', strtotime($data['startdate']));
 		if(isset($data['enddate'])&& $data['enddate']!='')             	$request['check_out'] 	    = date('Y-m-d', strtotime($data['enddate']));
 		if(isset($data['type'])&& $data['type']!='')             		$request['type'] 	    	= $data['type'];
+		if(isset($data['flag'])&& $data['flag']!='')             		$request['flag'] 	    	= $data['flag'];
 
 		if($data['actionid']==""){
 			if($request['type']=='1')	$this->db->table('cart')->delete(['ip' => $ip, 'type' => '2']);

@@ -104,25 +104,33 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 			</div>
 			<div class="row m-0 p-0">
 				<div class="col-md-9 tabook">
-					<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-5 ">
-						<h3 class="fw-bold mb-4">Book Your Stalls</h3>
+					<div class="border rounded py-2 ps-3 pe-3 mt-4 mb-3">
 						<div class="infoPanel form_check bookyourstalls">
 							<span class="infoSection bookborder flex-wrap">
-								<span class="iconProperty col-md-12 w-auto pad_100">
-									<input type="text" readonly id="stallcount"  value="0" placeholder="Number of Stalls" class="borderyt">
-									<span class="num_btn stallcount"></span>
-								</span>
-								<span class="iconProperty col-md-12 w-auto pad_100">			
-									<input type="text" name="startdate" id="startdate" class="land_width checkdate checkin borderyt" autocomplete="off" placeholder="Check-In"/>
-									<img src="<?php echo base_url() ?>/assets/site/img/calendar.svg" class="iconPlace" alt="Calender Icon">
-								</span>
-								<span class="iconProperty col-md-12 w-auto pad_100">
-									<input type="text" name="enddate" id="enddate" class="land_width checkdate checkout borderyt" autocomplete="off"placeholder="Check-Out"/>
-									<img src="<?php echo base_url() ?>/assets/site/img/calendar.svg" class="iconPlace" alt="Calender Icon">
-								</span>
+								<div class="col-md-6">
+									<p class="fw-bold mx-2 fs-5 mb-0">Check In</p>
+									<span class="iconProperty w-100 w-auto pad_100">			
+										<input type="text" name="startdate" id="startdate" class="w-100 land_width checkdate checkin borderyt" autocomplete="off" placeholder="Check-In"/>
+										<img src="<?php echo base_url() ?>/assets/site/img/calendar.svg" class="iconPlace" alt="Calender Icon">
+									</span>
+								</div>
+								<div class="col-md-6">
+									<p class="fw-bold mx-2 fs-5 mb-0">Check Out</p>
+									<span class="iconProperty w-100 col-md-12 w-auto pad_100">
+										<input type="text" name="enddate" id="enddate" class="w-100 land_width checkdate checkout borderyt" autocomplete="off"placeholder="Check-Out"/>
+										<img src="<?php echo base_url() ?>/assets/site/img/calendar.svg" class="iconPlace" alt="Calender Icon">
+									</span>
+								</div>
 							</span>
 						</div>
-
+					</div>
+				</div> 
+				<div class="sticky-top checkout col-md-3 mt-4 h-100"></div>
+			</div>
+			<div class="row m-0 p-0">
+				<div class="col-md-9 tabook">
+					<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-3">
+						<h3 class="fw-bold mb-4">Book Your Stalls</h3>
 						<?php 
 						$tabbtn = '';
 						$tabcontent = '';
@@ -143,7 +151,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 								}
 
 								$tabcontent .= 	'<li class="list-group-item">
-								<input class="form-check-input stallid me-1" data-price="'.$stalldata['price'].'" data-barnid="'.$stalldata['barn_id'].'" value="'.$stalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
+								<input class="evenbarnstall stallid me-1" data-price="'.$stalldata['price'].'" data-barnid="'.$stalldata['barn_id'].'" data-flag="1" value="'.$stalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
 								'.$stalldata['name'].'
 								<span class="'.$boxcolor.' stallavailability" data-stallid="'.$stalldata['id'].'" ></span>
 								</li>';
@@ -151,7 +159,6 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 							$tabcontent .= '</ul></div>';
 						}
 						?>
-
 						<div class="barn-nav mt-4">
 							<nav>
 								<div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
@@ -171,16 +178,12 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 						</div>
 					</div>
 				</div> 
-				<div class="sticky-top checkout col-md-3 mt-4 h-100"></div>
 			</div>
 			<?php if($detail['rv_flag'] =='1') { ?>
 				<div class="row m-0 p-0">
 					<div class="col-md-9 tabook">
-						<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-5 ">
-							<!-- <h3 class="fw-bold mb-4">Book Your Rvhookups</h3> -->
-							<div class="infoPanel form_check bookyourstalls">
-							</div>
-
+						<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-3">
+							<h3 class="fw-bold mb-4">Book Your Rvhookups</h3>
 							<?php 
 							$tabbtn = '';
 							$tabcontent = ''; 
@@ -200,8 +203,8 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 										$checkboxstatus = 'disabled';
 									}
 
-									$tabcontent .= 	'<li class="list-group-item">
-									<input class="form-check-input stallid me-1" data-price="'.$rvstalldata['price'].'" data-barnid="'.$rvstalldata['barn_id'].'" value="'.$rvstalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
+									$tabcontent .= 	'<li class="list-group-item rvhookups">
+									<input class="rvbarnstall stallid me-1" data-price="'.$rvstalldata['price'].'" data-barnid="'.$rvstalldata['barn_id'].'" data-flag="2" value="'.$rvstalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
 									'.$rvstalldata['name'].'
 									<span class="'.$boxcolor.' stallavailability" data-stallid="'.$rvstalldata['id'].'" ></span>
 									</li>';
@@ -209,7 +212,6 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 								$tabcontent .= '</ul></div>';
 							}
 							?>
-
 							<div class="barn-nav mt-4">
 								<nav>
 									<div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
@@ -234,18 +236,28 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 			<?php if($detail['feed_flag'] =='1') { ?>
 				<div class="row m-0 p-0">
 					<div class="col-md-9 tabook">
-						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-5 ">
-							<table class="table-bordered">
-								<tr>
-									<td>Product Name</td>
-									<td>Product Price</td>
-									<td>Product Quantity</td>
-								</tr>
+						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
+							<h3 class="fw-bold mb-4">Book Your Feed</h3>
+							<table class="table table-bordered table-hover mb-0">
+								<thead class="table-dark">
+									<tr>
+										<td class="text-light">Product Name</td>
+										<td class="text-light">Product Price</td>
+										<td class="text-light">Product Quantity</td>
+										<td class="text-light">Action</td>
+									</tr>
+								</thead>
 								<?php foreach ($detail['feed'] as $feed) { ?>
 									<tr>
-										<td><?php echo $feed['name'];?></td>
-										<td><?php echo $feed['price'];?></td>
-										<td><input type="number" id="feedid" name="feedname"></td>
+										<td style="border: 1px solid #e4e4e4;"><?php echo $feed['name'];?></td>
+										<td style="border: 1px solid #e4e4e4;"><?php echo $feed['price'];?></td>
+										<td style="border: 1px solid #e4e4e4;">
+											<input type="number" class="form-control feedbtn" required id="feedid" name="feedname">
+										</td>
+										<td style="border: 1px solid #e4e4e4;">
+											<button class="btn btn-primary feedcart" data-eventid="<?php echo $feed['event_id']?>" data-price="<?php echo $feed['price']?>"data-productid="<?php echo $feed['id']?>" value="<?php echo $feed['quantity']?>">Add to Cart</button>
+											<button class="btn btn-danger">Remove</button>
+										</td>
 									</tr>
 								<?php } ?>
 							</table>
@@ -256,18 +268,28 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 			<?php if($detail['shaving_flag'] =='1') { ?>
 				<div class="row m-0 p-0">
 					<div class="col-md-9 tabook">
-						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-5 ">
-							<table class="table-bordered">
-								<tr>
-									<td>Product Name</td>
-									<td>Product Price</td>
-									<td>Product Quantity</td>
-								</tr>
+						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
+							<h3 class="fw-bold mb-4">Book Your Shaving</h3>
+							<table class="table table-bordered table-hover mb-0">
+								<thead class="table-dark">
+									<tr>
+										<td class="text-light">Product Name</td>
+										<td class="text-light">Product Price</td>
+										<td class="text-light">Product Quantity</td>
+										<td class="text-light">Action</td>
+									</tr>
+								</thead>
 								<?php foreach ($detail['shaving'] as $shaving) { ?>
 									<tr>
-										<td><?php echo $shaving['name'];?></td>
-										<td><?php echo $shaving['price'];?></td>
-										<td><input type="number" id="shavingid" name="shavingname"></td>
+										<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['name'];?></td>
+										<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['price'];?></td>
+										<td style="border: 1px solid #e4e4e4;">
+											<input type="number" class="form-control shavingbtn" required id="shavingid" name="shavingname">
+										</td>
+										<td style="border: 1px solid #e4e4e4;">
+											<button class="btn btn-primary shavingcart" data-eventid="<?php echo $shaving['event_id']?>" data-price="<?php echo $shaving['price']?>" data-productid="<?php echo $shaving['id']?>" value="<?php echo $shaving['id']?>">Add to Cart</button>
+											<button class="btn btn-danger">Remove</button>
+										</td>
 									</tr>
 								<?php } ?>
 							</table>
@@ -313,7 +335,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 					$("#enddate").datepicker( "option", "minDate", date );
 				}
 			}
-		);
+			);
 
 		uidatepicker('#enddate', { 'mindate' : eventstartdate, 'maxdate' : eventenddateadd });
 	});
@@ -352,7 +374,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 					});
 				}
 			}
-		)
+			)
 		
 		ajax(
 			'<?php echo base_url()."/ajax/ajaxreserved"; ?>',
@@ -366,25 +388,61 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 					});
 				}
 			}
-		)
+			)
 	}
-	
-	$(".form-check-input").on("click", function() {
-		checkdate();
 
+	$(".evenbarnstall").on("click", function() {
+        barnstallbox($(this), 1);
+    });
+	
+	$(".rvbarnstall").on("click", function() {
+	 	barnstallbox($(this), 2);
+	});
+
+	$(".feedcart").on("click", function() {
+	 	productbox($(this),'#feedid', 3);
+	});
+	$(".shavingcart").on("click", function() {
+	 	productbox($(this),'#shavingid', 4);
+	});
+
+	function barnstallbox(_this, flag){ 
+		checkdate();
 		var startdate 	= $("#startdate").val(); 
 		var enddate   	= $("#enddate").val(); 
-		var barnid    	= $(this).attr('data-barnid');
-		var stallid		= $(this).val(); 
-		var price 		= $(this).attr('data-price');
+		var barnid    	= _this.attr('data-barnid');
+		var stallid		= _this.val(); 
+		var price 		= _this.attr('data-price');
 
-		if($(this).is(':checked')){
-			cart({stall_id : stallid, event_id : eventid, barn_id : barnid, price : price, startdate : startdate, enddate : enddate, type : '1',  checked : 1, actionid : ''});
-		}else{
+
+		if($(_this).is(':checked')){  
+			cart({stall_id : stallid, event_id : eventid, barn_id : barnid, price : price, startdate : startdate, enddate : enddate, type : '1', checked : 1, actionid : '', flag : flag});
+		}else{ 
 			$('.stallavailability[data-stallid='+stallid+']').removeClass("yellow-box").addClass("green-box");
 			cart({stall_id : stallid, type : '1', checked : 0}); 
 		}
-	});
+	}
+
+	function productbox(_this, selector, flag){
+        checkdate();
+        var startdate     	= $("#startdate").val(); 
+        var enddate       	= $("#enddate").val(); 
+        var event_id     	= _this.attr('data-eventid');
+        var product_id      = _this.attr('data-productid');
+        var price         	= _this.attr('data-price'); 
+		var product_quan	= _this.val();;
+		var quantity 		= $(selector).val();
+
+		if(quantity==""){ 
+			$(selector).focus();
+			toastr.warning('Please Enter Quantity .', {timeOut: 5000});
+		}else if(quantity > product_quan){
+			$(selector).focus();
+			toastr.warning('Please Select Quantity Less Than.'+product_quan, {timeOut: 5000});
+		}else{ 
+			cart({event_id : event_id, product_id : product_id, price : price, quantity : quantity, startdate : startdate, enddate : enddate, type : '1',  checked : 1, flag : flag, actionid : ''});
+		}
+    }
 
 	function checkdate(){
 		var startdate 	= $("#startdate").val(); 
@@ -406,13 +464,14 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 		}
 	}
 
-	function cart(data={cart:1, type:1}){	 	
+	function cart(data={cart:1, type:1}){	
 		ajax(
 			'<?php echo base_url()."/cart"; ?>',
 			data,
 			{ 
 				asynchronous : 1,
 				success  : function(result){
+
 					if(Object.keys(result).length){  
 						$("#startdate").val(result.check_in); 
 						$("#enddate").val(result.check_out); 
@@ -430,8 +489,11 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 						<div class="border rounded pt-4 ps-3 pe-3 mb-5">\
 						<div class="row mb-2">\
 						<div class="col-md-8 ">\
-						<span>'+result.barnstall.length+'</span> Stalls x \
-						<span>'+result.interval+'</span> Nights \
+						<div> <span class="col-8 fw-bold">Total Day : '+result.interval+'</span></div>\
+						<div> <span class="col-8 fw-bold"> Stall : '+result.barnstall.length+'</span> </div>\
+						<div ><span class="col-8 fw-bold"> Rv Hookups : '+result.rvbarnstall.length+'</span></div> \
+						<div ><span class="col-8 fw-bold"> Feed : '+result.feed.length+'</span></div> \
+						<div ><span class="col-8 fw-bold"> Shaving : '+result.shaving.length+'</span></div> \
 						</div>\
 						<div class="col-4">\
 						'+currencysymbol+result.price+'\

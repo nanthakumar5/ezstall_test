@@ -4660,3 +4660,7 @@ span.num_btn.stallcount {
     background-color: #40cf40;
     color: #fff !important;
 }
+
+.w-45 {
+    width: 45% !important;
+}

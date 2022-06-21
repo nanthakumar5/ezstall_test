@@ -247,14 +247,34 @@ function getCart($type=''){
 	$result         = $cart->getCart('all', ['cart', 'event', 'barn', 'stall'], $condition);
 	
 	if($result){
-		$barnstall = [];
+		$barnstall = $rvbarnstall = $feed =  $shaving = [];
 		foreach ($result as $res) {
-			$barnstall[] = [
-				'barn_id' => $res['barn_id'], 
-				'barn_name' => $res['barnname'], 
-				'stall_id' => $res['stall_id'],
-				'stall_name' => $res['stallname'] 
-			];
+			if($res['flag']=='1'){
+				$barnstall[] = [
+					'barn_id' => $res['barn_id'], 
+					'barn_name' => $res['barnname'], 
+					'stall_id' => $res['stall_id'],
+					'stall_name' => $res['stallname'] 
+				];
+			}else if($res['flag']=='2'){
+				$rvbarnstall[] = [
+					'barn_id' => $res['barn_id'], 
+					'barn_name' => $res['barnname'], 
+					'stall_id' => $res['stall_id'],
+					'stall_name' => $res['stallname'] 
+				];
+			}
+			else if($res['flag']=='3'){
+				$feed[] = [
+					'product_id'	=> $res['product_id'], 
+					'quantity' 		=> $res['quantity']
+				];
+			}else{
+				$shaving[] = [
+					'product_id'	=> $res['product_id'], 
+					'quantity' 		=> $res['quantity']
+				];
+			}
 		}
 
 		$event_id 				= array_unique(array_column($result, 'event_id'))[0];
@@ -269,18 +289,22 @@ function getCart($type=''){
 		$interval           	= $daydiff==0 ? 1 : $daydiff;
 		$price          		= array_sum(array_column($result, 'price'));
 		$type          			= array_unique(array_column($result, 'type'))[0];
+		$flag 					= array_unique(array_column($result, 'flag'))[0];
 		
 		return [
-			'event_id' => $event_id, 
-			'event_name' => $event_name, 
-			'event_location' => $event_location, 
+			'event_id'			=> $event_id, 
+			'event_name'		=> $event_name, 
+			'event_location' 	=> $event_location, 
 			'event_description' => $event_description, 
-			'barnstall'=> $barnstall, 
-			'price' => $price * $interval, 
-			'interval' => $interval, 
-			'check_in' => $check_in,
-			'check_out' => $check_out,
-			'type' => $type
+			'barnstall'			=> $barnstall,
+			'rvbarnstall'		=> $rvbarnstall, 
+			'feed'				=> $feed, 
+			'shaving'			=> $shaving, 
+			'price' 			=> $price * $interval, 
+			'interval' 			=> $interval, 
+			'check_in' 			=> $check_in,
+			'check_out'			=> $check_out,
+			'type' 				=> $type
 		];	
 	}else{
 		return false;
