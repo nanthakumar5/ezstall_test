@@ -29,12 +29,18 @@ class Cart extends BaseModel
 			$data		= 	['s.name stallname'];							
 			$select[] 	= 	implode(',', $data);
 		}
+		
+		if(in_array('product', $querydata)){
+			$data		= 	['p.name productname'];							
+			$select[] 	= 	implode(',', $data);
+		}
 
 		$query = $this->db->table('cart c');
 
 		if(in_array('event', $querydata)) $query->join('event e', 'e.id=c.event_id', 'left');
 		if(in_array('barn', $querydata)) $query->join('barn b', 'b.id=c.barn_id', 'left');
 		if(in_array('stall', $querydata)) $query->join('stall s', 's.id=c.stall_id', 'left');
+		if(in_array('product', $querydata)) $query->join('products p', 'p.id=c.product_id', 'left');
 
 		if(isset($extras['select'])) 					        $query->select($extras['select']);
 		else											        $query->select(implode(',', $select));
@@ -72,12 +78,13 @@ class Cart extends BaseModel
 		$request['ip'] = $ip;
 		
 		if(isset($data['user_id'])&& $data['user_id']!='') 	 	       	$request['user_id'] 		= $data['user_id'];
-		if(isset($data['stall_id'])&& $data['stall_id']!='')           	$request['stall_id'] 	    = $data['stall_id'];
-		if(isset($data['product_id'])&& $data['product_id']!='')           	$request['product_id'] 	    = $data['product_id'];
-		if(isset($data['quantity'])&& $data['quantity']!='')           	$request['quantity'] 	    = $data['quantity'];
 		if(isset($data['event_id'])&& $data['event_id']!='')           	$request['event_id'] 	    = $data['event_id'];
 		if(isset($data['barn_id'])&& $data['barn_id']!='')           	$request['barn_id'] 	    = $data['barn_id'];
+		if(isset($data['stall_id'])&& $data['stall_id']!='')           	$request['stall_id'] 	    = $data['stall_id'];
+		if(isset($data['product_id'])&& $data['product_id']!='')        $request['product_id'] 	    = $data['product_id'];
 		if(isset($data['price'])&& $data['price']!='')     				$request['price'] 	        = $data['price'];
+		if(isset($data['quantity'])&& $data['quantity']!='')           	$request['quantity'] 	    = $data['quantity'];
+		if(isset($data['total'])&& $data['total']!='')           		$request['total'] 	   		= $data['total'];
 		if(isset($data['startdate'])&& $data['startdate']!='')         	$request['check_in'] 	    = date('Y-m-d', strtotime($data['startdate']));
 		if(isset($data['enddate'])&& $data['enddate']!='')             	$request['check_out'] 	    = date('Y-m-d', strtotime($data['enddate']));
 		if(isset($data['type'])&& $data['type']!='')             		$request['type'] 	    	= $data['type'];
@@ -87,9 +94,19 @@ class Cart extends BaseModel
 			if($request['type']=='1')	$this->db->table('cart')->delete(['ip' => $ip, 'type' => '2']);
 			if($request['type']=='2') 	$this->db->table('cart')->delete(['ip' => $ip, 'type' => '1']);
 			
+			if($request['flag']=='3' || $request['flag']=='4'){
+				$checkproduct = $this->db->table('cart')->where(['ip' => $request['ip'], 'event_id' => $request['event_id'], 'product_id' => $request['product_id']])->get()->getRowArray();
+			}
+			
 			$request['datetime'] = date('Y-m-d H:i:s');
-			$cart = $this->db->table('cart')->insert($request);
-			$insertid = $this->db->insertID();
+			
+			if(isset($checkproduct)){
+				$cart = $this->db->table('cart')->where('id', $checkproduct['id'])->update($request);
+				$insertid = $this->db->insertID();
+			}else{
+				$cart = $this->db->table('cart')->insert($request);
+				$insertid = $this->db->insertID();
+			}
 		}else{
 			$this->db->table('cart')->update($request, ['ip' => $ip, 'user_id' => 0]);
 			$insertid = $this->db->insertID();

@@ -244,39 +244,9 @@ function getCart($type=''){
     $condition 		= getSiteUserID() ? ['user_id' => getSiteUserID(), 'ip' => $request->getIPAddress()] : ['user_id' => 0, 'ip' =>$request->getIPAddress()] ;
 	if($type!='') $condition['type'] = $type;
 	$cart 		    = new \App\Models\Cart;
-	$result         = $cart->getCart('all', ['cart', 'event', 'barn', 'stall'], $condition);
+	$result         = $cart->getCart('all', ['cart', 'event', 'barn', 'stall', 'product'], $condition);
 	
 	if($result){
-		$barnstall = $rvbarnstall = $feed =  $shaving = [];
-		foreach ($result as $res) {
-			if($res['flag']=='1'){
-				$barnstall[] = [
-					'barn_id' => $res['barn_id'], 
-					'barn_name' => $res['barnname'], 
-					'stall_id' => $res['stall_id'],
-					'stall_name' => $res['stallname'] 
-				];
-			}else if($res['flag']=='2'){
-				$rvbarnstall[] = [
-					'barn_id' => $res['barn_id'], 
-					'barn_name' => $res['barnname'], 
-					'stall_id' => $res['stall_id'],
-					'stall_name' => $res['stallname'] 
-				];
-			}
-			else if($res['flag']=='3'){
-				$feed[] = [
-					'product_id'	=> $res['product_id'], 
-					'quantity' 		=> $res['quantity']
-				];
-			}else{
-				$shaving[] = [
-					'product_id'	=> $res['product_id'], 
-					'quantity' 		=> $res['quantity']
-				];
-			}
-		}
-
 		$event_id 				= array_unique(array_column($result, 'event_id'))[0];
 		$event_name 			= array_unique(array_column($result, 'eventname'))[0];
 		$event_location 		= array_unique(array_column($result, 'eventlocation'))[0];
@@ -287,9 +257,66 @@ function getCart($type=''){
 		$end            		= strtotime(array_unique(array_column($result, 'check_out'))[0]);
 		$daydiff           		= ceil(abs($start - $end) / 86400);
 		$interval           	= $daydiff==0 ? 1 : $daydiff;
-		$price          		= array_sum(array_column($result, 'price'));
 		$type          			= array_unique(array_column($result, 'type'))[0];
-		$flag 					= array_unique(array_column($result, 'flag'))[0];
+		
+		$barnstall = $rvbarnstall = $feed =  $shaving = [];
+		$price = 0;
+		foreach ($result as $res) {
+			if($res['flag']=='1'){
+				$barnstall[] = [
+					'barn_id' 		=> $res['barn_id'], 
+					'barn_name' 	=> $res['barnname'], 
+					'stall_id' 		=> $res['stall_id'],
+					'stall_name' 	=> $res['stallname'],
+					'price' 		=> $res['price'],
+					'interval' 		=> $interval,
+					'total' 		=> $res['price'] * $interval
+				];
+				
+				$price += $res['price'] * $interval;
+			}else if($res['flag']=='2'){
+				$rvbarnstall[] = [
+					'barn_id' 		=> $res['barn_id'], 
+					'barn_name' 	=> $res['barnname'], 
+					'stall_id' 		=> $res['stall_id'],
+					'stall_name' 	=> $res['stallname'],
+					'price' 		=> $res['price'],
+					'interval' 		=> $interval,
+					'total' 		=> $res['price'] * $interval
+				];
+				
+				$price += $res['price'] * $interval;
+			}else if($res['flag']=='3'){
+				$feed[] = [
+					'product_id'	=> $res['product_id'], 
+					'product_name'	=> $res['productname'], 
+					'price' 		=> $res['price'],
+					'quantity' 		=> $res['quantity'],
+					'total' 		=> $res['price'] * $res['quantity']
+				];
+				
+				$price += $res['price'] * $res['quantity'];
+			}else if($res['flag']=='4'){
+				$shaving[] = [
+					'product_id'	=> $res['product_id'], 
+					'product_name'	=> $res['productname'], 
+					'price' 		=> $res['price'],
+					'quantity' 		=> $res['quantity'],
+					'total' 		=> $res['price'] * $res['quantity']
+				];
+				
+				$price += $res['price'] * $res['quantity'];
+			}
+		}
+		
+		$barnstallcolumn = array_column($barnstall, 'barn_id');
+		array_multisort($barnstallcolumn, SORT_ASC, $barnstall);
+		$rvbarnstallcolumn = array_column($rvbarnstall, 'barn_id');
+		array_multisort($rvbarnstallcolumn, SORT_ASC, $rvbarnstall);
+		$feedcolumn = array_column($feed, 'product_id');
+		array_multisort($feedcolumn, SORT_ASC, $feed);
+		$shavingcolumn = array_column($shaving, 'product_id');
+		array_multisort($shavingcolumn, SORT_ASC, $shaving);
 		
 		return [
 			'event_id'			=> $event_id, 
@@ -300,10 +327,10 @@ function getCart($type=''){
 			'rvbarnstall'		=> $rvbarnstall, 
 			'feed'				=> $feed, 
 			'shaving'			=> $shaving, 
-			'price' 			=> $price * $interval, 
 			'interval' 			=> $interval, 
 			'check_in' 			=> $check_in,
 			'check_out'			=> $check_out,
+			'price' 			=> $price,
 			'type' 				=> $type
 		];	
 	}else{

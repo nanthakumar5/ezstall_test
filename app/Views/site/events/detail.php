@@ -110,25 +110,20 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 								<div class="col-md-6">
 									<p class="fw-bold mx-2 fs-5 mb-0">Check In</p>
 									<span class="iconProperty w-100 w-auto pad_100">			
-										<input type="text" name="startdate" id="startdate" class="w-100 land_width checkdate checkin borderyt" autocomplete="off" placeholder="Check-In"/>
+										<input type="text" name="startdate" id="startdate" class="w-100 land_width checkdate checkin borderyt" autocomplete="off" placeholder="Check-In" readonly/>
 										<img src="<?php echo base_url() ?>/assets/site/img/calendar.svg" class="iconPlace" alt="Calender Icon">
 									</span>
 								</div>
 								<div class="col-md-6">
 									<p class="fw-bold mx-2 fs-5 mb-0">Check Out</p>
 									<span class="iconProperty w-100 col-md-12 w-auto pad_100">
-										<input type="text" name="enddate" id="enddate" class="w-100 land_width checkdate checkout borderyt" autocomplete="off"placeholder="Check-Out"/>
+										<input type="text" name="enddate" id="enddate" class="w-100 land_width checkdate checkout borderyt" autocomplete="off"placeholder="Check-Out" readonly/>
 										<img src="<?php echo base_url() ?>/assets/site/img/calendar.svg" class="iconPlace" alt="Calender Icon">
 									</span>
 								</div>
 							</span>
 						</div>
 					</div>
-				</div> 
-				<div class="sticky-top checkout col-md-3 mt-4 h-100"></div>
-			</div>
-			<div class="row m-0 p-0">
-				<div class="col-md-9 tabook">
 					<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-3">
 						<h3 class="fw-bold mb-4">Book Your Stalls</h3>
 						<?php 
@@ -151,7 +146,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 								}
 
 								$tabcontent .= 	'<li class="list-group-item">
-								<input class="evenbarnstall stallid me-1" data-price="'.$stalldata['price'].'" data-barnid="'.$stalldata['barn_id'].'" data-flag="1" value="'.$stalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
+								<input class="form-check-input eventbarnstall stallid me-1" data-price="'.$stalldata['price'].'" data-barnid="'.$stalldata['barn_id'].'" data-flag="1" value="'.$stalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
 								'.$stalldata['name'].'
 								<span class="'.$boxcolor.' stallavailability" data-stallid="'.$stalldata['id'].'" ></span>
 								</li>';
@@ -176,12 +171,8 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 								</div>
 							</div>    
 						</div>
-					</div>
-				</div> 
-			</div>
-			<?php if($detail['rv_flag'] =='1') { ?>
-				<div class="row m-0 p-0">
-					<div class="col-md-9 tabook">
+					</div>					
+					<?php if($detail['rv_flag'] =='1') { ?>
 						<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-3">
 							<h3 class="fw-bold mb-4">Book Your Rvhookups</h3>
 							<?php 
@@ -204,7 +195,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 									}
 
 									$tabcontent .= 	'<li class="list-group-item rvhookups">
-									<input class="rvbarnstall stallid me-1" data-price="'.$rvstalldata['price'].'" data-barnid="'.$rvstalldata['barn_id'].'" data-flag="2" value="'.$rvstalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
+									<input class="form-check-input rvbarnstall stallid me-1" data-price="'.$rvstalldata['price'].'" data-barnid="'.$rvstalldata['barn_id'].'" data-flag="2" value="'.$rvstalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
 									'.$rvstalldata['name'].'
 									<span class="'.$boxcolor.' stallavailability" data-stallid="'.$rvstalldata['id'].'" ></span>
 									</li>';
@@ -230,12 +221,8 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 								</div>    
 							</div>
 						</div>
-					</div>
-				</div>
-			<?php } ?>
-			<?php if($detail['feed_flag'] =='1') { ?>
-				<div class="row m-0 p-0">
-					<div class="col-md-9 tabook">
+					<?php } ?>
+					<?php if($detail['feed_flag'] =='1') { ?>
 						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
 							<h3 class="fw-bold mb-4">Book Your Feed</h3>
 							<table class="table table-bordered table-hover mb-0">
@@ -252,22 +239,18 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 										<td style="border: 1px solid #e4e4e4;"><?php echo $feed['name'];?></td>
 										<td style="border: 1px solid #e4e4e4;"><?php echo $feed['price'];?></td>
 										<td style="border: 1px solid #e4e4e4;">
-											<input type="number" class="form-control feedbtn" required id="feedid" name="feedname">
+											<input type="number" class="form-control quantity" data-productid="<?php echo $feed['id']?>" data-flag="3">
 										</td>
 										<td style="border: 1px solid #e4e4e4;">
-											<button class="btn btn-primary feedcart" data-eventid="<?php echo $feed['event_id']?>" data-price="<?php echo $feed['price']?>"data-productid="<?php echo $feed['id']?>" value="<?php echo $feed['quantity']?>">Add to Cart</button>
-											<button class="btn btn-danger">Remove</button>
+											<button class="btn btn-primary feedcart" data-price="<?php echo $feed['price']?>" data-productid="<?php echo $feed['id']?>" data-originalquantity="<?php echo $feed['quantity']?>">Add to Cart</button>
+											<!--<button class="btn btn-danger">Remove</button>-->
 										</td>
 									</tr>
 								<?php } ?>
 							</table>
 						</div>
-					</div>
-				</div>
-			<?php } ?>
-			<?php if($detail['shaving_flag'] =='1') { ?>
-				<div class="row m-0 p-0">
-					<div class="col-md-9 tabook">
+					<?php } ?>
+					<?php if($detail['shaving_flag'] =='1') { ?>
 						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
 							<h3 class="fw-bold mb-4">Book Your Shaving</h3>
 							<table class="table table-bordered table-hover mb-0">
@@ -284,19 +267,20 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 										<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['name'];?></td>
 										<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['price'];?></td>
 										<td style="border: 1px solid #e4e4e4;">
-											<input type="number" class="form-control shavingbtn" required id="shavingid" name="shavingname">
+											<input type="number" class="form-control quantity" data-productid="<?php echo $shaving['id']?>" data-flag="4">
 										</td>
 										<td style="border: 1px solid #e4e4e4;">
-											<button class="btn btn-primary shavingcart" data-eventid="<?php echo $shaving['event_id']?>" data-price="<?php echo $shaving['price']?>" data-productid="<?php echo $shaving['id']?>" value="<?php echo $shaving['id']?>">Add to Cart</button>
-											<button class="btn btn-danger">Remove</button>
+											<button class="btn btn-primary shavingcart" data-price="<?php echo $shaving['price']?>" data-productid="<?php echo $shaving['id']?>" data-originalquantity="<?php echo $shaving['quantity']?>">Add to Cart</button>
+											<!--<button class="btn btn-danger">Remove</button>-->
 										</td>
 									</tr>
 								<?php } ?>
 							</table>
 						</div>
-					</div>
-				</div>
-			<?php } ?>
+					<?php } ?>
+				</div> 
+				<div class="sticky-top checkout col-md-3 mt-4 h-100"></div>
+			</div>
 		</div>
 	</section>
 </body>
@@ -391,79 +375,109 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 			)
 	}
 
-	$(".evenbarnstall").on("click", function() {
-        barnstallbox($(this), 1);
+	$(".eventbarnstall").on("click", function() {
+        cartaction($(this), 1);
     });
 	
 	$(".rvbarnstall").on("click", function() {
-	 	barnstallbox($(this), 2);
+	 	cartaction($(this), 2);
 	});
 
 	$(".feedcart").on("click", function() {
-	 	productbox($(this),'#feedid', 3);
+	 	cartaction($(this), 3);
 	});
+	
 	$(".shavingcart").on("click", function() {
-	 	productbox($(this),'#shavingid', 4);
+	 	cartaction($(this), 4);
 	});
 
-	function barnstallbox(_this, flag){ 
-		checkdate();
+	$(".quantity").keyup(function(){
+		checkdate($(this).attr('data-flag'));
+	})
+	
+	function cartaction(_this, flag){ 
+		var datevalidation = checkdate(flag);
+		if(!datevalidation) return false;
+		
 		var startdate 	= $("#startdate").val(); 
 		var enddate   	= $("#enddate").val(); 
-		var barnid    	= _this.attr('data-barnid');
-		var stallid		= _this.val(); 
-		var price 		= _this.attr('data-price');
+			
+		if(flag==1 || flag==2){
+			var barnid    	= _this.attr('data-barnid');
+			var stallid		= _this.val(); 
+			var price 		= _this.attr('data-price');
 
 
-		if($(_this).is(':checked')){  
-			cart({stall_id : stallid, event_id : eventid, barn_id : barnid, price : price, startdate : startdate, enddate : enddate, type : '1', checked : 1, actionid : '', flag : flag});
-		}else{ 
-			$('.stallavailability[data-stallid='+stallid+']').removeClass("yellow-box").addClass("green-box");
-			cart({stall_id : stallid, type : '1', checked : 0}); 
-		}
-	}
-
-	function productbox(_this, selector, flag){
-        checkdate();
-        var startdate     	= $("#startdate").val(); 
-        var enddate       	= $("#enddate").val(); 
-        var event_id     	= _this.attr('data-eventid');
-        var product_id      = _this.attr('data-productid');
-        var price         	= _this.attr('data-price'); 
-		var product_quan	= _this.val();;
-		var quantity 		= $(selector).val();
-
-		if(quantity==""){ 
-			$(selector).focus();
-			toastr.warning('Please Enter Quantity .', {timeOut: 5000});
-		}else if(quantity > product_quan){
-			$(selector).focus();
-			toastr.warning('Please Select Quantity Less Than.'+product_quan, {timeOut: 5000});
-		}else{ 
-			cart({event_id : event_id, product_id : product_id, price : price, quantity : quantity, startdate : startdate, enddate : enddate, type : '1',  checked : 1, flag : flag, actionid : ''});
-		}
-    }
-
-	function checkdate(){
-		var startdate 	= $("#startdate").val(); 
-		var enddate   	= $("#enddate").val(); 
-
-		if($(".form-check-input:checked").length > 0){			
-			if(startdate=='' || enddate==''){
-				if(startdate==''){
-					$("#startdate").focus();
-					toastr.warning('Please select the Check-In Date.', {timeOut: 5000});
-				}else if(enddate==''){
-					$("#enddate").focus();
-					toastr.warning('Please select the Check-Out Date.', {timeOut: 5000});
-				}
-
-				$(".form-check-input:not(:disabled)").prop('checked', false);
-				return false;
+			if($(_this).is(':checked')){  
+				cart({event_id : eventid, barn_id : barnid, stall_id : stallid, price : price, quantity : 1, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
+			}else{ 
+				$('.stallavailability[data-stallid='+stallid+']').removeClass("yellow-box").addClass("green-box");
+				cart({stall_id : stallid, type : '1', checked : 0}); 
+			}
+		
+		}else{
+			var productid      		= _this.attr('data-productid');
+			var price         		= _this.attr('data-price'); 
+			var originalquantity	= _this.attr('data-originalquantity'); 
+			var quantitywrapper		= _this.parent().parent().find('.quantity');
+			var quantity 			= quantitywrapper.val();
+			
+			if(quantity==""){ 
+				quantitywrapper.focus();
+				toastr.warning('Please Enter Quantity .', {timeOut: 5000});
+			}else if(parseInt(quantity) > parseInt(originalquantity)){
+				quantitywrapper.focus();
+				toastr.warning('Please Select Quantity Less Than.'+originalquantity, {timeOut: 5000});
+			}else{ 
+				cart({event_id : eventid, product_id : productid, price : price, quantity : quantity, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
 			}
 		}
 	}
 
+	function checkdate(flag){
+		var classarray = ['eventbarnstall', 'rvbarnstall', 'feedcart', 'shavingcart'];
+		
+		if(flag==1 || flag==2){
+			if($("."+classarray[flag-1]+":checked").length > 0){			
+				var datevalidation = datetoastr()
+				if(!datevalidation){
+					$("."+classarray[flag-1]+":not(:disabled)").prop('checked', false);
+					return false;
+				}
+			}
+		}else{
+			var datevalidation = datetoastr()
+			if(!datevalidation){
+				$("."+classarray[flag-1]).each(function(){
+					$(this).parent().parent().find('.quantity').val('');
+				});
+				
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	function datetoastr(){
+		var startdate 	= $("#startdate").val(); 
+		var enddate   	= $("#enddate").val(); 
+		
+		if(startdate=='' || enddate==''){
+			if(startdate==''){
+				$("#startdate").focus();
+				toastr.warning('Please select the Check-In Date.', {timeOut: 5000});
+			}else if(enddate==''){
+				$("#enddate").focus();
+				toastr.warning('Please select the Check-Out Date.', {timeOut: 5000});
+			}
+
+			return false;
+		}
+		
+		return true;
+	}
+	
 	function cart(data={cart:1, type:1}){	
 		ajax(
 			'<?php echo base_url()."/cart"; ?>',
@@ -471,46 +485,88 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 			{ 
 				asynchronous : 1,
 				success  : function(result){
-
 					if(Object.keys(result).length){  
 						$("#startdate").val(result.check_in); 
 						$("#enddate").val(result.check_out); 
 						
 						occupiedreserved($("#startdate").val(), $("#enddate").val());
 						
-						$(result.barnstall).each(function(i,v){ 
-							$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
-						});
-
+						var barnstalldata = '';
+						if(result.barnstall.length){
+							var barnname = '';
+							barnstalldata += '<div><span class="col-12 fw-bold">STALL</span></div>';
+							$(result.barnstall).each(function(i,v){
+								if(barnname!=v.barn_name){
+									barnstalldata += '<div><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
+								}
+								
+								barnstalldata += '<div class="row"><span class="col-7">'+v.stall_name+'</span><span class="col-5 text-end">('+v.price+'x'+v.interval+') '+v.total+'</span></div>';
+								$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
+								barnname = v.barn_name;
+							});
+						}
+						
+						var rvbarnstalldata = '';
+						if(result.rvbarnstall.length){
+							var barnname = '';
+							rvbarnstalldata += '<div><span class="col-12 fw-bold">RV HOOKUP</span></div>';
+							$(result.rvbarnstall).each(function(i,v){
+								if(barnname!=v.barn_name){
+									rvbarnstalldata += '<div><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
+								}
+								
+								rvbarnstalldata += '<div class="row"><span class="col-7">'+v.stall_name+'</span><span class="col-5 text-end">('+v.price+'x'+v.interval+') '+v.total+'</span></div>';
+								$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
+								barnname = v.barn_name;
+							});
+						}
+						
+						var feeddata = '';
+						if(result.feed.length){
+							feeddata += '<div><span class="col-12 fw-bold">Feed</span></div>';
+							$(result.feed).each(function(i,v){								
+								feeddata += '<div class="row"><span class="col-7">'+v.product_name+'</span><span class="col-5 text-end">('+v.price+'x'+v.quantity+') '+v.total+'</span></div>';
+								$('.quantity[data-productid='+v.product_id+']').val(v.quantity);
+							});
+						}
+						
+						var shavingdata = '';
+						if(result.shaving.length){
+							shavingdata += '<div><span class="col-12 fw-bold">Shaving</span></div>';
+							$(result.shaving).each(function(i,v){
+								shavingdata += '<div class="row"><span class="col-7">'+v.product_name+'</span><span class="col-5 text-end">('+v.price+'x'+v.quantity+') '+v.total+'</span></div>';
+								$('.quantity[data-productid='+v.product_id+']').val(v.quantity);
+							});
+						}
+						
 						$('#stallcount').val(result.barnstall.length);
 						var total = (parseFloat(result.price)+parseFloat((transactionfee/100) * result.price)).toFixed(2);
 						var result ='\
 						<div class="w-100">\
-						<div class="border rounded pt-4 ps-3 pe-3 mb-5">\
-						<div class="row mb-2">\
-						<div class="col-md-8 ">\
-						<div> <span class="col-8 fw-bold">Total Day : '+result.interval+'</span></div>\
-						<div> <span class="col-8 fw-bold"> Stall : '+result.barnstall.length+'</span> </div>\
-						<div ><span class="col-8 fw-bold"> Rv Hookups : '+result.rvbarnstall.length+'</span></div> \
-						<div ><span class="col-8 fw-bold"> Feed : '+result.feed.length+'</span></div> \
-						<div ><span class="col-8 fw-bold"> Shaving : '+result.shaving.length+'</span></div> \
-						</div>\
-						<div class="col-4">\
-						'+currencysymbol+result.price+'\
-						</div>\
-						</div>\
-						<div class="row mb-2">\
-						<div class="col-8 ">Transaction Fees</div>\
-						<div class="col-4">'+currencysymbol+((transactionfee/100) * result.price).toFixed(2)+'\</div>\
-						</div>\
-						<div class="row mb-2 border-top mt-3 mb-3 pt-3">\
-						<div class="col-8 fw-bold ">Total Due</div>\
-						<div class="col-4 fw-bold">'+currencysymbol+total+'</div>\
-						</div>\
-						<div class="row mb-2 w-100">\
-						<a href="<?php echo base_url()?>/checkout" class="w-100 text-center mx-2 ucEventdetBtn ps-3 mb-3 ">Continue to Checkout</a>\
-						</div>\
-						</div>\
+							<div class="border rounded pt-4 ps-3 pe-3 mb-5">\
+								<div class="row mb-2">\
+									<div class="col-md-12">\
+										<div class="row"> <span class="col-6 fw-bold">Total Day :</span><span class="col-6 fw-bold text-end">'+result.interval+'</span></div>\
+										'+barnstalldata+'\
+										'+rvbarnstalldata+'\
+										'+feeddata+'\
+										'+shavingdata+'\
+									</div>\
+								</div>\
+								<div class="row mb-2">\
+									<div class="col-8 ">Total</div>\
+									<div class="col-4">'+currencysymbol+result.price.toFixed(2)+'\</div>\
+									<div class="col-8 ">Transaction Fees</div>\
+									<div class="col-4">'+currencysymbol+((transactionfee/100) * result.price).toFixed(2)+'\</div>\
+								</div>\
+								<div class="row mb-2 border-top mt-3 mb-3 pt-3">\
+									<div class="col-8 fw-bold ">Total Due</div>\
+									<div class="col-4 fw-bold">'+currencysymbol+total+'</div>\
+								</div>\
+								<div class="row mb-2 w-100">\
+									<a href="<?php echo base_url()?>/checkout" class="w-100 text-center mx-2 ucEventdetBtn ps-3 mb-3 ">Continue to Checkout</a>\
+								</div>\
+							</div>\
 						</div>\
 						';
 
