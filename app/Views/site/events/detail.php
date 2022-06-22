@@ -239,11 +239,11 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 										<td style="border: 1px solid #e4e4e4;"><?php echo $feed['name'];?></td>
 										<td style="border: 1px solid #e4e4e4;"><?php echo $feed['price'];?></td>
 										<td style="border: 1px solid #e4e4e4;">
-											<input type="number" class="form-control quantity" data-productid="<?php echo $feed['id']?>" data-flag="3">
+											<input type="number" min="0" class="form-control quantity" data-productid="<?php echo $feed['id']?>" data-flag="3">
 										</td>
 										<td style="border: 1px solid #e4e4e4;">
-											<button class="btn btn-primary feedcart form-control" data-price="<?php echo $feed['price']?>" data-productid="<?php echo $feed['id']?>" data-originalquantity="<?php echo $feed['quantity']?>">Add to Cart</button>
-											<!--<button class="btn btn-danger">Remove</button>-->
+											<button class="btn btn-primary feedcart" data-productid="<?php echo $feed['id']?>" data-originalquantity="<?php echo $feed['quantity']?>" data-price="<?php echo $feed['price']?>">Add to Cart</button>
+											<button class="btn btn-danger feedcartremove cartremove displaynone" data-productid="<?php echo $feed['id']?>">Remove</button>
 										</td>
 									</tr>
 								<?php } ?>
@@ -267,11 +267,11 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 										<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['name'];?></td>
 										<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['price'];?></td>
 										<td style="border: 1px solid #e4e4e4;">
-											<input type="number" class="form-control quantity" data-productid="<?php echo $shaving['id']?>" data-flag="4">
+											<input type="number" min="0" class="form-control quantity" data-productid="<?php echo $shaving['id']?>" data-flag="4">
 										</td>
 										<td style="border: 1px solid #e4e4e4;">
-											<button class="btn btn-primary shavingcart form-control" data-price="<?php echo $shaving['price']?>" data-productid="<?php echo $shaving['id']?>" data-originalquantity="<?php echo $shaving['quantity']?>">Add to Cart</button>
-											<!--<button class="btn btn-danger">Remove</button>-->
+											<button class="btn btn-primary shavingcart" data-productid="<?php echo $shaving['id']?>" data-originalquantity="<?php echo $shaving['quantity']?>" data-price="<?php echo $shaving['price']?>">Add to Cart</button>
+											<button class="btn btn-danger shavingcartremove cartremove displaynone" data-productid="<?php echo $shaving['id']?>">Remove</button>
 										</td>
 									</tr>
 								<?php } ?>
@@ -346,19 +346,27 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 		}, 100);
 	})
 	
-	function occupiedreserved(startdate, enddate){
+	function occupiedreserved(startdate, enddate, stallid=''){
+		var result = 1;
 		ajax(
 			'<?php echo base_url()."/ajax/ajaxoccupied"; ?>',
 			{ eventid : eventid, checkin : startdate, checkout : enddate },
 			{
+				asynchronous : 1,
 				success : function(data){
 					$(data.success).each(function(i,v){ 
+						if(stallid==v){
+							result = 0;
+							toastr.warning('Stall is already booked.', {timeOut: 5000});
+							$('.stallid[value='+stallid+']').prop('checked', false);
+						}
+							
 						$('.stallid[value='+v+']').prop('checked', true).attr('disabled', 'disabled');
 						$('.stallavailability[data-stallid='+v+']').removeClass("green-box").addClass("red-box");
 					});
 				}
 			}
-			)
+		)
 		
 		ajax(
 			'<?php echo base_url()."/ajax/ajaxreserved"; ?>',
@@ -367,12 +375,36 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 				asynchronous : 1,
 				success : function(data){
 					$.each(data.success, function (i, v) {
+						if(stallid==i){
+							result = 0;
+							toastr.warning('Stall is already booked.', {timeOut: 5000});
+							$('.stallid[value='+stallid+']').prop('checked', false);
+						}
+						
 						$('.stallid[value='+i+']').prop('checked', true).attr('disabled', 'disabled');
 						$('.stallavailability[data-stallid='+i+']').removeClass("green-box").addClass("yellow-box");
 					});
 				}
 			}
-			)
+		)
+		
+		return result;
+	}
+	
+	function productquantity(productid){
+		var result = 0;
+		ajax(
+			'<?php echo base_url()."/ajax/ajaxproductquantity"; ?>',
+			{ eventid : eventid, productid : productid },
+			{
+				asynchronous : 1,
+				success : function(data){
+					result = data.success;
+				}
+			}
+		)
+		
+		return result;
 	}
 
 	$(".eventbarnstall").on("click", function() {
@@ -383,11 +415,11 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 	 	cartaction($(this), 2);
 	});
 
-	$(".feedcart").on("click", function() {
+	$(".feedcart, .feedcartremove").on("click", function() {
 	 	cartaction($(this), 3);
 	});
 	
-	$(".shavingcart").on("click", function() {
+	$(".shavingcart, .shavingcartremove").on("click", function() {
 	 	cartaction($(this), 4);
 	});
 
@@ -401,35 +433,42 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 		
 		var startdate 	= $("#startdate").val(); 
 		var enddate   	= $("#enddate").val(); 
-			
-		if(flag==1 || flag==2){
+				
+		if(flag==1 || flag==2){			
 			var barnid    	= _this.attr('data-barnid');
 			var stallid		= _this.val(); 
 			var price 		= _this.attr('data-price');
 
-
 			if($(_this).is(':checked')){  
-				cart({event_id : eventid, barn_id : barnid, stall_id : stallid, price : price, quantity : 1, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
+				var checkoccupiedreserved = occupiedreserved(startdate, enddate, stallid);
+				if(checkoccupiedreserved==1) cart({event_id : eventid, barn_id : barnid, stall_id : stallid, price : price, quantity : 1, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
 			}else{ 
 				$('.stallavailability[data-stallid='+stallid+']').removeClass("yellow-box").addClass("green-box");
 				cart({stall_id : stallid, type : '1', checked : 0}); 
-			}
-		
+			}		
 		}else{
 			var productid      		= _this.attr('data-productid');
-			var price         		= _this.attr('data-price'); 
-			var originalquantity	= _this.attr('data-originalquantity'); 
 			var quantitywrapper		= _this.parent().parent().find('.quantity');
-			var quantity 			= quantitywrapper.val();
 			
-			if(quantity==""){ 
-				quantitywrapper.focus();
-				toastr.warning('Please Enter Quantity .', {timeOut: 5000});
-			}else if(parseInt(quantity) > parseInt(originalquantity)){
-				quantitywrapper.focus();
-				toastr.warning('Please Select Quantity Less Than.'+originalquantity, {timeOut: 5000});
-			}else{ 
-				cart({event_id : eventid, product_id : productid, price : price, quantity : quantity, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
+			if(!_this.hasClass('cartremove')){
+				var price         		= _this.attr('data-price'); 
+				var originalquantity	= _this.attr('data-originalquantity'); 
+				var cartquantity		= productquantity(productid);
+				var quantity 			= quantitywrapper.val();
+				
+				if(quantity==""){ 
+					quantitywrapper.focus();
+					toastr.warning('Please Enter Quantity .', {timeOut: 5000});
+				}else if(parseInt(quantity) > (parseInt(originalquantity) - parseInt(cartquantity))){
+					quantitywrapper.focus();
+					toastr.warning('Please Select Quantity Less Than or equal to.'+(parseInt(originalquantity) - parseInt(cartquantity)), {timeOut: 5000});
+				}else{ 
+					cart({event_id : eventid, product_id : productid, price : price, quantity : quantity, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
+				}
+			}else{
+				quantitywrapper.val('');
+				$('.cartremove[data-productid='+productid+']').addClass('displaynone'); 
+				cart({product_id : productid, type : '1', checked : 0});
 			}
 		}
 	}
@@ -491,55 +530,11 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 						
 						occupiedreserved($("#startdate").val(), $("#enddate").val());
 						
-						var barnstalldata = '';
-						if(result.barnstall.length){
-							var barnname = '';
-							barnstalldata += '<div class="event_cart_title"><span class="col-12 fw-bold">STALL</span></div>';
-							$(result.barnstall).each(function(i,v){
-								if(barnname!=v.barn_name){
-									barnstalldata += '<div ><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
-								}
-								
-								barnstalldata += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+v.price+'x'+v.interval+') '+v.total+'</span></div>';
-								$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
-								barnname = v.barn_name;
-							});
-						}
+						var barnstalldata = cartsummary(1, 'STALL', result.barnstall);
+						var rvbarnstalldata = cartsummary(1, 'RV HOOKUP', result.rvbarnstall);
+						var feeddata = cartsummary(2, 'FEED', result.feed);
+						var shavingdata = cartsummary(2, 'SHAVING', result.shaving);
 						
-						var rvbarnstalldata = '';
-						if(result.rvbarnstall.length){
-							var barnname = '';
-							rvbarnstalldata += '<div class="event_cart_title"><span class="col-12 fw-bold">RV HOOKUP</span></div>';
-							$(result.rvbarnstall).each(function(i,v){
-								if(barnname!=v.barn_name){
-									rvbarnstalldata += '<div class="e_cart_subtitle"><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
-								}
-								
-								rvbarnstalldata += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+v.price+'x'+v.interval+') '+v.total+'</span></div>';
-								$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
-								barnname = v.barn_name;
-							});
-						}
-						
-						var feeddata = '';
-						if(result.feed.length){
-							feeddata += '<div class="event_cart_title"><span class="col-12 fw-bold">Feed</span></div>';
-							$(result.feed).each(function(i,v){								
-								feeddata += '<div class="row"><span class="col-7 event_c_text">'+v.product_name+'</span><span class="col-5 text-end event_c_text">('+v.price+'x'+v.quantity+') '+v.total+'</span></div>';
-								$('.quantity[data-productid='+v.product_id+']').val(v.quantity);
-							});
-						}
-						
-						var shavingdata = '';
-						if(result.shaving.length){
-							shavingdata += '<div class="event_cart_title"><span class="col-12 fw-bold">Shaving</span></div>';
-							$(result.shaving).each(function(i,v){
-								shavingdata += '<div class="row"><span class="col-7 event_c_text">'+v.product_name+'</span><span class="col-5 text-end event_c_text">('+v.price+'x'+v.quantity+') '+v.total+'</span></div>';
-								$('.quantity[data-productid='+v.product_id+']').val(v.quantity);
-							});
-						}
-						
-						$('#stallcount').val(result.barnstall.length);
 						var total = (parseFloat(result.price)+parseFloat((transactionfee/100) * result.price)).toFixed(2);
 						var result ='\
 						<div class="w-100">\
@@ -572,12 +567,39 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 
 						$('.checkout').empty().append(result);
 					}else{
-						$('#stallcount').val(0);
 						$('.checkout').empty();
 					}
 				}
 			}
-			);
+		);
+	}
+	
+	function cartsummary(type, title, result){
+		var data = '';
+		if(result.length){
+			if(type==1){
+				var name = '';
+				data += '<div class="event_cart_title"><span class="col-12 fw-bold">'+title+'</span></div>';
+				$(result).each(function(i,v){
+					if(name!=v.barn_name){
+						data += '<div ><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
+					}
+					
+					data += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+currencysymbol+v.price+'x'+v.interval+') '+currencysymbol+v.total+'</span></div>';
+					$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
+					name = v.barn_name;
+				});
+			}else{
+				data += '<div class="event_cart_title"><span class="col-12 fw-bold">'+title+'</span></div>';
+				$(result).each(function(i,v){								
+					data += '<div class="row"><span class="col-7 event_c_text">'+v.product_name+'</span><span class="col-5 text-end event_c_text">('+currencysymbol+v.price+'x'+v.quantity+') '+currencysymbol+v.total+'</span></div>';
+					$('.quantity[data-productid='+v.product_id+']').val(v.quantity);
+					$('.cartremove[data-productid='+v.product_id+']').removeClass('displaynone');
+				});
+			}
+		}
+		
+		return data;
 	}
 </script>
 <?php echo $this->endSection() ?>

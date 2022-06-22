@@ -41,25 +41,28 @@
 			</div>
 			<div class="row m-0 p-0">
 				<div class="col-md-9">
-					<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-5">
-						<h3 class="fw-bold mb-4">Book Your Stalls</h3>
-						<div class="infoPanel form_check">
-							<span class="infoSection flex-wrap">
-								<span class="iconProperty col-md-12 w-auto pad_100 ">
-									<input type="text" readonly id="stallcount"  value="0" placeholder="Number of Stalls">
-									<span class="num_btn stallcount"></span>
-								</span>
-								<span class="iconProperty col-md-12 w-auto pad_100">			
-									<input type="text" name="startdate" id="startdate" class ="checkdate checkin" autocomplete="off" placeholder="Check-In"/>
-									<img src="<?php echo base_url() ?>/assets/site/img/calendar.svg" class="iconPlace" alt="Calender Icon">
-								</span>
-								<span class="iconProperty col-md-12 w-auto pad_100">
-									<input type="text" name="enddate" id="enddate" class = "checkdate checkout" autocomplete="off"placeholder="Check-Out"/>
-									<img src="<?php echo base_url() ?>/assets/site/img/calendar.svg" class="iconPlace" alt="Calender Icon">
-								</span>
+					<div class="border rounded py-2 ps-3 pe-3 mt-4 mb-3">
+						<div class="infoPanel form_check bookyourstalls">
+							<span class="infoSection bookborder flex-wrap">
+								<div class="col-md-6">
+									<p class="fw-bold mx-2 fs-5 mb-0">Check In</p>
+									<span class="iconProperty w-100 w-auto pad_100">			
+										<input type="text" name="startdate" id="startdate" class="w-100 land_width checkdate checkin borderyt" autocomplete="off" placeholder="Check-In" readonly/>
+										<img src="<?php echo base_url() ?>/assets/site/img/calendar.svg" class="iconPlace" alt="Calender Icon">
+									</span>
+								</div>
+								<div class="col-md-6">
+									<p class="fw-bold mx-2 fs-5 mb-0">Check Out</p>
+									<span class="iconProperty w-100 col-md-12 w-auto pad_100">
+										<input type="text" name="enddate" id="enddate" class="w-100 land_width checkdate checkout borderyt" autocomplete="off"placeholder="Check-Out" readonly/>
+										<img src="<?php echo base_url() ?>/assets/site/img/calendar.svg" class="iconPlace" alt="Calender Icon">
+									</span>
+								</div>
 							</span>
 						</div>
-
+					</div>
+					<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-5">
+						<h3 class="fw-bold mb-4">Book Your Stalls</h3>
 						<?php 
 						$tabbtn = '';
 						$tabcontent = '';
@@ -83,10 +86,9 @@
 							$tabcontent .= '</ul></div>';
 						}
 						?>
-
 						<div class="barn-nav mt-4">
 							<nav>
-								<div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
+								<div class="nav nav-tabs" id="nav-tab" role="tablist">
 									<?php echo $tabbtn; ?>
 								</div>
 							</nav>
@@ -170,11 +172,11 @@
 										<td style="border: 1px solid #e4e4e4;"><?php echo $feed['name'];?></td>
 										<td style="border: 1px solid #e4e4e4;"><?php echo $feed['price'];?></td>
 										<td style="border: 1px solid #e4e4e4;">
-											<input type="number" class="form-control quantity" data-productid="<?php echo $feed['id']?>" data-flag="3">
+											<input type="number" min="0" class="form-control quantity" data-productid="<?php echo $feed['id']?>" data-flag="3">
 										</td>
 										<td style="border: 1px solid #e4e4e4;">
-											<button class="btn btn-primary feedcart form-control" data-price="<?php echo $feed['price']?>" data-productid="<?php echo $feed['id']?>" data-originalquantity="<?php echo $feed['quantity']?>">Add to Cart</button>
-											<!--<button class="btn btn-danger">Remove</button>-->
+											<button class="btn btn-primary feedcart" data-productid="<?php echo $feed['id']?>" data-originalquantity="<?php echo $feed['quantity']?>" data-price="<?php echo $feed['price']?>">Add to Cart</button>
+											<button class="btn btn-danger feedcartremove cartremove displaynone" data-productid="<?php echo $feed['id']?>">Remove</button>
 										</td>
 									</tr>
 								<?php } ?>
@@ -198,11 +200,11 @@
 										<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['name'];?></td>
 										<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['price'];?></td>
 										<td style="border: 1px solid #e4e4e4;">
-											<input type="number" class="form-control quantity" data-productid="<?php echo $shaving['id']?>" data-flag="4">
+											<input type="number" min="0" class="form-control quantity" data-productid="<?php echo $shaving['id']?>" data-flag="4">
 										</td>
 										<td style="border: 1px solid #e4e4e4;">
-											<button class="btn btn-primary shavingcart form-control" data-price="<?php echo $shaving['price']?>" data-productid="<?php echo $shaving['id']?>" data-originalquantity="<?php echo $shaving['quantity']?>">Add to Cart</button>
-											<!--<button class="btn btn-danger">Remove</button>-->
+											<button class="btn btn-primary shavingcart" data-productid="<?php echo $shaving['id']?>" data-originalquantity="<?php echo $shaving['quantity']?>" data-price="<?php echo $shaving['price']?>">Add to Cart</button>
+											<button class="btn btn-danger shavingcartremove cartremove displaynone" data-productid="<?php echo $shaving['id']?>">Remove</button>
 										</td>
 									</tr>
 								<?php } ?>
@@ -224,14 +226,11 @@
 	var stallid 			= '<?php echo $stalldata["id"]; ?>';
 	var cartevent 			= '<?php echo $cartevent; ?>';
 	var checkevent 			= '<?php echo $checkevent["status"]; ?>';
-	var eventstartdate  	= '<?php echo $detail["start_date"] > date("Y-m-d") ? formatdate($detail["start_date"], 1) : 0; ?>';
-	//var eventenddate 		= '<?php echo formatdate($detail["end_date"], 1); ?>';
-	//var eventenddateadd 	= '<?php echo formatdate(date("Y-m-d", strtotime($detail["end_date"]." +1 day")), 1); ?>';
 		
 	uidatepicker(
 		'#startdate', 
 		{ 
-			'mindate' 	: eventstartdate,
+			'mindate' 	: '0',
 			'close' 	: function(selecteddate){
 				var date = new Date(selecteddate)
 				date.setDate(date.getDate() + 1);
@@ -240,7 +239,7 @@
 		}
 	);
 
-	uidatepicker('#enddate', { 'mindate' : eventstartdate });
+	uidatepicker('#enddate', { 'mindate' : '0' });
 	
 	$(document).ready(function (){ 
 		if(cartevent == 0 ){ 
@@ -267,18 +266,42 @@
 				$('.stallid').prop('checked', false).removeAttr('disabled');
 				$('.stallavailability').removeClass("yellow-box").removeClass("red-box").addClass("green-box");
 				
+				validatestalldates(enddate);
 				occupiedreserved(startdate, enddate);
 			}
 		}, 100);
 	})
+
+	function validatestalldates(enddate){ 
+		$('.stallid').each(function(){
+			var stallenddate		= $(this).attr('data-stallenddate');
+			var stallid	 			= $(this).val();
+
+			$('.stallid[value='+stallid+']').removeAttr('disabled', 'disabled');
+			$('.stallavailability[data-stallid='+stallid+']').removeClass("brown-box").addClass("green-box");
+			
+			if(Date.parse(stallenddate) < Date.parse(enddate)){ 
+				$('.stallid[value='+stallid+']').attr('disabled', 'disabled');
+				$('.stallavailability[data-stallid='+stallid+']').removeClass("green-box").addClass("brown-box");
+			}
+		});
+	}
 	
-	function occupiedreserved(startdate, enddate){
+	function occupiedreserved(startdate, enddate, stallid=''){
+		var result = 1;
 		ajax(
 			'<?php echo base_url()."/ajax/ajaxoccupied"; ?>',
 			{ eventid : eventid, checkin : startdate, checkout : enddate },
 			{
+				asynchronous : 1,
 				success : function(data){
 					$(data.success).each(function(i,v){ 
+						if(stallid==v){
+							result = 0;
+							toastr.warning('Stall is already booked.', {timeOut: 5000});
+							$('.stallid[value='+stallid+']').prop('checked', false);
+						}
+							
 						$('.stallid[value='+v+']').prop('checked', true).attr('disabled', 'disabled');
 						$('.stallavailability[data-stallid='+v+']').removeClass("green-box").addClass("red-box");
 					});
@@ -293,13 +316,37 @@
 				asynchronous : 1,
 				success : function(data){
 					$.each(data.success, function (i, v) {
+						if(stallid==i){
+							result = 0;
+							toastr.warning('Stall is already booked.', {timeOut: 5000});
+							$('.stallid[value='+stallid+']').prop('checked', false);
+						}
+						
 						$('.stallid[value='+i+']').prop('checked', true).attr('disabled', 'disabled');
 						$('.stallavailability[data-stallid='+i+']').removeClass("green-box").addClass("yellow-box");
 					});
 				}
 			}
 		)
+		
+		return result;
 	} 
+
+	function productquantity(productid){
+		var result = 0;
+		ajax(
+			'<?php echo base_url()."/ajax/ajaxproductquantity"; ?>',
+			{ eventid : eventid, productid : productid },
+			{
+				asynchronous : 1,
+				success : function(data){
+					result = data.success;
+				}
+			}
+		)
+		
+		return result;
+	}
 
 	$(".eventbarnstall").on("click", function() {
         cartaction($(this), 1);
@@ -309,11 +356,11 @@
 	 	cartaction($(this), 2);
 	});
 
-	$(".feedcart").on("click", function() {
+	$(".feedcart, .feedcartremove").on("click", function() {
 	 	cartaction($(this), 3);
 	});
 	
-	$(".shavingcart").on("click", function() {
+	$(".shavingcart, .shavingcartremove").on("click", function() {
 	 	cartaction($(this), 4);
 	});
 
@@ -327,35 +374,42 @@
 		
 		var startdate 	= $("#startdate").val(); 
 		var enddate   	= $("#enddate").val(); 
-			
-		if(flag==1 || flag==2){
+				
+		if(flag==1 || flag==2){			
 			var barnid    	= _this.attr('data-barnid');
 			var stallid		= _this.val(); 
 			var price 		= _this.attr('data-price');
 
-
 			if($(_this).is(':checked')){  
-				cart({event_id : eventid, barn_id : barnid, stall_id : stallid, price : price, quantity : 1, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
+				var checkoccupiedreserved = occupiedreserved(startdate, enddate, stallid);
+				if(checkoccupiedreserved==1) cart({event_id : eventid, barn_id : barnid, stall_id : stallid, price : price, quantity : 1, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
 			}else{ 
 				$('.stallavailability[data-stallid='+stallid+']').removeClass("yellow-box").addClass("green-box");
 				cart({stall_id : stallid, type : '1', checked : 0}); 
-			}
-		
+			}		
 		}else{
 			var productid      		= _this.attr('data-productid');
-			var price         		= _this.attr('data-price'); 
-			var originalquantity	= _this.attr('data-originalquantity'); 
 			var quantitywrapper		= _this.parent().parent().find('.quantity');
-			var quantity 			= quantitywrapper.val();
 			
-			if(quantity==""){ 
-				quantitywrapper.focus();
-				toastr.warning('Please Enter Quantity .', {timeOut: 5000});
-			}else if(parseInt(quantity) > parseInt(originalquantity)){
-				quantitywrapper.focus();
-				toastr.warning('Please Select Quantity Less Than.'+originalquantity, {timeOut: 5000});
-			}else{ 
-				cart({event_id : eventid, product_id : productid, price : price, quantity : quantity, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
+			if(!_this.hasClass('cartremove')){
+				var price         		= _this.attr('data-price'); 
+				var originalquantity	= _this.attr('data-originalquantity'); 
+				var cartquantity		= productquantity(productid);
+				var quantity 			= quantitywrapper.val();
+				
+				if(quantity==""){ 
+					quantitywrapper.focus();
+					toastr.warning('Please Enter Quantity .', {timeOut: 5000});
+				}else if(parseInt(quantity) > (parseInt(originalquantity) - parseInt(cartquantity))){
+					quantitywrapper.focus();
+					toastr.warning('Please Select Quantity Less Than or equal to.'+(parseInt(originalquantity) - parseInt(cartquantity)), {timeOut: 5000});
+				}else{ 
+					cart({event_id : eventid, product_id : productid, price : price, quantity : quantity, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
+				}
+			}else{
+				quantitywrapper.val('');
+				$('.cartremove[data-productid='+productid+']').addClass('displaynone'); 
+				cart({product_id : productid, type : '1', checked : 0});
 			}
 		}
 	}
@@ -415,57 +469,14 @@
 						$("#startdate").val(result.check_in); 
 						$("#enddate").val(result.check_out); 
 						
+						validatestalldates($("#enddate").val());
 						occupiedreserved($("#startdate").val(), $("#enddate").val());
 						
-						var barnstalldata = '';
-						if(result.barnstall.length){
-							var barnname = '';
-							barnstalldata += '<div class="event_cart_title"><span class="col-12 fw-bold">STALL</span></div>';
-							$(result.barnstall).each(function(i,v){
-								if(barnname!=v.barn_name){
-									barnstalldata += '<div ><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
-								}
-								
-								barnstalldata += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+v.price+'x'+v.interval+') '+v.total+'</span></div>';
-								$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
-								barnname = v.barn_name;
-							});
-						}
+						var barnstalldata = cartsummary(1, 'STALL', result.barnstall);
+						var rvbarnstalldata = cartsummary(1, 'RV HOOKUP', result.rvbarnstall);
+						var feeddata = cartsummary(2, 'FEED', result.feed);
+						var shavingdata = cartsummary(2, 'SHAVING', result.shaving);
 						
-						var rvbarnstalldata = '';
-						if(result.rvbarnstall.length){
-							var barnname = '';
-							rvbarnstalldata += '<div class="event_cart_title"><span class="col-12 fw-bold">RV HOOKUP</span></div>';
-							$(result.rvbarnstall).each(function(i,v){
-								if(barnname!=v.barn_name){
-									rvbarnstalldata += '<div class="e_cart_subtitle"><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
-								}
-								
-								rvbarnstalldata += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+v.price+'x'+v.interval+') '+v.total+'</span></div>';
-								$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
-								barnname = v.barn_name;
-							});
-						}
-						
-						var feeddata = '';
-						if(result.feed.length){
-							feeddata += '<div class="event_cart_title"><span class="col-12 fw-bold">Feed</span></div>';
-							$(result.feed).each(function(i,v){								
-								feeddata += '<div class="row"><span class="col-7 event_c_text">'+v.product_name+'</span><span class="col-5 text-end event_c_text">('+v.price+'x'+v.quantity+') '+v.total+'</span></div>';
-								$('.quantity[data-productid='+v.product_id+']').val(v.quantity);
-							});
-						}
-						
-						var shavingdata = '';
-						if(result.shaving.length){
-							shavingdata += '<div class="event_cart_title"><span class="col-12 fw-bold">Shaving</span></div>';
-							$(result.shaving).each(function(i,v){
-								shavingdata += '<div class="row"><span class="col-7 event_c_text">'+v.product_name+'</span><span class="col-5 text-end event_c_text">('+v.price+'x'+v.quantity+') '+v.total+'</span></div>';
-								$('.quantity[data-productid='+v.product_id+']').val(v.quantity);
-							});
-						}
-						
-						$('#stallcount').val(result.barnstall.length);
 						var total = (parseFloat(result.price)+parseFloat((transactionfee/100) * result.price)).toFixed(2);
 						var result ='\
 						<div class="w-100">\
@@ -498,12 +509,39 @@
 
 						$('.checkout').empty().append(result);
 					}else{
-						$('#stallcount').val(0);
 						$('.checkout').empty();
 					}
 				}
 			}
-			);
+		);
+	}
+	
+	function cartsummary(type, title, result){
+		var data = '';
+		if(result.length){
+			if(type==1){
+				var name = '';
+				data += '<div class="event_cart_title"><span class="col-12 fw-bold">'+title+'</span></div>';
+				$(result).each(function(i,v){
+					if(name!=v.barn_name){
+						data += '<div ><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
+					}
+					
+					data += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+currencysymbol+v.price+'x'+v.interval+') '+currencysymbol+v.total+'</span></div>';
+					$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
+					name = v.barn_name;
+				});
+			}else{
+				data += '<div class="event_cart_title"><span class="col-12 fw-bold">'+title+'</span></div>';
+				$(result).each(function(i,v){								
+					data += '<div class="row"><span class="col-7 event_c_text">'+v.product_name+'</span><span class="col-5 text-end event_c_text">('+currencysymbol+v.price+'x'+v.quantity+') '+currencysymbol+v.total+'</span></div>';
+					$('.quantity[data-productid='+v.product_id+']').val(v.quantity);
+					$('.cartremove[data-productid='+v.product_id+']').removeClass('displaynone');
+				});
+			}
+		}
+		
+		return data;
 	}
 </script>
 <?php echo $this->endSection() ?>

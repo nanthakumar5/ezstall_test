@@ -49,8 +49,11 @@ class Cart extends BaseModel
 		if(isset($requestdata['event_id'])) 				    $query->where('c.event_id', $requestdata['event_id']);
 		if(isset($requestdata['barn_id'])) 				    	$query->where('c.barn_id', $requestdata['barn_id']);
 		if(isset($requestdata['stall_id'])) 				    $query->where('c.stall_id', $requestdata['stall_id']);
+		if(isset($requestdata['product_id'])) 				    $query->where('c.product_id', $requestdata['product_id']);
 		if(isset($requestdata['ip'])) 				    		$query->where('c.ip', $requestdata['ip']);
 		if(isset($requestdata['type'])) 				    	$query->where('c.type', $requestdata['type']);
+		if(isset($requestdata['neq_user_id'])) 				    $query->where('c.user_id !=', $requestdata['neq_user_id']);
+		if(isset($requestdata['neq_product_id'])) 				$query->where('c.product_id !=', $requestdata['neq_product_id']);
 		
 		if(isset($requestdata['checkin']) && isset($requestdata['checkout'])){
 			$query->groupStart();
@@ -76,8 +79,8 @@ class Cart extends BaseModel
 
 		$ip = $data['ip'];
 		$request['ip'] = $ip;
+		$request['user_id'] = (isset($data['user_id'])&& $data['user_id']!='') ? $data['user_id'] : 0;
 		
-		if(isset($data['user_id'])&& $data['user_id']!='') 	 	       	$request['user_id'] 		= $data['user_id'];
 		if(isset($data['event_id'])&& $data['event_id']!='')           	$request['event_id'] 	    = $data['event_id'];
 		if(isset($data['barn_id'])&& $data['barn_id']!='')           	$request['barn_id'] 	    = $data['barn_id'];
 		if(isset($data['stall_id'])&& $data['stall_id']!='')           	$request['stall_id'] 	    = $data['stall_id'];
@@ -95,7 +98,7 @@ class Cart extends BaseModel
 			if($request['type']=='2') 	$this->db->table('cart')->delete(['ip' => $ip, 'type' => '1']);
 			
 			if($request['flag']=='3' || $request['flag']=='4'){
-				$checkproduct = $this->db->table('cart')->where(['ip' => $request['ip'], 'event_id' => $request['event_id'], 'product_id' => $request['product_id']])->get()->getRowArray();
+				$checkproduct = $this->db->table('cart')->where(['ip' => $request['ip'], 'user_id' => $request['user_id'], 'event_id' => $request['event_id'], 'product_id' => $request['product_id']])->get()->getRowArray();
 			}
 			
 			$request['datetime'] = date('Y-m-d H:i:s');
@@ -130,6 +133,7 @@ class Cart extends BaseModel
 		if(isset($data['ip']))            	 	$request['ip']    		= $data['ip'];
 		if(isset($data['user_id']))            	$request['user_id']    	= $data['user_id'];
 		if(isset($data['stall_id']))            $request['stall_id'] 	= $data['stall_id'];
+		if(isset($data['product_id']))          $request['product_id'] 	= $data['product_id'];
 		
 		if(count($request)){
 			$cart = $this->db->table('cart')->delete($request);
