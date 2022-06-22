@@ -239,11 +239,13 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 										<td style="border: 1px solid #e4e4e4;"><?php echo $feed['name'];?></td>
 										<td style="border: 1px solid #e4e4e4;"><?php echo $feed['price'];?></td>
 										<td style="border: 1px solid #e4e4e4;">
-											<input type="number" min="0" class="form-control quantity" data-productid="<?php echo $feed['id']?>" data-flag="3">
+											<input type="number" min="0" class="form-control quantity" data-productid="<?php echo $feed['id']?>" data-flag="3" <?php if($cartevent=='1' || $checkevent['status']=='0'){ echo 'disabled'; } ?>>
 										</td>
 										<td style="border: 1px solid #e4e4e4;">
-											<button class="btn btn-primary feedcart" data-productid="<?php echo $feed['id']?>" data-originalquantity="<?php echo $feed['quantity']?>" data-price="<?php echo $feed['price']?>">Add to Cart</button>
-											<button class="btn btn-danger feedcartremove cartremove displaynone" data-productid="<?php echo $feed['id']?>">Remove</button>
+											<?php if($cartevent!='1' && $checkevent['status']!='0'){ ?>
+												<button class="btn btn-primary feedcart" data-productid="<?php echo $feed['id']?>" data-originalquantity="<?php echo $feed['quantity']?>" data-price="<?php echo $feed['price']?>">Add to Cart</button>
+												<button class="btn btn-danger feedcartremove cartremove displaynone" data-productid="<?php echo $feed['id']?>">Remove</button>
+											<?php } ?>
 										</td>
 									</tr>
 								<?php } ?>
@@ -267,11 +269,13 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 										<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['name'];?></td>
 										<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['price'];?></td>
 										<td style="border: 1px solid #e4e4e4;">
-											<input type="number" min="0" class="form-control quantity" data-productid="<?php echo $shaving['id']?>" data-flag="4">
+											<input type="number" min="0" class="form-control quantity" data-productid="<?php echo $shaving['id']?>" data-flag="4" <?php if($cartevent=='1' || $checkevent['status']=='0'){ echo 'disabled'; } ?>>
 										</td>
 										<td style="border: 1px solid #e4e4e4;">
-											<button class="btn btn-primary shavingcart" data-productid="<?php echo $shaving['id']?>" data-originalquantity="<?php echo $shaving['quantity']?>" data-price="<?php echo $shaving['price']?>">Add to Cart</button>
-											<button class="btn btn-danger shavingcartremove cartremove displaynone" data-productid="<?php echo $shaving['id']?>">Remove</button>
+											<?php if($cartevent!='1' && $checkevent['status']!='0'){ ?>
+												<button class="btn btn-primary shavingcart" data-productid="<?php echo $shaving['id']?>" data-originalquantity="<?php echo $shaving['quantity']?>" data-price="<?php echo $shaving['price']?>">Add to Cart</button>
+												<button class="btn btn-danger shavingcartremove cartremove displaynone" data-productid="<?php echo $shaving['id']?>">Remove</button>
+											<?php } ?>
 										</td>
 									</tr>
 								<?php } ?>
@@ -319,7 +323,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 					$("#enddate").datepicker( "option", "minDate", date );
 				}
 			}
-			);
+		);
 
 		uidatepicker('#enddate', { 'mindate' : eventstartdate, 'maxdate' : eventenddateadd });
 	});
