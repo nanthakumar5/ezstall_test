@@ -382,10 +382,10 @@
 
 			if($(_this).is(':checked')){  
 				var checkoccupiedreserved = occupiedreserved(startdate, enddate, stallid);
-				if(checkoccupiedreserved==1) cart({event_id : eventid, barn_id : barnid, stall_id : stallid, price : price, quantity : 1, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
+				if(checkoccupiedreserved==1) cart({event_id : eventid, barn_id : barnid, stall_id : stallid, price : price, quantity : 1, startdate : startdate, enddate : enddate, type : '2', checked : 1, flag : flag, actionid : ''});
 			}else{ 
 				$('.stallavailability[data-stallid='+stallid+']').removeClass("yellow-box").addClass("green-box");
-				cart({stall_id : stallid, type : '1', checked : 0}); 
+				cart({stall_id : stallid, type : '2', checked : 0}); 
 			}		
 		}else{
 			var productid      		= _this.attr('data-productid');
@@ -404,12 +404,12 @@
 					quantitywrapper.focus();
 					toastr.warning('Please Select Quantity Less Than or equal to.'+(parseInt(originalquantity) - parseInt(cartquantity)), {timeOut: 5000});
 				}else{ 
-					cart({event_id : eventid, product_id : productid, price : price, quantity : quantity, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
+					cart({event_id : eventid, product_id : productid, price : price, quantity : quantity, startdate : startdate, enddate : enddate, type : '2', checked : 1, flag : flag, actionid : ''});
 				}
 			}else{
 				quantitywrapper.val('');
 				$('.cartremove[data-productid='+productid+']').addClass('displaynone'); 
-				cart({product_id : productid, type : '1', checked : 0});
+				cart({product_id : productid, type : '2', checked : 0});
 			}
 		}
 	}
@@ -458,7 +458,7 @@
 		return true;
 	}
 
-	function cart(data={cart:1, type:1}){	
+	function cart(data={cart:1, type:2}){	
 		ajax(
 			'<?php echo base_url()."/cart"; ?>',
 			data,
