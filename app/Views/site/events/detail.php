@@ -133,7 +133,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 							$barnid = $barndata['id'];
 							$barnname = $barndata['name'];
 							$barnactive = $barnkey=='0' ? ' show active' : '';
-							$tabbtn .= '<button class="nav-link'.$barnactive.'" data-bs-toggle="tab" data-bs-target="#barn'.$barnid.'" type="button" role="tab" aria-controls="barn'.$barnid.'" aria-selected="true">'.$barnname.'</button>';
+							$tabbtn .= '<button class="nav-link m-0'.$barnactive.'" data-bs-toggle="tab" data-bs-target="#barn'.$barnid.'" type="button" role="tab" aria-controls="barn'.$barnid.'" aria-selected="true">'.$barnname.'</button>';
 
 							$tabcontent .= '<div class="tab-pane fade'.$barnactive.'" id="barn'.$barnid.'" role="tabpanel" aria-labelledby="nav-home-tab">
 							<ul class="list-group">';
@@ -156,7 +156,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 						?>
 						<div class="barn-nav mt-4">
 							<nav>
-								<div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
+								<div class="nav nav-tabs" id="nav-tab" role="tablist">
 									<?php echo $tabbtn; ?>
 								</div>
 							</nav>
@@ -182,7 +182,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 								$rvid = $rvdata['id'];
 								$rvname = $rvdata['name'];
 								$rvactive = $rvkey=='0' ? ' show active' : '';
-								$tabbtn .= '<button class="nav-link'.$barnactive.'" data-bs-toggle="tab" data-bs-target="#barn'.$rvid.'" type="button" role="tab" aria-controls="barn'.$rvid.'" aria-selected="true">'.$rvname.'</button>';
+								$tabbtn .= '<button class="nav-link m-0'.$rvactive.'" data-bs-toggle="tab" data-bs-target="#barn'.$rvid.'" type="button" role="tab" aria-controls="barn'.$rvid.'" aria-selected="true">'.$rvname.'</button>';
 
 								$tabcontent .= '<div class="tab-pane fade'.$rvactive.'" id="barn'.$rvid.'" role="tabpanel" aria-labelledby="nav-home-tab">
 								<ul class="list-group">';
@@ -205,7 +205,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 							?>
 							<div class="barn-nav mt-4">
 								<nav>
-									<div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
+									<div class="nav nav-tabs" id="nav-tab" role="tablist">
 										<?php echo $tabbtn; ?>
 									</div>
 								</nav>
@@ -242,7 +242,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 											<input type="number" class="form-control quantity" data-productid="<?php echo $feed['id']?>" data-flag="3">
 										</td>
 										<td style="border: 1px solid #e4e4e4;">
-											<button class="btn btn-primary feedcart" data-price="<?php echo $feed['price']?>" data-productid="<?php echo $feed['id']?>" data-originalquantity="<?php echo $feed['quantity']?>">Add to Cart</button>
+											<button class="btn btn-primary feedcart form-control" data-price="<?php echo $feed['price']?>" data-productid="<?php echo $feed['id']?>" data-originalquantity="<?php echo $feed['quantity']?>">Add to Cart</button>
 											<!--<button class="btn btn-danger">Remove</button>-->
 										</td>
 									</tr>
@@ -270,7 +270,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 											<input type="number" class="form-control quantity" data-productid="<?php echo $shaving['id']?>" data-flag="4">
 										</td>
 										<td style="border: 1px solid #e4e4e4;">
-											<button class="btn btn-primary shavingcart" data-price="<?php echo $shaving['price']?>" data-productid="<?php echo $shaving['id']?>" data-originalquantity="<?php echo $shaving['quantity']?>">Add to Cart</button>
+											<button class="btn btn-primary shavingcart form-control" data-price="<?php echo $shaving['price']?>" data-productid="<?php echo $shaving['id']?>" data-originalquantity="<?php echo $shaving['quantity']?>">Add to Cart</button>
 											<!--<button class="btn btn-danger">Remove</button>-->
 										</td>
 									</tr>
@@ -494,13 +494,13 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 						var barnstalldata = '';
 						if(result.barnstall.length){
 							var barnname = '';
-							barnstalldata += '<div><span class="col-12 fw-bold">STALL</span></div>';
+							barnstalldata += '<div class="event_cart_title"><span class="col-12 fw-bold">STALL</span></div>';
 							$(result.barnstall).each(function(i,v){
 								if(barnname!=v.barn_name){
-									barnstalldata += '<div><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
+									barnstalldata += '<div ><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
 								}
 								
-								barnstalldata += '<div class="row"><span class="col-7">'+v.stall_name+'</span><span class="col-5 text-end">('+v.price+'x'+v.interval+') '+v.total+'</span></div>';
+								barnstalldata += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+v.price+'x'+v.interval+') '+v.total+'</span></div>';
 								$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
 								barnname = v.barn_name;
 							});
@@ -509,13 +509,13 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 						var rvbarnstalldata = '';
 						if(result.rvbarnstall.length){
 							var barnname = '';
-							rvbarnstalldata += '<div><span class="col-12 fw-bold">RV HOOKUP</span></div>';
+							rvbarnstalldata += '<div class="event_cart_title"><span class="col-12 fw-bold">RV HOOKUP</span></div>';
 							$(result.rvbarnstall).each(function(i,v){
 								if(barnname!=v.barn_name){
-									rvbarnstalldata += '<div><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
+									rvbarnstalldata += '<div class="e_cart_subtitle"><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
 								}
 								
-								rvbarnstalldata += '<div class="row"><span class="col-7">'+v.stall_name+'</span><span class="col-5 text-end">('+v.price+'x'+v.interval+') '+v.total+'</span></div>';
+								rvbarnstalldata += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+v.price+'x'+v.interval+') '+v.total+'</span></div>';
 								$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
 								barnname = v.barn_name;
 							});
@@ -523,18 +523,18 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 						
 						var feeddata = '';
 						if(result.feed.length){
-							feeddata += '<div><span class="col-12 fw-bold">Feed</span></div>';
+							feeddata += '<div class="event_cart_title"><span class="col-12 fw-bold">Feed</span></div>';
 							$(result.feed).each(function(i,v){								
-								feeddata += '<div class="row"><span class="col-7">'+v.product_name+'</span><span class="col-5 text-end">('+v.price+'x'+v.quantity+') '+v.total+'</span></div>';
+								feeddata += '<div class="row"><span class="col-7 event_c_text">'+v.product_name+'</span><span class="col-5 text-end event_c_text">('+v.price+'x'+v.quantity+') '+v.total+'</span></div>';
 								$('.quantity[data-productid='+v.product_id+']').val(v.quantity);
 							});
 						}
 						
 						var shavingdata = '';
 						if(result.shaving.length){
-							shavingdata += '<div><span class="col-12 fw-bold">Shaving</span></div>';
+							shavingdata += '<div class="event_cart_title"><span class="col-12 fw-bold">Shaving</span></div>';
 							$(result.shaving).each(function(i,v){
-								shavingdata += '<div class="row"><span class="col-7">'+v.product_name+'</span><span class="col-5 text-end">('+v.price+'x'+v.quantity+') '+v.total+'</span></div>';
+								shavingdata += '<div class="row"><span class="col-7 event_c_text">'+v.product_name+'</span><span class="col-5 text-end event_c_text">('+v.price+'x'+v.quantity+') '+v.total+'</span></div>';
 								$('.quantity[data-productid='+v.product_id+']').val(v.quantity);
 							});
 						}
@@ -553,11 +553,11 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 										'+shavingdata+'\
 									</div>\
 								</div>\
-								<div class="row mb-2">\
-									<div class="col-8 ">Total</div>\
-									<div class="col-4">'+currencysymbol+result.price.toFixed(2)+'\</div>\
-									<div class="col-8 ">Transaction Fees</div>\
-									<div class="col-4">'+currencysymbol+((transactionfee/100) * result.price).toFixed(2)+'\</div>\
+								<div class="row mb-2 event_border_top pt-4">\
+									<div class="col-8 event_c_text">Total</div>\
+									<div class="col-4 event_c_text text-end">'+currencysymbol+result.price.toFixed(2)+'\</div>\
+									<div class="col-8 event_c_text">Transaction Fees</div>\
+									<div class="col-4 event_c_text text-end">'+currencysymbol+((transactionfee/100) * result.price).toFixed(2)+'\</div>\
 								</div>\
 								<div class="row mb-2 border-top mt-3 mb-3 pt-3">\
 									<div class="col-8 fw-bold ">Total Due</div>\

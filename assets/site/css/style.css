@@ -4664,3 +4664,24 @@ span.num_btn.stallcount {
 .w-45 {
     width: 45% !important;
 }
+
+.event_cart_title{
+    padding: 3px 0;
+    margin: 20px 0;
+    background-color: #efefef;
+    text-align: center;
+}
+
+.e_cart_subtitle {
+    padding: 10px 0px 0 0;
+}
+
+.event_border_top {
+    border-top: 1px solid #e5e5e5;
+    padding: 10px 0;
+}
+
+.event_c_text{
+    font-weight: 600;
+    color: #505050;
+}
