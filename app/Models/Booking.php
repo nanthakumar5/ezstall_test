@@ -165,7 +165,7 @@ class Booking extends BaseModel
     }
 
 	public function action($data)
-	{
+	{ 
 		$this->db->transStart();
 		$datetime = date('Y-m-d H:i:s');
 		
@@ -192,21 +192,10 @@ class Booking extends BaseModel
 			$insertid = $this->db->insertID();
 		}
 
-		if(isset($data['barnstall'])){	
-			$barnstall = json_decode($data['barnstall'], true);
-			$count = count($barnstall);
-
-			foreach ($barnstall as $value){
-				$bookingdetails = array(
-					'booking_id' => $insertid,
-					'barn_id' 	 => $value['barn_id'],
-					'stall_id' 	 => $value['stall_id'],
-					'status' 	 => 1
-				);
-
-				$this->db->table('booking_details')->insert($bookingdetails);
-			}
-		}
+		$result = $this->bookingdetailaction(['booking_id' => $insertid, 'flag' => '1']+json_decode($data['barnstall'], true));
+        $this->bookingdetailaction(['booking_id' => $insertid, 'flag' => '2']+json_decode($data['rvbarnstall'], true));
+        $this->bookingdetailaction(['booking_id' => $insertid, 'flag' => '3']+json_decode($data['feed'], true));
+        $this->bookingdetailaction(['booking_id' => $insertid, 'flag' => '4']+json_decode($data['shaving'], true));
 
 		if(isset($insertid) && $this->db->transStatus() === FALSE){
 			$this->db->transRollback();
@@ -217,4 +206,22 @@ class Booking extends BaseModel
 		}
 
 	}
+	public function bookingdetailaction($results){
+        foreach ($results as $result){ 
+            $bookingdetails = array(
+                'booking_id' 	=> isset($result['booking_id']) ? $result['booking_id'] : '',
+                'barn_id'      	=> isset($result['barn_id']) ? $result['barn_id'] : '',
+                'stall_id'      => isset($result['stall_id']) ? $result['stall_id'] : '',
+                'product_id'    => isset($result['product_id']) ? $result['product_id'] : '',
+                'price'      	=> isset($result['price']) ? $result['price'] : '',
+                'quantity'      => isset($result['quantity']) ? $result['quantity'] : '',
+                'total'      	=> isset($result['total']) ? $result['total'] : '',
+                'flag'      	=> isset($result['flag']) ? $result['flag'] : '',
+                'status'      	=> 1
+            );
+            echo "<pre>";print_r($bookingdetails);die;
+
+            $this->db->table('booking_details')->insert($bookingdetails);
+        }
+    }
 }
