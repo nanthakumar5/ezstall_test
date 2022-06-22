@@ -364,6 +364,17 @@ function getReserved($eventid, $extras=[]){
 	return (count($cart) > 0) ? array_column($cart, 'user_id', 'stall_id') : [];
 }
 
+function getProductQuantity($eventid, $extras=[]){
+	$request 		= service('request');
+	$condition 		= getSiteUserID() ? ['eventid' => $eventid, 'neq_user_id' => getSiteUserID(), 'neq_ip' => $request->getIPAddress()] : ['eventid' => $eventid, 'neq_user_id' => 0, 'neq_ip' =>$request->getIPAddress()] ;
+	if(count($extras) > 0) $condition 	= $condition+$extras;
+	
+	$cart	= new \App\Models\Cart;
+	$cart	= $cart->getCart('all', ['cart'], $condition);
+	
+	return (count($cart) > 0) ? array_sum(array_column($cart, 'quantity')) : 0;
+}
+
 function upcomingEvents()
 {
 	$event	= new \App\Models\Event;

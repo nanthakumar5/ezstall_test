@@ -41,6 +41,15 @@ class Ajax extends BaseController
 		echo json_encode(['success' => $result]);
 	}
 	
+	public function ajaxproductquantity()
+	{
+		$eventid = $this->request->getPost('eventid');
+		$productid = $this->request->getPost('productid');
+		$result = getProductQuantity($eventid, ['product_id' => $productid]);
+		
+		echo json_encode(['success' => $result]);
+	}
+	
 	public function ajaxstripepayment()
 	{
 		$requestData = $this->request->getPost();		
