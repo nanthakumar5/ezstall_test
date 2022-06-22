@@ -39,9 +39,8 @@ class Index extends BaseController
 			else $payment = 1;
 			
 			if($payment){
-				$requestData['paymentid'] 	= ($paymentmethodid!='1') ? $payment : 0;	
-				$requestData['amount'] 		= $requestData['price'];	
-		
+				$requestData['paymentid'] 	= ($paymentmethodid!='1') ? $payment : 0;
+				
 				$booking = $this->booking->action($requestData);
 				if($booking){
 					$this->cart->delete(['user_id' => $userid, 'type' => $requestData['type']]);

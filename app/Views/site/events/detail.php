@@ -172,7 +172,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 							</div>    
 						</div>
 					</div>					
-					<?php if($detail['rv_flag'] =='1') { ?>
+					<?php if($detail['rv_flag'] =='1' && !empty($detail['rvbarn'])) { ?>
 						<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-3">
 							<h3 class="fw-bold mb-4">Book Your Rvhookups</h3>
 							<?php 
@@ -222,7 +222,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 							</div>
 						</div>
 					<?php } ?>
-					<?php if($detail['feed_flag'] =='1') { ?>
+					<?php if($detail['feed_flag'] =='1' && !empty($detail['feed_flag'])) { ?>
 						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
 							<h3 class="fw-bold mb-4">Book Your Feed</h3>
 							<table class="table table-bordered table-hover mb-0">
@@ -252,7 +252,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 							</table>
 						</div>
 					<?php } ?>
-					<?php if($detail['shaving_flag'] =='1') { ?>
+					<?php if($detail['shaving_flag'] =='1' && !empty($detail['shaving_flag'])) { ?>
 						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
 							<h3 class="fw-bold mb-4">Book Your Shaving</h3>
 							<table class="table table-bordered table-hover mb-0">
@@ -586,7 +586,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 				data += '<div class="event_cart_title"><span class="col-12 fw-bold">'+title+'</span></div>';
 				$(result).each(function(i,v){
 					if(name!=v.barn_name){
-						data += '<div ><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
+						data += '<div><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
 					}
 					
 					data += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+currencysymbol+v.price+'x'+v.interval+') '+currencysymbol+v.total+'</span></div>';

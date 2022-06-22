@@ -88,7 +88,9 @@
 					<input type="hidden" name="email" value="<?php echo $userdetail['email']; ?>" >
 					<input type="hidden" name="checkin" value="<?php echo formatdate($cartdetail['check_in']); ?>" >
 					<input type="hidden" name="checkout" value="<?php echo formatdate($cartdetail['check_out']); ?>" >
-					<input type="hidden" name="price" value="<?php echo $cartdetail['price']+$transactionfee; ?>" >
+					<input type="hidden" name="price" value="<?php echo $cartdetail['price']; ?>" >
+					<input type="hidden" name="transactionfee" value="<?php echo $transactionfee; ?>" >
+					<input type="hidden" name="amount" value="<?php echo $cartdetail['price']+$transactionfee; ?>" >
 					<input type="hidden" name="eventid" value="<?php echo $cartdetail['event_id']; ?>" >
 					<input type="hidden" name="type" value="<?php echo $cartdetail['type']; ?>" >
 					<input type="hidden" name="barnstall" value='<?php echo json_encode($barnstall); ?>'>
@@ -124,75 +126,78 @@
 							<div class="col-lg-6 mb-4">
 								<b>Check In</b>
 								<p class="mb-4"><?php echo $cartdetail['check_in'] ?></p>
+							</div>
+							<div class="col-lg-6 mb-4">
 								<b>Check Out</b>
 								<p><?php echo $cartdetail['check_out'] ?></p>
 							</div>
 							<div class="col-lg-6 mb-4">
-								<b>Number Of Stalls</b>
+								<b>Number Of Stalls (<?php echo count($barnstall); ?>)</b>
 								<p>
-								<?php echo count($barnstall); ?> Stalls 
 								<?php
-								$barnstalldata = [];
-								$barndata = '';
+								$barnstalldata = '';
+								$barnname = '';
 								foreach ($barnstall as $data) {
-									if($barndata!= $data['barn_name']){
-										echo '<p>'.$data['barn_name'].'</p>';
-										$barnstalldata []= '<div ><span class="col-12 fw-bold">'.$data['barn_name'].'</span></div>';
-										$barndata = $data['barn_name'];
+									if($barnname!=$data['barn_name']){
+										$barnname = $data['barn_name'];
+										$barnstalldata .= '<div><span class="col-12 fw-bold">'.$barnname.'</span></div>';
+										echo '<p>'.$barnname.'</p>';
 									}
 
-									$barnstalldata []= '<div class="row"><span class="col-7 event_c_text">'.$data['stall_name'].'</span><span class="col-5 text-end event_c_text">('.$data['price'].'x'.$data['interval'].') '.$data['total'].'</span></div>';
-									
+									$barnstalldata .= '<div class="row"><span class="col-7 event_c_text">'.$data['stall_name'].'</span><span class="col-5 text-end event_c_text">('.$data['price'].'x'.$data['interval'].') '.$data['total'].'</span></div>';
 									echo '<p>'.$data['stall_name'].'</p>';
 								}
 								?>
 								</p>
 							</div>
-							<div class="col-lg-6 mb-4">
-								<b>Number Of Rv Stall</b>
-								<p>
-								<?php echo count($rvbarnstall); ?> Rv Stall
-								<?php 
-								$rvbarnstalldata = [];
-								$barnname = '';
-								foreach ($rvbarnstall as $rvdata) { 
-									if($barnname!= $rvdata['barn_name']){
-										echo '<p>'.$rvdata['barn_name'].'</p>';
-										$rvbarnstalldata []= '<div class="e_cart_subtitle"><span class="col-12 fw-bold">'.$rvdata['barn_name'].'</span></div>';
-										$barnname = $rvdata['barn_name'];
+							<?php if(count($rvbarnstall) > 0){ ?>
+								<div class="col-lg-6 mb-4">
+									<b>Number Of Rv Stall (<?php echo count($rvbarnstall); ?>)</b>
+									<p>
+									<?php 
+									$rvbarnstalldata = '';
+									$rvbarnname = '';
+									foreach ($rvbarnstall as $rvdata) { 
+										if($rvbarnname!= $rvdata['barn_name']){
+											$rvbarnname = $rvdata['barn_name'];
+											$rvbarnstalldata .= '<div><span class="col-12 fw-bold">'.$rvbarnname.'</span></div>';
+											echo '<p>'.$rvbarnname.'</p>';
+										}
+										$rvbarnstalldata .= '<div class="row"><span class="col-7 event_c_text">'.$rvdata['stall_name'].'</span><span class="col-5 text-end event_c_text">('.$rvdata['price'].'x'.$rvdata['interval'].') '.$rvdata['total'].'</span></div>';
+										echo '<p>'.$rvdata['stall_name'].'</p>';
 									}
-									$rvbarnstalldata[] = '<div class="row"><span class="col-7 event_c_text">'.$rvdata['stall_name'].'</span><span class="col-5 text-end event_c_text">('.$rvdata['price'].'x'.$rvdata['interval'].') '.$rvdata['total'].'</span></div>';
-									echo '<p>'.$rvdata['stall_name'].'</p>';
-								}
-								?>
-								</p>
-							</div>
-							<div class="col-lg-6 mb-4">
-								<b>Number Of Feed</b>
-								<p>
-								<?php echo count($feed); ?> Feed
-								<?php 
-								$feeddata = [];
-								foreach ($feed as $feed) { 
-									echo '<p>'.$feed['product_name'].'</p>';
-									$feeddata[] = '<div class="row"><span class="col-7 event_c_text">'.$feed['product_name'].'</span><span class="col-5 text-end event_c_text">('.$feed['price'].'x'.$feed['quantity'].') '.$feed['total'].'</span></div>';
-								}
-								?>
-								</p>
-							</div>
-							<div class="col-lg-6 mb-4">
-								<b>Number Of Shaving</b>
-								<p>
-								<?php echo count($shaving); ?> shaving
-								<?php 
-								$shavingdata = [];
-								foreach ($shaving as $shaving) { 
-									echo '<p>'.$shaving['product_name'].'</p>';
-									$shavingdata[] = '<div class="row"><span class="col-7 event_c_text">'.$shaving['product_name'].'</span><span class="col-5 text-end event_c_text">('.$shaving['price'].'x'.$shaving['quantity'].') '.$shaving['total'].'</span></div>';
-								}
-								?>
-								</p>
-							</div>
+									?>
+									</p>
+								</div>
+							<?php } ?>
+							<?php if(count($feed) > 0){ ?>
+								<div class="col-lg-6 mb-4">
+									<b>Number Of Feed (<?php echo count($feed); ?>)</b>
+									<p>
+									<?php 
+									$feeddata = '';
+									foreach ($feed as $feed) { 
+										echo '<p>'.$feed['product_name'].'</p>';
+										$feeddata .= '<div class="row"><span class="col-7 event_c_text">'.$feed['product_name'].'</span><span class="col-5 text-end event_c_text">('.$feed['price'].'x'.$feed['quantity'].') '.$feed['total'].'</span></div>';
+									}
+									?>
+									</p>
+								</div>
+							<?php } ?>
+							<?php if(count($shaving) > 0){ ?>
+								<div class="col-lg-6 mb-4">
+									<b>Number Of Shaving (<?php echo count($shaving); ?>)</b>
+									<p>
+									<?php 
+									$shavingdata = '';
+									foreach ($shaving as $shaving) { 
+										echo '<p>'.$shaving['product_name'].'</p>';
+										$shavingdata .= '<div class="row"><span class="col-7 event_c_text">'.$shaving['product_name'].'</span><span class="col-5 text-end event_c_text">('.$shaving['price'].'x'.$shaving['quantity'].') '.$shaving['total'].'</span></div>';
+									}
+									?>
+									</p>
+								</div>
+							<?php } ?>
 						</div>
 					</div>
 					<div class="checkout-complete-btn">
@@ -208,55 +213,39 @@
 		<div class="col-lg-3">
 			<div class="border rounded pt-4 ps-3 pe-3 mb-5">
 				<div class="row mb-2">
-					<div class="col-lg-8 ">
-						<p>Total Day : <?php echo $cartdetail['interval']; ?></p> 
-					</div>
+					<div class="row"><span class="col-6 fw-bold">Total Day :</span><span class="col-6 fw-bold text-end"><?php echo $cartdetail['interval']; ?></span></div>
 					<div>
-						<div class="event_cart_title"><span class="col-12 fw-bold">
-							STALL
-						</span></div>
-						<p><?php echo implode('<br>', $barnstalldata)?></p>
+						<div class="event_cart_title"><span class="col-12 fw-bold">STALL</span></div>
+						<p><?php echo $barnstalldata; ?></p>
 					</div>
-					<div>
-						<div class="event_cart_title"><span class="col-12 fw-bold">
-							RV HOOKUP
-						</span></div>
-						<p><?php echo implode('<br>', $rvbarnstalldata)?></p>
-					</div>
-					<div>
-						<div class="event_cart_title"><span class="col-12 fw-bold">
-							Feed
-						</span></div>
-						<p><?php echo implode('<br>', $feeddata)?></p>
-					</div>
-					<div>
-						<div class="event_cart_title"><span class="col-12 fw-bold">
-							Shaving
-						</span></div>
-						<p><?php echo implode('<br>', $shavingdata)?></p>
-					</div>
-					<div class="col-lg-4">
-						<div class="col-lg-8 ">
-							Total
+					<?php if(count($rvbarnstall) > 0){ ?>
+						<div>
+							<div class="event_cart_title"><span class="col-12 fw-bold">RV HOOKUP</span></div>
+							<p><?php echo $rvbarnstalldata; ?></p>
 						</div>
-						<?php echo $currencysymbol.$cartdetail['price']; ?>
-					</div>
+					<?php } ?>
+					<?php if(count($feed) > 0){ ?>
+						<div>
+							<div class="event_cart_title"><span class="col-12 fw-bold">FEED</span></div>
+							<p><?php echo $feeddata; ?></p>
+						</div>
+					<?php } ?>
+					<?php if(count($shaving) > 0){ ?>
+						<div>
+							<div class="event_cart_title"><span class="col-12 fw-bold">SHAVING</span></div>
+							<p><?php echo $shavingdata; ?></p>
+						</div>
+					<?php } ?>
 				</div> 
-				<div class="row mb-2">
-					<div class="col-lg-8 ">
-						Transaction Fees
-					</div>
-					<div class="col-lg-4">
-						<?php echo $currencysymbol.$transactionfee; ?>
-					</div>
-				</div> 
+				<div class="row mb-2 event_border_top pt-4">
+					<div class="col-8 event_c_text">Total</div>
+					<div class="col-4 event_c_text text-end"><?php echo $currencysymbol.$cartdetail['price']; ?></div>
+					<div class="col-8 event_c_text">Transaction Fees</div>
+					<div class="col-4 event_c_text text-end"><?php echo $currencysymbol.$transactionfee; ?></div>
+				</div>
 				<div class="row mb-2 border-top mt-3 mb-3 pt-3">
-					<div class="col-lg-8 fw-bold ">
-						Total Due
-					</div>
-					<div class="col-lg-4 fw-bold totaldue">
-						<?php echo $currencysymbol.($cartdetail['price']+$transactionfee); ?>
-					</div>  
+					<div class="col-8 fw-bold ">Total Due</div>
+					<div class="col-4 fw-bold totaldue"><?php echo $currencysymbol.($cartdetail['price']+$transactionfee); ?></div>
 				</div>
 			</div>
 		</div>

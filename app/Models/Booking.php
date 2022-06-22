@@ -179,6 +179,8 @@ class Booking extends BaseModel
 		if(isset($data['paymentmethodid']) && $data['paymentmethodid']!='')     $request['paymentmethod_id'] 	= $data['paymentmethodid'];
 		if(isset($data['userid']) && $data['userid']!='')      	           		$request['user_id'] 	  		= $data['userid'];
 		if(isset($data['type']) && $data['type']!='')      	           	 		$request['type'] 	      		= $data['type'];
+		if(isset($data['price']) && $data['price']!='')      	           	 	$request['price'] 	      		= $data['price'];
+		if(isset($data['transactionfee']) && $data['transactionfee']!='')      	$request['transaction_fee'] 	= $data['transactionfee'];
 		if(isset($data['amount']) && $data['amount']!='')      	           	 	$request['amount'] 	      		= $data['amount'];
  		$request['status'] 	      = '1';
 
@@ -192,10 +194,10 @@ class Booking extends BaseModel
 			$insertid = $this->db->insertID();
 		}
 
-		$result = $this->bookingdetailaction(['booking_id' => $insertid, 'flag' => '1']+json_decode($data['barnstall'], true));
-        $this->bookingdetailaction(['booking_id' => $insertid, 'flag' => '2']+json_decode($data['rvbarnstall'], true));
-        $this->bookingdetailaction(['booking_id' => $insertid, 'flag' => '3']+json_decode($data['feed'], true));
-        $this->bookingdetailaction(['booking_id' => $insertid, 'flag' => '4']+json_decode($data['shaving'], true));
+		$this->bookingdetailaction(json_decode($data['barnstall'], true), ['booking_id' => $insertid, 'flag' => '1']);
+        $this->bookingdetailaction(json_decode($data['rvbarnstall'], true), ['booking_id' => $insertid, 'flag' => '2']);
+        $this->bookingdetailaction(json_decode($data['feed'], true), ['booking_id' => $insertid, 'flag' => '3']);
+        $this->bookingdetailaction(json_decode($data['shaving'], true), ['booking_id' => $insertid, 'flag' => '4']);
 
 		if(isset($insertid) && $this->db->transStatus() === FALSE){
 			$this->db->transRollback();
@@ -204,22 +206,21 @@ class Booking extends BaseModel
 			$this->db->transCommit();
 			return $insertid;
 		}
-
 	}
-	public function bookingdetailaction($results){
+	
+	public function bookingdetailaction($results, $extras){
         foreach ($results as $result){ 
             $bookingdetails = array(
-                'booking_id' 	=> isset($result['booking_id']) ? $result['booking_id'] : '',
+                'booking_id' 	=> isset($extras['booking_id']) ? $extras['booking_id'] : '',
                 'barn_id'      	=> isset($result['barn_id']) ? $result['barn_id'] : '',
                 'stall_id'      => isset($result['stall_id']) ? $result['stall_id'] : '',
                 'product_id'    => isset($result['product_id']) ? $result['product_id'] : '',
                 'price'      	=> isset($result['price']) ? $result['price'] : '',
-                'quantity'      => isset($result['quantity']) ? $result['quantity'] : '',
+                'quantity'      => isset($result['quantity']) ? $result['quantity'] : (isset($result['interval']) ? $result['interval'] : ''),
                 'total'      	=> isset($result['total']) ? $result['total'] : '',
-                'flag'      	=> isset($result['flag']) ? $result['flag'] : '',
+                'flag'      	=> isset($extras['flag']) ? $extras['flag'] : '',
                 'status'      	=> 1
             );
-            echo "<pre>";print_r($bookingdetails);die;
 
             $this->db->table('booking_details')->insert($bookingdetails);
         }
