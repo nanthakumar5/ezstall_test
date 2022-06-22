@@ -75,12 +75,17 @@
 							$tabcontent .= '<div class="tab-pane fade'.$barnactive.'" id="barn'.$barnid.'" role="tabpanel" aria-labelledby="nav-home-tab">
 												<ul class="list-group">';
 							foreach($barndata['stall'] as $stalldata){ 
-								$stallenddate = $stalldata['end_date'];
-								
+								$boxcolor  = 'green-box';
+								$checkboxstatus = '';
+
+								if($cartevent=='1' || $checkevent['status']=='0'){
+									$checkboxstatus = 'disabled';
+								}
+
 								$tabcontent .= 	'<li class="list-group-item">
-													<input class="form-check-input eventbarnstall stallid me-1" data-stallenddate="'.$stallenddate.'" data-price="'.$stalldata['price'].'" data-barnid="'.$stalldata['barn_id'].'" value="'.$stalldata['id'].'" name="checkbox"  type="checkbox">
+													<input class="form-check-input eventbarnstall stallid me-1" data-stallenddate="'.$stalldata['end_date'].'" data-price="'.$stalldata['price'].'" data-barnid="'.$stalldata['barn_id'].'" value="'.$stalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
 													'.$stalldata['name'].'
-													<span class="green-box stallavailability" data-stallid="'.$stalldata['id'].'" ></span>
+													<span class="'.$boxcolor.' stallavailability" data-stallid="'.$stalldata['id'].'" ></span>
 												</li>';
 							}
 							$tabcontent .= '</ul></div>';
