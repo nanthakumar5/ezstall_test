@@ -98,42 +98,45 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 									<p>Will you be selling feed at this event? </p>
 
 									<div>
-										<button class="btn questionmodal_feed event_btn" value="1"> Yes </button>
-										<button name="feed" class="btn questionmodal_feed event_btn" value="2"> No </button>
+										<?php foreach($yesno as $key => $data){ ?>
+											<button type="button" class="btn questionmodal_feed event_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+										<?php } ?>
 										<input type="hidden" value="" class="feed_flag" name="feed_flag">
-
 									</div>
 								</div>
 								<div class="d-flex justify-content-between flex-wrap align-items-center my-3">
 									<p>Will you be selling shavings at this event?</p>
 									<div>
-										<button class="btn questionmodal_shaving event_btn" value="1"> Yes </button>
-										<button class="btn questionmodal_shaving event_btn" value="2"> No </button>
+										<?php foreach($yesno as $key => $data){ ?>
+											<button type="button" class="btn questionmodal_shaving event_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+										<?php } ?>
 										<input type="hidden" value="" class="shaving_flag" name="shaving_flag">
 									</div>
 								</div>
 								<div class="d-flex justify-content-between flex-wrap align-items-center my-3">
 									<p>Will you have RV Hookups at this event? </p>
 									<div>
-										<button class="btn questionmodal_rv event_btn" value="1"> Yes</button>
-										<button class="btn questionmodal_rv event_btn" value="2"> No</button>
+										<?php foreach($yesno as $key => $data){ ?>
+											<button type="button" class="btn questionmodal_rv event_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+										<?php } ?>
 										<input type="hidden" value="" class="rv_flag" name="rv_flag">
 									</div>
 								</div>
 								<div class="d-flex justify-content-between flex-wrap align-items-center my-3">
 									<p>How will you be charging for your stalls? </p>
 									<div>
-										<button class="btn questionmodal_charging event_btn" value="1">Per Week</button>
-										<button class="btn questionmodal_charging event_btn" value="2">Per Month</button>
-										<button class="btn questionmodal_charging event_btn" value="3">Flat Rate</button>
+										<?php foreach($chargingflag as $key => $data){ ?>
+											<button type="button" class="btn questionmodal_charging event_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+										<?php } ?>
 										<input type="hidden" value="" class="charging_flag" name="charging_flag">
 									</div>
 								</div>
 								<div class="d-flex justify-content-between flex-wrap align-items-center my-3">
 									<p>Send a text message to users when their stall is unlocked and ready for use? </p>
 									<div>
-										<button class="btn questionmodal_notification event_btn" value="1"> Yes</button>
-										<button class="btn questionmodal_notification event_btn" value="2"> No</button>
+										<?php foreach($yesno as $key => $data){ ?>
+											<button type="button" class="btn questionmodal_notification event_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+										<?php } ?>
 										<input type="hidden" value="" class="notification_flag" name="notification_flag">
 									</div>
 								</div>

@@ -11,38 +11,42 @@
 			<div class="modal-body modalcarousel active first">
 				Will you be selling feed at this event?
 				<div align="center" class="mt-3">
-					<button type="button" class="btn questionmodal_feed model_btn questionmodal_btn" value="1">Yes</button>
-					<button type="button" class="btn questionmodal_feed model_btn questionmodal_btn" value="2">No</button>
+					<?php foreach($yesno as $key => $data){ ?>
+						<button type="button" class="btn questionmodal_feed model_btn questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+					<?php } ?>
 				</div>
 			</div>
 			<div class="modal-body modalcarousel displaynone">
 				Will you be selling shavings at this event? 
 				<div align="center"  class="mt-3">
-					<button type="button" class="btn questionmodal_shaving model_btn questionmodal_btn" value="1" >Yes</button>
-					<button type="button" class="btn questionmodal_shaving model_btn questionmodal_btn" value="2">No</button>
+					<?php foreach($yesno as $key => $data){ ?>
+						<button type="button" class="btn questionmodal_shaving model_btn questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+					<?php } ?>
 				</div>
 			</div>
 			<div class="modal-body modalcarousel displaynone">
 				Will you have RV Hookups at this event?
 				<div align="center" class="mt-3">
-					<button type="button" class="btn questionmodal_rv model_btn questionmodal_btn" value="1">Yes</button>
-					<button type="button" class="btn questionmodal_rv model_btn questionmodal_btn" value="2">No</button>
+					<?php foreach($yesno as $key => $data){ ?>
+						<button type="button" class="btn questionmodal_rv model_btn questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+					<?php } ?>
 				</div>
 			</div>
 			<div class="modal-body modalcarousel displaynone">
 				How will you be charging for your stalls?
 				<div class="d-flex flex-wrap flex-column align-items-center">
-					<button type="button" class="btn questionmodal_charging model_btn m-2 w-50 questionmodal_btn" value="1">Per Week</button>
-					<button type="button" class="btn questionmodal_charging model_btn m-2 w-50 questionmodal_btn" value="2">Per Month</button>
-					<button type="button" class="btn questionmodal_charging model_btn m-2 w-50 questionmodal_btn" value="3">Flat Rate</button>
+					<?php foreach($chargingflag as $key => $data){ ?>
+						<button type="button" class="btn questionmodal_charging model_btn m-2 w-50 questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+					<?php } ?>
 				</div>
 			</div>
 			<div class="modal-body modalcarousel displaynone">
 				Send a text message to users when their
 				stall is unlocked and ready for use?
 				<div align="center" class="mt-3">
-					<button type="button" class="btn questionmodal_notification model_btn questionmodal_btn" value="1">Yes</button>
-					<button type="button" class="btn questionmodal_notification model_btn questionmodal_btn" value="2" >No</button>
+					<?php foreach($yesno as $key => $data){ ?>
+						<button type="button" class="btn questionmodal_notification model_btn questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+					<?php } ?>
 				</div>
 			</div>
 			<div class="modal-body modalcarousel displaynone last">

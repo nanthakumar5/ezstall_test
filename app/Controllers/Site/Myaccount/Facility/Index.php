@@ -116,7 +116,9 @@ class Index extends BaseController
 		$data['statuslist'] 	= $this->config->status1;
 		$data['currencysymbol'] = $this->config->currencysymbol;
 		$data['stripe'] 		= view('site/common/stripe/stripe1');
-		$data['questionmodal'] 	= view('site/common/questionmodal/questionmodal1');
+		$data['yesno'] 			= $this->config->yesno;
+		$data['chargingflag'] 	= $this->config->chargingflag;
+		$data['questionmodal'] 	= view('site/common/questionmodal/questionmodal1', ['yesno' => $data['yesno'], 'chargingflag' => $data['chargingflag']]);
 		$data['settings'] 		= $settings;
 		
 		return view('site/myaccount/facility/action', $data);

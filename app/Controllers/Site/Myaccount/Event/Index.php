@@ -134,8 +134,10 @@ class Index extends BaseController
 			}
         } 
 		
-		$data['userid'] = $userid;
-		$data['questionmodal'] = view('site/common/questionmodal/questionmodal1');
+		$data['userid'] 		= $userid;
+		$data['yesno'] 			= $this->config->yesno;
+		$data['chargingflag'] 	= $this->config->chargingflag;
+		$data['questionmodal'] 	= view('site/common/questionmodal/questionmodal1', ['yesno' => $data['yesno'], 'chargingflag' => $data['chargingflag']]);
 		return view('site/myaccount/event/action', $data);
 	}
 	
