@@ -11,6 +11,9 @@
       $checkout           = isset($result['check_out']) ? formatdate($result['check_out'], 1) : '';
       $createdat       	  = isset($result['created_at']) ? formatdate($result['created_at'], 2) : '';
       $barnstalls         = isset($result['barnstall']) ? $result['barnstall'] : '';
+      $rvbarnstalls       = isset($result['rvbarnstalls']) ? $result['rvbarnstalls'] : '';
+      $feed               = isset($result['feed']) ? $result['feed'] : '';
+      $shaving            = isset($result['shaving']) ? $result['shaving'] : '';
       $paymentmethod      = isset($result['paymentmethod_name']) ? $result['paymentmethod_name'] : '';
 
   ?>
@@ -65,11 +68,44 @@
       </div>
       <div class="row col-md-10 base-style">
         <div class="col fw-600">
-          <p class="my-2">Barn Name</p>
+          <p class="my-2">Barn&Stall Name</p>
         </div>
         <div class="col" align="left">
           <?php foreach ($barnstalls as $barnstall) {
-              echo ' <p class="my-2">'.$barnstall['barnname'].'-'.$barnstall['stallname'].'</p>';  } ?>
+            echo ' <p class="my-2">'.$barnstall['barnname'].'</p>';
+            echo ' <p class="my-2">'.$barnstall['stallname'].'</p>';
+          } ?>
+        </div>
+      </div>
+      <div class="row col-md-10 base-style">
+        <div class="col fw-600">
+          <p class="my-2">Rv&Stall Name</p>
+        </div>
+        <div class="col" align="left">
+          <?php foreach ($rvbarnstalls as $rvbarnstall) {
+            echo ' <p class="my-2">'.$rvbarnstall['barnname'].'</p>';
+            echo ' <p class="my-2">'.$rvbarnstall['stallname'].'</p>';
+          } ?>
+        </div>
+      </div>
+      <div class="row col-md-10 base-style">
+        <div class="col fw-600">
+          <p class="my-2">Feed Name</p>
+        </div>
+        <div class="col" align="left">
+          <?php foreach ($feed as $feed) {
+            echo ' <p class="my-2">'.$feed['name'].'</p>';
+          } ?>
+        </div>
+      </div>
+      <div class="row col-md-10 base-style">
+        <div class="col fw-600">
+          <p class="my-2">Shaving Name</p>
+        </div>
+        <div class="col" align="left">
+          <?php foreach ($shaving as $shaving) {
+            echo ' <p class="my-2">'.$shaving['name'].'</p>';
+          } ?>
         </div>
       </div>
       <div class="row col-md-10 base-style">

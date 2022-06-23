@@ -99,6 +99,10 @@ $routes->group('myaccount', ['filter' => 'siteauthentication2'], function($route
     $routes->match(['get','post'], 'subscription', 'Site\Myaccount\Subscription\Index::index');
     $routes->match(['get','post'], 'account','Site\Myaccount\AccountInfo\Index::index');
 
+    $routes->match(['get','post'], 'operators', 'Site\Myaccount\Operators\Index::index');
+    $routes->match(['get','post'], 'operators/add', 'Site\Myaccount\Operators\Index::action'); 
+    $routes->match(['get','post'], 'operators/edit/(:num)', 'Site\Myaccount\Operators\Index::action/$1');
+
     $routes->match(['get','post'], 'bookings','Site\Myaccount\Reservation\Index::index');
     $routes->match(['get', 'post'], 'stripe/(:any)', 'Site\Myaccount\Reservation\Index::index/$1'); 
     $routes->get('bookings/view/(:num)', 'Site\Myaccount\Reservation\Index::view/$1');

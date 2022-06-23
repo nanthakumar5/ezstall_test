@@ -126,42 +126,78 @@ class Booking extends BaseModel
 		
 			if($type=='all'){
 				$result = $query->getResultArray();
-				
-				if(count($result) > 0){
-					if(in_array('barnstall', $querydata)){
-						foreach ($result as $key => $booking) {
-							$bookingstall = $this->db->table('booking_details bd')
-											->join('barn b', 'b.id = bd.barn_id', 'left')
-											->join('stall s','s.id  = bd.stall_id', 'left')
-											->select('bd.*, b.name barnname, s.name stallname')
-											->where('bd.booking_id', $booking['id'])
-											->get()
-											->getResultArray();
-											
-							$result[$key]['barnstall'] = $bookingstall;
-						}
-					}
-				}
-
 			}elseif($type=='row'){
 				$result = $query->getRowArray();
-				
-				if($result){
-					if(in_array('barnstall', $querydata)){
+			}
+
+			$result = $this->getBookingstalls($type, $querydata, ['result' => $result, 'flag' => 1, 'bookingbarnstall' =>'barnstall']);
+			$result = $this->getBookingstalls($type, $querydata, ['result' => $result, 'flag' => 2, 'bookingbarnstall' =>'rvbarnstalls']);
+			$result = $this->getBookingProduct($type, $querydata, ['result' => $result, 'type' => 1, 'productname' =>'feed']);
+			$result = $this->getBookingProduct($type, $querydata, ['result' => $result, 'type' => 2, 'productname' =>'shaving']);
+		}
+		return $result;
+    }
+
+    public function getBookingstalls($type, $querydata, $extras)
+    { 
+    	$result 			= $extras['result'];
+		$bookingbarnstall 	= $extras['bookingbarnstall'];
+		$flag 				= $extras['flag'];
+
+    	if($type=='all'){ 
+    		if(count($result) > 0){ 
+				if(in_array('barnstall', $querydata)){
+					foreach ($result as $key => $booking) {
 						$bookingstall = $this->db->table('booking_details bd')
 										->join('barn b', 'b.id = bd.barn_id', 'left')
-										->join('stall s', 's.id  = bd.stall_id', 'left')
+										->join('stall s','s.id  = bd.stall_id', 'left')
 										->select('bd.*, b.name barnname, s.name stallname')
-										->where('bd.booking_id', $result['id'])
+										->where('bd.booking_id', $booking['id'])
 										->get()
 										->getResultArray();
 										
-						$result['barnstall'] = $bookingstall;
+						$result[$key][$bookingbarnstall] = $bookingstall;
+
 					}
 				}
 			}
+    	}else if($type=='row'){
+    		if($result){
+				if(in_array('barnstall', $querydata)){
+					$bookingstall = $this->db->table('booking_details bd')
+									->join('barn b', 'b.id = bd.barn_id', 'left')
+									->join('stall s', 's.id  = bd.stall_id', 'left')
+									->select('bd.*, b.name barnname, s.name stallname')
+									->where(['bd.booking_id'=> $result['id'], 'bd.flag' => $flag])
+									->get()
+									->getResultArray();
+									
+					$result[$bookingbarnstall] = $bookingstall;
+				}
+			}
+    	}
+    	return $result;
+    }
+
+    public function getBookingProduct($type, $querydata, $extras)
+    { 
+    	$result 		= $extras['result'];
+		$productname 	= $extras['productname'];
+
+    	if($type=='all'){
+			if(in_array($productname, $querydata) && count($result) > 0){
+				foreach ($result as $key => $Bookingdata) {
+					$productsdata = $this->db->table('products p')->where(['p.status' => '1', 'p.event_id' => $Bookingdata['event_id'], 'p.type' => $extras['type']])->get()->getResultArray();
+					$result[$key][$productname] = $productsdata;
+				}
+			}
+    	}else if($type=='row'){
+			if(in_array($productname, $querydata) && $result){
+				$productsdata = $this->db->table('products p')->where(['p.status' => '1', 'p.event_id' => $result['event_id'], 'p.type' => $extras['type']])->get()->getResultArray();
+				$result[$productname] = $productsdata;
+			}
 		}
-		return $result;
+    	return $result;
     }
 
 	public function action($data)
@@ -209,6 +245,7 @@ class Booking extends BaseModel
 	}
 	
 	public function bookingdetailaction($results, $extras){
+
         foreach ($results as $result){ 
             $bookingdetails = array(
                 'booking_id' 	=> isset($extras['booking_id']) ? $extras['booking_id'] : '',
@@ -221,7 +258,6 @@ class Booking extends BaseModel
                 'flag'      	=> isset($extras['flag']) ? $extras['flag'] : '',
                 'status'      	=> 1
             );
-
             $this->db->table('booking_details')->insert($bookingdetails);
         }
     }

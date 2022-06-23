@@ -51,6 +51,12 @@
 			</li>
 		<?php } ?>
 		<li>
+			<a class="side-nav-a" href="<?php echo base_url();?>/myaccount/operators">
+				<i class="side-nav-i bi bi-calendar2-week"></i>
+				<p>Operators</p>
+			</a>
+		</li>
+		<li>
 			<a class="side-nav-a" href="<?php echo base_url();?>/myaccount/bookings">
 				<i class="side-nav-i bi bi-calendar2-week"></i>
 				<p>Current Reservation</p>

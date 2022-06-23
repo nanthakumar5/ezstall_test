@@ -32,6 +32,7 @@ class Index extends BaseController
 		
 		$bookingcount = $this->booking->getBooking('count', ['booking', 'event', 'users'], ['userid'=> $allids, 'gtenddate'=> $date]);
 		$data['bookings'] = $this->booking->getBooking('all', ['booking', 'event', 'users', 'barnstall', 'payment','paymentmethod'], ['userid'=> $allids, 'gtenddate'=> $date, 'start' => $offset, 'length' => $perpage], ['orderby' => 'b.id desc']);
+
 		$data['pager'] 			= $pager->makeLinks($page, $perpage, $bookingcount);
 		$data['bookingstatus'] 	= $this->config->bookingstatus;
 		$data['usertype'] 		= $this->config->usertype;
@@ -45,7 +46,7 @@ class Index extends BaseController
 	{
     	$userid = getSiteUserID();
 
-		$result = $this->booking->getBooking('row', ['booking', 'event', 'users','barnstall','payment','paymentmethod'], ['userid' => [$userid], 'id' => $id]);
+		$result = $this->booking->getBooking('row', ['booking', 'event', 'users','barnstall','payment','paymentmethod', 'rvbarnstalls', 'feed', 'shaving'], ['userid' => [$userid], 'id' => $id]);
 
 		if($result){
 			$data['result'] = $result;
