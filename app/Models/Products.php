@@ -21,35 +21,6 @@ class Products extends BaseModel
 		else											$query->select(implode(',', $select));
 		
 		if(isset($requestdata['id'])) 					$query->where('p.id', $requestdata['id']);
-		if(isset($requestdata['type'])) 				$query->where('p.type', $requestdata['type']);
-		
-		if($type!=='count' && isset($requestdata['start']) && isset($requestdata['length'])){
-			$query->limit($requestdata['length'], $requestdata['start']);
-		}
-
-		if(isset($requestdata['order']['0']['column']) && isset($requestdata['order']['0']['dir'])){
-			if(isset($requestdata['page']) && $requestdata['page']=='products'){
-				$column = ['p.name', 'p.quantity'];
-				$query->orderBy($column[$requestdata['order']['0']['column']], $requestdata['order']['0']['dir']);
-			}
-		}
-		if(isset($requestdata['search']['value']) && $requestdata['search']['value']!=''){
-			$searchvalue = $requestdata['search']['value'];
-						
-			if(isset($requestdata['page'])){ 
-				$page = $requestdata['page'];
-				$query->groupStart();
-					if($page=='products'){				
-						$query->like('p.name', $searchvalue);
-					}
-				$query->groupEnd();
-			}			
-		}
-		
-		if(isset($extras['groupby'])) 	$query->groupBy($extras['groupby']);
-		else $query->groupBy('p.id');
-		
-		if(isset($extras['orderby'])) 	$query->orderBy($extras['orderby'], $extras['sort']);
 		
 		if($type=='count'){
 			$result = $query->countAllResults();

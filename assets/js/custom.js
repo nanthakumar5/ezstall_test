@@ -697,6 +697,11 @@ function products(productsname, productsitem=[], productsresult=[]){
 		var productQuantity    		= result['quantity'] ? result['quantity'] : '';
 		var productPrice    		= result['price'] ? result['price'] : '';
 		
+		var soldoutmsg = '';
+		if(productQuantity==0){
+			soldoutmsg = 'sold out';
+		}
+		
 		var data='\
 		<div class="row mb-2 dash-stall-base">\
 			<div class="col-md-6 mb-4">\
@@ -707,6 +712,7 @@ function products(productsname, productsitem=[], productsresult=[]){
 			</div>\
 			<div class="col-md-2 mb-4">\
 				<input type="text" id="product_'+productsname+'_'+productIndex+'_price" name="'+productsname+'['+productIndex+'][price]" class="form-control fs-7" placeholder="Price" value="'+productPrice+'">\
+				<p class="tagline">'+soldoutmsg+'</p>\
 			</div>\
 			<div class="col-md-1 mb-4 delete">\
 				<a href="javascript:void(0);" class="dash-stall-remove fs-7 productremovebtn_'+productsname+'"><i class="fas fa-times text-white"></i></a>\

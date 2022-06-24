@@ -12,7 +12,7 @@
 				Will you be selling feed at this event?
 				<div align="center" class="mt-3">
 					<?php foreach($yesno as $key => $data){ ?>
-						<button type="button" class="btn questionmodal_feed model_btn questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+						<button type="button" data-type="feed" class="btn questionmodal_feed model_btn questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
 					<?php } ?>
 				</div>
 			</div>
@@ -20,7 +20,7 @@
 				Will you be selling shavings at this event? 
 				<div align="center"  class="mt-3">
 					<?php foreach($yesno as $key => $data){ ?>
-						<button type="button" class="btn questionmodal_shaving model_btn questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+						<button type="button" data-type="shaving" class="btn questionmodal_shaving model_btn questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
 					<?php } ?>
 				</div>
 			</div>
@@ -28,7 +28,7 @@
 				Will you have RV Hookups at this event?
 				<div align="center" class="mt-3">
 					<?php foreach($yesno as $key => $data){ ?>
-						<button type="button" class="btn questionmodal_rv model_btn questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+						<button type="button" data-type="rv" class="btn questionmodal_rv model_btn questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
 					<?php } ?>
 				</div>
 			</div>
@@ -36,7 +36,7 @@
 				How will you be charging for your stalls?
 				<div class="d-flex flex-wrap flex-column align-items-center">
 					<?php foreach($chargingflag as $key => $data){ ?>
-						<button type="button" class="btn questionmodal_charging model_btn m-2 w-50 questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+						<button type="button" data-type="charging" class="btn questionmodal_charging model_btn m-2 w-50 questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
 					<?php } ?>
 				</div>
 			</div>
@@ -45,7 +45,7 @@
 				stall is unlocked and ready for use?
 				<div align="center" class="mt-3">
 					<?php foreach($yesno as $key => $data){ ?>
-						<button type="button" class="btn questionmodal_notification model_btn questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+						<button type="button" data-type="notification" class="btn questionmodal_notification model_btn questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
 					<?php } ?>
 				</div>
 			</div>
@@ -65,12 +65,21 @@
 </div>
 <script>
 	$('.modalcarousel_next').click(function(){
-		var nextsibling = $('.modalcarousel.active').next('.modalcarousel');
-		$('.modalcarousel').addClass('displaynone').removeClass('active');
-		nextsibling.addClass('active').removeClass('displaynone');
+		var modaltype = $('.modalcarousel.active').find('.questionmodal_btn').attr('data-type');
+		if(modaltype!=undefined && $(document).find('.'+modaltype+'_flag').val()==''){
+			if(modaltype=='charging'){
+				$('.modalcarousel.active').find('.questionmodal_btn[value="1"]').click();
+			}else{
+				$('.modalcarousel.active').find('.questionmodal_btn[value="2"]').click();
+			}
+		}else{
+			var nextsibling = $('.modalcarousel.active').next('.modalcarousel');
+			$('.modalcarousel').addClass('displaynone').removeClass('active');
+			nextsibling.addClass('active').removeClass('displaynone');
 
-		$('.modalcarousel_prev').removeClass('displaynone');
-		if(nextsibling.hasClass('last')) $('.modalcarousel_next').addClass('displaynone');
+			$('.modalcarousel_prev').removeClass('displaynone');
+			if(nextsibling.hasClass('last')) $('.modalcarousel_next').addClass('displaynone');
+		}
 	})
 	
 	$('.modalcarousel_prev').click(function(){

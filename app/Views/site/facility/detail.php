@@ -177,9 +177,7 @@
 										<td style="border: 1px solid #e4e4e4;"><?php echo $feed['name'];?></td>
 										<td style="border: 1px solid #e4e4e4;"><?php echo $feed['price'];?></td>
 										<td style="border: 1px solid #e4e4e4;">
-											<?php if($feed['quantity']==0){ $msg = 'sold out'; $readonly = 'readonly';} else{ $msg = ''; $readonly = ''; } ?>
-											<input type="number" min="0" class="form-control quantity" <?php echo $readonly;?> data-productid="<?php echo $feed['id']?>" data-flag="3" <?php if($cartevent=='1'){ echo 'disabled'; } ?>>
-											<p style="color:red"><?php echo $msg; ?></p>
+											<input type="number" min="0" class="form-control quantity" data-productid="<?php echo $feed['id']?>" data-flag="3" <?php if($cartevent=='1'){ echo 'disabled'; } ?>>
 										</td>
 										<td style="border: 1px solid #e4e4e4;">
 											<?php if($cartevent!='1'){ ?>

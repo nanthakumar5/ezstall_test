@@ -21,7 +21,6 @@ class Emailtemplate extends BaseModel
 		else											$query->select(implode(',', $select));
 		
 		if(isset($requestdata['id'])) 					$query->where('et.id', $requestdata['id']);
-		if(isset($requestdata['type'])) 				$query->where('et.type', $requestdata['type']);
 		
 		if($type=='count'){
 			$result = $query->countAllResults();

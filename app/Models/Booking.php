@@ -257,13 +257,12 @@ class Booking extends BaseModel
             );
 			
             $this->db->table('booking_details')->insert($bookingdetails);
-			$userdetail 					= getSiteUserDetails();
-			$userid 						= $userdetail['id'];
-
-			send_message_template('2', ['productid' => isset($result['product_id']), 'userid' => $userid]);
 
 			if(isset($result['product_id']) && isset($result['quantity']) && isset($extras['flag']) && ($extras['flag']==3 || $extras['flag']==4)){
 				$datass = $this->db->table('products')->where('id', $result['product_id'])->set('quantity', 'quantity-'.$result['quantity'], FALSE)->update();
+				
+				$products = $this->db->table('products')->where('id', $result['product_id'])->get->getRowArray();
+				if($products['quantity']=='0') send_message_template('2', ['productid' => $result['product_id'], 'userid' => $data['userid']]);
 			}
         }
     }
