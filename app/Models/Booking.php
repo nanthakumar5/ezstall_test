@@ -261,8 +261,8 @@ class Booking extends BaseModel
 			if(isset($result['product_id']) && isset($result['quantity']) && isset($extras['flag']) && ($extras['flag']==3 || $extras['flag']==4)){
 				$datass = $this->db->table('products')->where('id', $result['product_id'])->set('quantity', 'quantity-'.$result['quantity'], FALSE)->update();
 				
-				$products = $this->db->table('products')->where('id', $result['product_id'])->get->getRowArray();
-				$event = $this->db->table('event')->where('id', $data['eventid'])->get->getRowArray();
+				$products = $this->db->table('products')->where('id', $result['product_id'])->get()->getRowArray();
+				$event = $this->db->table('event')->where('id', $data['eventid'])->get()->getRowArray();
 				if($products['quantity']=='0') send_message_template('2', ['productid' => $result['product_id'], 'userid' => $event['user_id']]);
 			}
         }
