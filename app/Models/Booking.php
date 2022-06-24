@@ -132,8 +132,8 @@ class Booking extends BaseModel
 
 			$result = $this->getBookingDetails($type, $querydata, ['result' => $result, 'flag' => 1, 'bookingname' =>'barnstall']);
 			$result = $this->getBookingDetails($type, $querydata, ['result' => $result, 'flag' => 2, 'bookingname' =>'rvbarnstall']);
-			$result = $this->getBookingDetails($type, $querydata, ['result' => $result, 'type' => 1, 'bookingname' =>'feed']);
-			$result = $this->getBookingDetails($type, $querydata, ['result' => $result, 'type' => 2, 'bookingname' =>'shaving']);
+			$result = $this->getBookingDetails($type, $querydata, ['result' => $result, 'flag' => 3, 'bookingname' =>'feed']);
+			$result = $this->getBookingDetails($type, $querydata, ['result' => $result, 'flag' => 4, 'bookingname' =>'shaving']);
 		}
 		return $result;
     }
