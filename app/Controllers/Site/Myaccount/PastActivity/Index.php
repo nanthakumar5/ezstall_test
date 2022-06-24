@@ -40,7 +40,7 @@ class Index extends BaseController
 		
     	$userid = getSiteUserID();
 
-		$result = $this->booking->getBooking('row', ['booking', 'event', 'users','barnstall','payment','paymentmethod', 'rvbarnstalls', 'feed', 'shaving'], ['userid' => [$userid], 'id' => $id]);
+		$result = $this->booking->getBooking('row', ['booking', 'event', 'users','barnstall', 'rvbarnstall', 'feed', 'shaving', 'payment','paymentmethod'], ['userid' => [$userid], 'id' => $id]);
 
 		if($result){
 			$data['result'] = $result;

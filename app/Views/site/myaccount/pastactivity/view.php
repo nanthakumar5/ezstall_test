@@ -94,7 +94,7 @@
         </div>
         <div class="col" align="left">
           <?php foreach ($feed as $feed) {
-            echo ' <p class="my-2">'.$feed['name'].'</p>';
+            echo ' <p class="my-2">'.$feed['productname'].'</p>';
           } ?>
         </div>
       </div>
@@ -104,7 +104,7 @@
         </div>
         <div class="col" align="left">
           <?php foreach ($shaving as $shaving) {
-            echo ' <p class="my-2">'.$shaving['name'].'</p>';
+            echo ' <p class="my-2">'.$shaving['productname'].'</p>';
           } ?>
         </div>
       </div>

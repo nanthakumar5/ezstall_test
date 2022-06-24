@@ -130,73 +130,70 @@ class Booking extends BaseModel
 				$result = $query->getRowArray();
 			}
 
-			$result = $this->getBookingstalls($type, $querydata, ['result' => $result, 'flag' => 1, 'bookingbarnstall' =>'barnstall']);
-			$result = $this->getBookingstalls($type, $querydata, ['result' => $result, 'flag' => 2, 'bookingbarnstall' =>'rvbarnstalls']);
-			$result = $this->getBookingProduct($type, $querydata, ['result' => $result, 'type' => 1, 'productname' =>'feed']);
-			$result = $this->getBookingProduct($type, $querydata, ['result' => $result, 'type' => 2, 'productname' =>'shaving']);
+			$result = $this->getBookingDetails($type, $querydata, ['result' => $result, 'flag' => 1, 'bookingname' =>'barnstall']);
+			$result = $this->getBookingDetails($type, $querydata, ['result' => $result, 'flag' => 2, 'bookingname' =>'rvbarnstall']);
+			$result = $this->getBookingDetails($type, $querydata, ['result' => $result, 'type' => 1, 'bookingname' =>'feed']);
+			$result = $this->getBookingDetails($type, $querydata, ['result' => $result, 'type' => 2, 'bookingname' =>'shaving']);
 		}
 		return $result;
     }
 
-    public function getBookingstalls($type, $querydata, $extras)
+    public function getBookingDetails($type, $querydata, $extras)
     { 
     	$result 			= $extras['result'];
-		$bookingbarnstall 	= $extras['bookingbarnstall'];
+		$bookingname 		= $extras['bookingname'];
 		$flag 				= $extras['flag'];
 
     	if($type=='all'){ 
     		if(count($result) > 0){ 
-				if(in_array('barnstall', $querydata)){
+				if(in_array($bookingname, $querydata)){
 					foreach ($result as $key => $booking) {
-						$bookingstall = $this->db->table('booking_details bd')
-										->join('barn b', 'b.id = bd.barn_id', 'left')
-										->join('stall s','s.id  = bd.stall_id', 'left')
-										->select('bd.*, b.name barnname, s.name stallname')
-										->where('bd.booking_id', $booking['id'])
-										->get()
-										->getResultArray();
+						$bookingdetails = $this->db->table('booking_details bd');
+						if($flag==1 || $flag==2){
+							$bookingdetails = $bookingdetails
+							->join('barn b', 'b.id = bd.barn_id', 'left')
+							->join('stall s','s.id  = bd.stall_id', 'left')
+							->select('bd.*, b.name barnname, s.name stallname');
+						}elseif($flag==3 || $flag==4){
+							$bookingdetails = $bookingdetails
+							->join('products p', 'p.id = bd.product_id', 'left')
+							->select('bd.*, p.name productname, p.quantity productquantity');
+						}
+						
+						$bookingdetails = $bookingdetails
+						->where(['bd.booking_id'=> $booking['id'], 'bd.flag' => $flag])
+						->get()
+						->getResultArray();
 										
-						$result[$key][$bookingbarnstall] = $bookingstall;
-
+						$result[$key][$bookingname] = $bookingdetails;
 					}
 				}
 			}
     	}else if($type=='row'){
     		if($result){
-				if(in_array('barnstall', $querydata)){
-					$bookingstall = $this->db->table('booking_details bd')
-									->join('barn b', 'b.id = bd.barn_id', 'left')
-									->join('stall s', 's.id  = bd.stall_id', 'left')
-									->select('bd.*, b.name barnname, s.name stallname')
-									->where(['bd.booking_id'=> $result['id'], 'bd.flag' => $flag])
-									->get()
-									->getResultArray();
+				if(in_array($bookingname, $querydata)){
+					$bookingdetails = $this->db->table('booking_details bd');
+					if($flag==1 || $flag==2){
+						$bookingdetails = $bookingdetails
+						->join('barn b', 'b.id = bd.barn_id', 'left')
+						->join('stall s','s.id  = bd.stall_id', 'left')
+						->select('bd.*, b.name barnname, s.name stallname');
+					}elseif($flag==3 || $flag==4){
+						$bookingdetails = $bookingdetails
+						->join('products p', 'p.id = bd.product_id', 'left')
+						->select('bd.*, p.name productname, p.quantity productquantity');
+					}
+					
+					$bookingdetails = $bookingdetails
+					->where(['bd.booking_id'=> $result['id'], 'bd.flag' => $flag])
+					->get()
+					->getResultArray();
 									
-					$result[$bookingbarnstall] = $bookingstall;
+					$result[$bookingname] = $bookingstall;
 				}
 			}
     	}
-    	return $result;
-    }
-
-    public function getBookingProduct($type, $querydata, $extras)
-    { 
-    	$result 		= $extras['result'];
-		$productname 	= $extras['productname'];
-
-    	if($type=='all'){
-			if(in_array($productname, $querydata) && count($result) > 0){
-				foreach ($result as $key => $Bookingdata) {
-					$productsdata = $this->db->table('products p')->where(['p.status' => '1', 'p.event_id' => $Bookingdata['event_id'], 'p.type' => $extras['type']])->get()->getResultArray();
-					$result[$key][$productname] = $productsdata;
-				}
-			}
-    	}else if($type=='row'){
-			if(in_array($productname, $querydata) && $result){
-				$productsdata = $this->db->table('products p')->where(['p.status' => '1', 'p.event_id' => $result['event_id'], 'p.type' => $extras['type']])->get()->getResultArray();
-				$result[$productname] = $productsdata;
-			}
-		}
+		
     	return $result;
     }
 

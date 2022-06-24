@@ -41,7 +41,6 @@
 				</a>
 			</li>
 		<?php } ?>
-
 		<?php if($role=='2' || $role=='3'){ ?>
 			<li>
 				<a class="side-nav-a" href="<?php echo base_url();?>/myaccount/stallmanager">
@@ -49,19 +48,20 @@
 					<p>Stall Manager</p>
 				</a>
 			</li>
+			<li>
+				<a class="side-nav-a" href="<?php echo base_url();?>/myaccount/operators">
+					<i class="side-nav-i bi bi-calendar2-week"></i>
+					<p>Operators</p>
+				</a>
+			</li>
 		<?php } ?>
-		<li>
-			<a class="side-nav-a" href="<?php echo base_url();?>/myaccount/operators">
-				<i class="side-nav-i bi bi-calendar2-week"></i>
-				<p>Operators</p>
-			</a>
-		</li>
 		<li>
 			<a class="side-nav-a" href="<?php echo base_url();?>/myaccount/bookings">
 				<i class="side-nav-i bi bi-calendar2-week"></i>
 				<p>Current Reservation</p>
 			</a>
 		</li>
+		<?php if($role=='2' || $role=='3' || $role=='4' || $role=='5'){ ?>
 		<li>
 			<a class="side-nav-a" href="<?php echo base_url();?>/myaccount/pastactivity">
 				<i class="side-nav-i bi bi-calendar3"></i>
@@ -74,6 +74,7 @@
 				<p>Payments</p>
 			</a>
 		</li>
+		<?php } ?>
 		<?php if($role=='2' || $role=='5'){ ?>
 			<li>
 				<a class="side-nav-a" href="<?php echo base_url();?>/myaccount/subscription">
