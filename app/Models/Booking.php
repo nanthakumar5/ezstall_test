@@ -227,10 +227,10 @@ class Booking extends BaseModel
 			$insertid = $this->db->insertID();
 		}
 
-		$this->bookingdetailaction(json_decode($data['barnstall'], true), ['booking_id' => $insertid, 'flag' => '1']);
-        $this->bookingdetailaction(json_decode($data['rvbarnstall'], true), ['booking_id' => $insertid, 'flag' => '2']);
-        $this->bookingdetailaction(json_decode($data['feed'], true), ['booking_id' => $insertid, 'flag' => '3']);
-        $this->bookingdetailaction(json_decode($data['shaving'], true), ['booking_id' => $insertid, 'flag' => '4']);
+		$this->bookingdetailaction(json_decode($data['barnstall'], true), ['event_id' => $data['eventid'], 'booking_id' => $insertid, 'flag' => '1']);
+        $this->bookingdetailaction(json_decode($data['rvbarnstall'], true), ['event_id' => $data['eventid'], 'booking_id' => $insertid, 'flag' => '2']);
+        $this->bookingdetailaction(json_decode($data['feed'], true), ['event_id' => $data['eventid'], 'booking_id' => $insertid, 'flag' => '3']);
+        $this->bookingdetailaction(json_decode($data['shaving'], true), ['event_id' => $data['eventid'], 'booking_id' => $insertid, 'flag' => '4']);
 
 		if(isset($insertid) && $this->db->transStatus() === FALSE){
 			$this->db->transRollback();
@@ -262,7 +262,7 @@ class Booking extends BaseModel
 				$datass = $this->db->table('products')->where('id', $result['product_id'])->set('quantity', 'quantity-'.$result['quantity'], FALSE)->update();
 				
 				$products = $this->db->table('products')->where('id', $result['product_id'])->get()->getRowArray();
-				$event = $this->db->table('event')->where('id', $data['eventid'])->get()->getRowArray();
+				$event = $this->db->table('event')->where('id', $extras['event_id'])->get()->getRowArray();
 				if($products['quantity']=='0') send_message_template('2', ['productid' => $result['product_id'], 'userid' => $event['user_id']]);
 			}
         }
