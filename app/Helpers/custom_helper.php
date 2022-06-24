@@ -392,3 +392,43 @@ function getBooking($condition=[])
 	$booking = new \App\Models\Booking;
 	return $booking->getBooking('all', ['booking','users','barnstall'], $condition);
 }
+
+function send_message_template($id, $extras=[]){  
+	$emailtempate 	= new \App\Models\Emailtemplate;
+	$users 			= new \App\Models\Users;
+	$products 		= new \App\Models\Products;
+
+    $emailtemplate = $emailtempate->getEmailTemplate('row', ['emailtemplate'], ['id' => $id]);
+    
+    if($extras['userid']){
+        $users = $users->getUsers('row', ['users'], ['id' => $extras['userid']]);
+        $username  	= $users['name'];
+        $email  	= $users['email'];
+    }
+    
+    if($extras['productid']){ 
+        $products 		= $products->getProduct('row', ['product'], ['id' => $extras['productid']]);
+        $productname 	= $products['name'];
+    }
+   /* if($extras['eventid']){ 
+        $event 		= $event->getEvent('row', ['event'], ['id' => $extras['eventid']]);
+        $eventname 	= $event['name'];
+    }*/
+    $productnames 	= isset($productname) ? $productname : '';
+    $subject 		= str_replace ('#productname',$productnames ,$emailtemplate['subject']);
+    $message = str_replace(
+        [
+            '#productname', '#username','#eventname'
+
+        ],
+        [
+            isset($productname) ? $productname : '',
+            isset($username) ? $username : ''
+            //isset($eventname) ? $eventname : '',
+        ],
+        $emailtemplate['message'],
+    );
+
+    send_mail($email,$subject,$message);
+    
+}

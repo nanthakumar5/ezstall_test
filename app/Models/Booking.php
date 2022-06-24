@@ -189,7 +189,7 @@ class Booking extends BaseModel
 					->get()
 					->getResultArray();
 									
-					$result[$bookingname] = $bookingstall;
+					$result[$bookingname] = $bookingdetails;
 				}
 			}
     	}
@@ -243,7 +243,7 @@ class Booking extends BaseModel
 	
 	public function bookingdetailaction($results, $extras){
 
-        foreach ($results as $result){ 
+        foreach ($results as $result){
             $bookingdetails = array(
                 'booking_id' 	=> isset($extras['booking_id']) ? $extras['booking_id'] : '',
                 'barn_id'      	=> isset($result['barn_id']) ? $result['barn_id'] : '',
@@ -257,9 +257,13 @@ class Booking extends BaseModel
             );
 			
             $this->db->table('booking_details')->insert($bookingdetails);
-			
+			$userdetail 					= getSiteUserDetails();
+			$userid 						= $userdetail['id'];
+
+			send_message_template('2', ['productid' => isset($result['product_id']), 'userid' => $userid]);
+
 			if(isset($result['product_id']) && isset($result['quantity']) && isset($extras['flag']) && ($extras['flag']==3 || $extras['flag']==4)){
-				 $this->db->table('products')->where('id', $result['product_id'])->set('quantity', 'quantity-'.$result['quantity'], FALSE)->update();
+				$datass = $this->db->table('products')->where('id', $result['product_id'])->set('quantity', 'quantity-'.$result['quantity'], FALSE)->update();
 			}
         }
     }
