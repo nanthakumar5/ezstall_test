@@ -255,7 +255,12 @@ class Booking extends BaseModel
                 'flag'      	=> isset($extras['flag']) ? $extras['flag'] : '',
                 'status'      	=> 1
             );
+			
             $this->db->table('booking_details')->insert($bookingdetails);
+			
+			if(isset($result['product_id']) && isset($result['quantity']) && isset($extras['flag']) && ($extras['flag']==3 || $extras['flag']==4)){
+				 $this->db->table('products')->where('id', $result['product_id'])->update(['quantity' => 'quantity-'.$result['quantity']]);
+			}
         }
     }
 }
