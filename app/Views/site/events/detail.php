@@ -1,9 +1,12 @@
 <?php $this->extend('site/common/layout/layout1') ?>
 <?php $this->section('content') ?>
 <?php 
-$userid 	= getSiteUserID() ? getSiteUserID() : 0;
-$getcart 	= getCart('1');
-$cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
+$userid 			= getSiteUserID() ? getSiteUserID() : 0;
+$getcart 			= getCart('1');
+$cartevent 			= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
+$bookedeventid 		= (isset($bookings['event_id'])) ? $bookings['event_id'] : 0;
+$bookeduserid 		= (isset($bookings['user_id'])) ? $bookings['user_id'] : 0;
+$comments        	= (isset($comments)) ? $comments : [];
 ?>
 <body style="overflow: initial;">
 	<section class="maxWidth">
@@ -284,7 +287,92 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 							</table>
 						</div>
 					<?php } ?>
-				</div> 
+					<?php if(($usertype == '5') && ($bookedeventid == $detail['id']) && ($bookeduserid == $userid) ){ ?>
+						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
+							<h3 class="fw-bold mb-4">Add Comment</h3>
+							<form method="post" action="" id="comment_form" autocomplete="off">
+								<div class="mb-3">
+									<label for="comment_lbl" class="form-label">Comment:</label>
+									<textarea class="form-control" name="comment" placeholder="Add Your Comment" id="comment" rows="3"></textarea>
+								</div>
+								<div class="mb-3">
+									<label for="communication_lbl" class="form-label">Communication</label>
+									<div class="communicationRating commentratings" data-rate-value=6>
+									</div>
+								</div>
+								<div class="mb-3">
+									<label for="cleanliness_lbl" class="form-label">Cleanliness</label>
+									<div class="cleanlinessRating commentratings"  data-rate-value=6>
+									</div>
+								</div>
+								<div class="mb-3">
+									<label for="friendliness_lbl" class="form-label">Friendliness</label>
+									<div class="friendlinessRating commentratings" data-rate-value=6></div>
+								</div>
+									<input type="hidden" name="eventid" value="<?php echo $detail["id"]; ?>">
+									<input type="hidden" name="userid" 	value="<?php echo $userid; ?>">
+									<input type="hidden" name="communication" 	id="communication">
+									<input type="hidden" name="cleanliness" 	id="cleanliness">
+									<input type="hidden" name="friendliness"  	id="friendliness">
+									<input type="hidden" name="status" id="status" value="1">
+								  <button type="submit" id="commentSubmit" class="btn btn-primary">Submit</button>
+							</form>
+						</div>
+					<?php } ?>
+					<?php if(!empty($comments)) { ?>
+						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
+							<h3 class="fw-bold mb-4">Comment List</h3>
+							<h5 class="fw-bold">User Comments:</h3>
+							<?php foreach ($comments as $commentdata ) { 
+								if($commentdata['comment_id'] == 0){ ?>
+									<div id="usercommentlist">
+										<div class="mb-3">
+											<label class="form-label fw-bold">Name:</label>
+											<p class="commented_username"><?php echo $commentdata['username'];?></p>
+										</div>
+										<div class="mb-3">
+											<label class="form-label fw-bold">Comment:</label>
+											<p class="usercomment"><?php echo $commentdata['comment'];?></p>
+										</div>
+										<div class="mb-3">
+											<label for="communication_lbl" class="form-label">Communication</label>
+											<div class="communicationRating commentratings" data-rate-value="<?php echo $commentdata['communication'];?>">
+											</div>
+										</div>
+										<div class="mb-3">
+											<label for="cleanliness_lbl" class="form-label">Cleanliness</label>
+											<div class="cleanlinessRating commentratings"  data-rate-value="<?php echo $commentdata['cleanliness'];?>">
+											</div>
+										</div>
+										<div class="mb-3">
+											<label for="friendliness_lbl" class="form-label">Friendliness</label>
+											<div class="friendlinessRating commentratings" data-rate-value="<?php echo $commentdata['friendliness'];?>"></div>
+										</div>
+									</div>
+								<?php if(($usertype != '5') && ($detail['user_id'] == $userid)){ ?>
+									<button id="replycomment" class="btn btn-primary" onclick="replyComment('<?php echo $commentdata['id'];?>')">Reply</button>
+									<div id="replybox<?php echo $commentdata['id'];?>"></div>
+								<?php } ?>
+								<?php if(!empty($commentdata['replycomments'])){ ?>
+										<h5 class="fw-bold">Replies : </h3>
+											<?php foreach ($commentdata['replycomments'] as $replydata ) { ?>
+													<div id="replylist">
+														<div class="mb-3">
+															<label class="form-label fw-bold">Name:</label>
+															<p class="commented_username"><?php echo $replydata['username'];?></p>
+														</div>
+														<div class="mb-3">
+															<label class="form-label fw-bold">Reply:</label>
+															<p class="usercomment"><?php echo $replydata['reply'];?></p>
+														</div>
+													</div>
+												<?php } ?>
+											<?php } ?>
+										<?php } ?>
+									<?php } ?>
+								</div>
+							<?php } ?>
+						</div> 
 				<div class="sticky-top checkout col-md-3 mt-4 h-100"></div>
 			</div>
 		</div>
@@ -433,7 +521,7 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 		checkdate($(this).attr('data-flag'));
 	})
 	
-	function cartaction(_this, flag){ 
+	function cartaction(_this, flag){
 		var datevalidation = checkdate(flag);
 		if(!datevalidation) return false;
 		
@@ -607,5 +695,51 @@ $cartevent 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 		
 		return data;
 	}
+
+	/*	ratings */
+	
+	var options = {
+		max_value: 5,
+	    initial_value: 0,
+	}
+
+	$(".commentratings").rate(options);
+	
+	$(".communicationRating").on("change", function(ev, data){
+	    console.log(data.from, data.to);
+	    var userratings = data.to;
+	    $('#communication').val(userratings);
+	});
+
+	$(".cleanlinessRating").on("change", function(ev, data){
+	    console.log(data.from, data.to);
+	    var userratings = data.to;
+	    $('#cleanliness').val(userratings);
+	});
+
+	$(".friendlinessRating").on("change", function(ev, data){
+	    console.log(data.from, data.to);
+	    var userratings = data.to;
+	    $('#friendliness').val(userratings);
+	});
+
+	function replyComment(commentId){
+		console.log(commentId+'commentId');
+	  	var commentform = '<form method="post" action="" id="reply_form" autocomplete="off">\
+								<div class="mb-3">\
+									<textarea class="form-control" placeholder="Add Your Comment"  name="comment" id="replycomment" rows="3"></textarea>\
+								</div>\
+									<input type="hidden" name="eventid" 		value="<?php echo $detail["id"]; ?>">\
+									<input type="hidden" name="userid" 			value="<?php echo $userid; ?>">\
+									<input type="hidden" name="communication" 	id="communication" value="0">\
+									<input type="hidden" name="cleanliness" 	id="cleanliness" value="0">\
+									<input type="hidden" name="friendliness"  	id="friendliness" value="0">\
+									<input type="hidden" name="comment_id"  	id="comment_id" value="'+commentId+'">\
+									<input type="hidden" name="status" value="1">\
+								  <button type="submit" id="commentSubmit" class="btn btn-primary">Submit</button>\
+							</form>';
+	  	$('#replybox'+commentId).empty().append(commentform);
+	}
+
 </script>
 <?php echo $this->endSection() ?>

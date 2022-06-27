@@ -5,6 +5,9 @@ namespace App\Controllers\Site\Event;
 use App\Controllers\BaseController;
 use App\Models\Event;
 use App\Models\Users;
+use App\Models\Comments;
+use App\Models\Booking;
+
 
 class Index extends BaseController
 {
@@ -12,6 +15,10 @@ class Index extends BaseController
 	{
 		$this->event   	= new Event();
 		$this->users 	= new Users();
+		$this->comments = new Comments();
+		$this->booking = new Booking();	
+
+
 	}
     
     public function lists()
@@ -50,11 +57,36 @@ class Index extends BaseController
 	
 	public function detail($id)
     {  	
-		$event = $this->event->getEvent('row', ['event', 'barn', 'stall', 'rvbarn', 'rvstall', 'feed', 'shaving'],['id' => $id, 'type' =>'1']);
+		if ($this->request->getMethod()=='post'){
+
+			$requestData 	= $this->request->getPost();
+        	$result 		= $this->comments->action($requestData);
+
+        	if($result){
+				$this->session->setFlashdata('success', 'Your Comment Submitted Successfully');
+				return redirect()->to(base_url().'/events/detail/'.$id); 
+        	}else {
+				$this->session->setFlashdata('danger', 'Try Again');
+				return redirect()->to(base_url().'/events/detail/'.$id); 
+			}
+		}
+
+		$userdetail 		= getSiteUserDetails() ? getSiteUserDetails() : [];
+		$userid 			= (isset($userdetail['id'])) ? $userdetail['id'] : 0;
+		$usertype 			= (isset($userdetail['type'])) ? $userdetail['type'] : 0;
+
+		$event 		= $this->event->getEvent('row', ['event', 'barn', 'stall', 'rvbarn', 'rvstall', 'feed', 'shaving'],['id' => $id, 'type' =>'1']);
+
+		$bookings 	= $this->booking->getBooking('row', ['booking', 'event'],['user_id' => $userid,'eventid' => $id]);
+		$comments 	= $this->comments->getComments('all', ['comments','users','replycomments'],['eventid' => $id]);
+
 		$data['checkevent'] 		= checkEvent($event);
 		$data['detail']  			= $event;
+		$data['bookings']  			= $bookings;
+		$data['comments']  			= $comments;
 		$data['settings']  			= getSettings();
 		$data['currencysymbol']  	= $this->config->currencysymbol;
+		$data['usertype']			= $usertype;
 		
 		return view('site/events/detail',$data);
     }
@@ -67,4 +99,20 @@ class Index extends BaseController
         readfile ($filepath);
         exit();
 	}
+
+	// public function Comments()
+ //    {
+ //    	 $data = array(
+ //            'eventid' 		=> $this->request->getPost('event_id'),
+ //            'user_id' 		=> $this->request->getPost('user_id'),
+ //            'communication' => $this->request->getPost('communication'),
+ //            'cleanliness' 	=> $this->request->getPost('cleanliness'),
+ //            'friendliness' 	=> $this->request->getPost('friendliness'),
+ //            'status' 		=> $this->request->getPost('status'),
+ //        );
+
+ //     	$result 		= $this->comments->action($data);
+
+ //     	return $result;
+ //    }
 }
