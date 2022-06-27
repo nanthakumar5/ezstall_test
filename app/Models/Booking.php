@@ -278,7 +278,7 @@ class Booking extends BaseModel
 		if(isset($data['lockunlock'])) $request['lock_unlock'] =  $data['lockunlock'];
 		if(isset($data['dirtyclean'])) $request['dirty_clean'] =  $data['dirtyclean'];
 		
-		if(!empty($request)) $stall = $this->db->table('stall')->update($condition , ['id' => $stallid]);
+		if(!empty($request)) $stall = $this->db->table('stall')->update($request , ['id' => $stallid]);
 		
 		if(isset($stall) && $this->db->transStatus() === FALSE){
 			$this->db->transRollback();
