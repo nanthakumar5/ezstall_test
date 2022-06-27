@@ -1,6 +1,5 @@
 <?php $this->extend('site/common/layout/layout1') ?>
 <?php $this->section('content') ?>
-<?php $userdetail = getSiteUserDetails(); ?>
 <div class="dFlexComBetween eventTP flex-wrap">
 	<h2 class="fw-bold mb-4">Current Reservation</h2>
 	<?php if(!empty($bookings)) {  ?>
@@ -57,7 +56,7 @@
 										<p class="mb-0 fs-7 width100"><?php echo $data['eventname'];?> (
 											<?php 
 											$stallname = '';
-											foreach ($data['barnstall'] as $stalls) {
+											foreach ($data['barnstall'] as $stalls) { 
 												if($userdetail['type'] =='6'){ 
 												$btnlockunlock ='<button data-stallid="'.$stalls['stall_id'].'" class="btn btn-primary lockunlock">Lock</button>';
 												$btndirtyclean ='<button data-stallid="'.$stalls['stall_id'].' " class="btn btn-primary dirtyclean">Dirty</button>';

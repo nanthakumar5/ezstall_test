@@ -268,19 +268,13 @@ class Booking extends BaseModel
         }
     }
     
-    public function delete($data)
+    public function updatedata($data)
 	{
 		$this->db->transStart();
 
-		$stallid = $data['stallid'];
-		$lockunlock  	= isset($data['lockunlock']) ? $data['lockunlock'] : '';
-		$dirtyclean   	= isset($data['dirtyclean']) ? $data['dirtyclean'] : '';
-		
-		if($lockunlock=='1'){
-			$stall = $this->db->table('stall')->update(['lock_unlock' => '1'], ['id' => $stallid]);
-		}else if($dirtyclean=='1'){
-			$stall = $this->db->table('stall')->update(['dirty_clean' => '1' ], ['id' => $stallid]);
-		}
+		$stallid 	= $data['stallid'];
+		$condition 	= (isset($data['lockunlock'])) ? ['lock_unlock' => '1'] : ['dirty_clean' => '1' ];
+		$stall 		= $this->db->table('stall')->update($condition , ['id' => $stallid]);
 		
 		if($stall && $this->db->transStatus() === FALSE){
 			$this->db->transRollback();

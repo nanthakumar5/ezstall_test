@@ -16,7 +16,13 @@ class Index extends BaseController
 	public function index()
     { 
     	if($this->request->getMethod()=='post'){ 
-			$this->stripe->striperefunds($this->request->getPost());
+    		$requestData 	= $this->request->getPost();
+    		
+    		if(isset($requestData['lockunlock']) || isset($requestData['dirtyclean'])){
+    			$result = $this->booking->updatedata($requestData);
+	    	}else{
+				$this->stripe->striperefunds($requestData);
+			}
 			return redirect()->to(base_url().'/myaccount/bookings'); 
         }
 
@@ -30,6 +36,8 @@ class Index extends BaseController
 		$userid 		= ($userdetail['type']=='6') ? $userdetail['parent_id'] : getSiteUserID();
 		$allids 		= getStallManagerIDS($userid);
 		array_push($allids, $userid);
+
+		
 		
 		$bookingcount = $this->booking->getBooking('count', ['booking', 'event', 'users'], ['userid'=> $allids, 'gtenddate'=> $date]);
 		$data['bookings'] = $this->booking->getBooking('all', ['booking', 'event', 'users', 'barnstall', 'payment','paymentmethod'], ['userid'=> $allids, 'gtenddate'=> $date, 'start' => $offset, 'length' => $perpage], ['orderby' => 'b.id desc']);
@@ -37,7 +45,8 @@ class Index extends BaseController
 		$data['pager'] 			= $pager->makeLinks($page, $perpage, $bookingcount);
 		$data['bookingstatus'] 	= $this->config->bookingstatus;
 		$data['usertype'] 		= $this->config->usertype;
-		$data['currencysymbol'] = $this->config->currencysymbol;
+		$data['currencysymbol'] = $this->config->currencysymbol; 
+		$data['userdetail']     = $userdetail;
 		
     	return view('site/myaccount/reservation/index', $data);
     }

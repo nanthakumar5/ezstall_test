@@ -15,5 +15,6 @@ class Custom extends BaseConfig
 	public $bookingstatus 		= ['1' => 'Booked', '2' => 'Cancelled'];
 	public $stripemode 			= ['1' => 'Live', '2' => 'Sandbox'];
 	public $yesno 				= ['1' => 'Yes', '2' => 'No'];
+	public $chargingflag 		= ['1' => 'Per Night', '2' => 'Per Week', '3' => 'Per Month', '4' => 'Flat Rate'];
 	public $currencysymbol 		= "$";
 }
