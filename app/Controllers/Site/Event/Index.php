@@ -16,9 +16,7 @@ class Index extends BaseController
 		$this->event   	= new Event();
 		$this->users 	= new Users();
 		$this->comments = new Comments();
-		$this->booking = new Booking();	
-
-
+		$this->booking 	= new Booking();	
 	}
     
     public function lists()
@@ -77,8 +75,8 @@ class Index extends BaseController
 
 		$event 		= $this->event->getEvent('row', ['event', 'barn', 'stall', 'rvbarn', 'rvstall', 'feed', 'shaving'],['id' => $id, 'type' =>'1']);
 
-		$bookings 	= $this->booking->getBooking('row', ['booking', 'event'],['user_id' => $userid,'eventid' => $id]);
-		$comments 	= $this->comments->getComments('all', ['comments','users','replycomments'],['eventid' => $id]);
+		$bookings 	= $this->booking->getBooking('row', ['booking', 'event'],['user_id' => $userid, 'eventid' => $id]);
+		$comments 	= $this->comments->getComments('all', ['comments','users','replycomments'],['commentid' => '0', 'eventid' => $id]);
 
 		$data['checkevent'] 		= checkEvent($event);
 		$data['detail']  			= $event;
@@ -99,20 +97,4 @@ class Index extends BaseController
         readfile ($filepath);
         exit();
 	}
-
-	// public function Comments()
- //    {
- //    	 $data = array(
- //            'eventid' 		=> $this->request->getPost('event_id'),
- //            'user_id' 		=> $this->request->getPost('user_id'),
- //            'communication' => $this->request->getPost('communication'),
- //            'cleanliness' 	=> $this->request->getPost('cleanliness'),
- //            'friendliness' 	=> $this->request->getPost('friendliness'),
- //            'status' 		=> $this->request->getPost('status'),
- //        );
-
- //     	$result 		= $this->comments->action($data);
-
- //     	return $result;
- //    }
 }

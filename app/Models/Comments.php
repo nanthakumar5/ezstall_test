@@ -23,7 +23,6 @@ class Comments extends BaseModel
 		$query = $this->db->table('comments c');
 		if(in_array('users', $querydata)) $query->join('users u', 'u.id=c.user_id', 'left');
 
-
 		if(isset($extras['select'])) 					$query->select($extras['select']);
 		else											$query->select(implode(',', $select));
 		
@@ -31,19 +30,16 @@ class Comments extends BaseModel
 		if(isset($requestdata['eventid'])) 				$query->where('c.event_id', $requestdata['eventid']);
 		if(isset($requestdata['commentid'])) 			$query->where('c.comment_id ', $requestdata['commentid']);
 
-
 		if($type=='count'){
 			$result = $query->countAllResults();
 		}else{
 			$query = $query->get();
-			if($type=='all'){
-
-				$result = $query->getResultArray();
 			
-				if(count($result) > 0){
-					if(in_array('replycomments', $querydata)){
-						foreach ($result as $key => $comments) {
-							
+			if($type=='all'){
+				$result = $query->getResultArray();	
+				if(in_array('replycomments', $querydata)){		
+					if(count($result) > 0){
+						foreach ($result as $key => $comments) {							
 							$replycomment = $this->db->table('comments r')
 											->join('users u','u.id  = r.user_id', 'left')
 											->select('r.comment reply, u.name username')
@@ -55,11 +51,24 @@ class Comments extends BaseModel
 						}
 					}
 				}
-			}
-			elseif($type=='row'){
+			}elseif($type=='row'){
 				$result = $query->getRowArray();
+				
+				if(in_array('replycomments', $querydata)){		
+					if($result){
+						$replycomment = $this->db->table('comments r')
+										->join('users u','u.id  = r.user_id', 'left')
+										->select('r.comment reply, u.name username')
+										->where('r.comment_id', $result['id'])
+										->get()
+										->getResultArray();
+										
+						$result['replycomments'] = $replycomment;
+					}
+				}
 			}
 		}
+		
 		return $result;
     }
 	
@@ -68,28 +77,27 @@ class Comments extends BaseModel
 
 		$this->db->transStart();
 		
-		$datetime			= date('Y-m-d H:i:s');
-		$commentid 			= (isset($data['comment_id'])) ? $data['comment_id'] : 0;
+		$datetime		= date('Y-m-d H:i:s');
+		$commentid 		= (isset($data['comment_id'])) ? $data['comment_id'] : 0;
 		
 		if(isset($data['eventid']) && $data['eventid']!='')      			$request['event_id'] 						= $data['eventid'];
 		if(isset($data['userid']) && $data['userid']!='') 	 				$request['user_id'] 						= $data['userid'];
 		if(isset($data['comment']) && $data['comment']!='')					$request['comment'] 						= $data['comment'];
-		if(isset($data['communication']) && $data['communication']!='') 	$request['communication'] 					= $data['communication'];
-		if(isset($data['cleanliness']) && $data['cleanliness']!='') 	  	$request['cleanliness'] 					= $data['cleanliness'];
-		if(isset($data['friendliness']) && $data['friendliness']!='') 	  	$request['friendliness'] 					= $data['friendliness'];
-		if(isset($data['status']) && $data['status']!='') 	  				$request['status'] 							= $data['status'];
+		
+		$request['communication']	= (isset($data['communication']) && $data['communication']!='') ? $data['communication'] : 0; 
+		$request['cleanliness']		= (isset($data['cleanliness']) && $data['cleanliness']!='') ? $data['cleanliness'] : 0; 
+		$request['friendliness']	= (isset($data['friendliness']) && $data['friendliness']!='') ? $data['friendliness'] : 0; 
 		
 		if(isset($request)){
+			$request['status'] 			= 	'1';		
+			$request['created_at'] 		= 	$datetime;
+			$request['created_by'] 		= 	$data['userid'];				
+			$request['updated_at'] 		= 	$datetime;
+			$request['updated_by'] 		= 	$data['userid'];						
+			$request['comment_id'] 		= 	$commentid;
 
-				$request['created_at'] 		= 	$datetime;
-				$request['created_by'] 		= 	$data['userid'];				
-				$request['updated_at'] 		= 	$datetime;
-				$request['updated_by'] 		= 	$data['userid'];						
-				$request['comment_id'] 		= 	$commentid;
-
-				$comments = $this->db->table('comments')->insert($request);
-				$commentsinsertid = $this->db->insertID();
-			
+			$comments = $this->db->table('comments')->insert($request);
+			$commentsinsertid = $this->db->insertID();			
 		}
 		
 		if(isset($commentsinsertid) && $this->db->transStatus() === FALSE){
@@ -100,5 +108,4 @@ class Comments extends BaseModel
 			return $commentsinsertid;
 		}
 	}
-
 }
