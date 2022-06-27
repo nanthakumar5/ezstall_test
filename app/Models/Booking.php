@@ -274,11 +274,11 @@ class Booking extends BaseModel
 
 		$stallid 	= $data['stallid'];
 		
-		$data		= [];
-		if(isset($data['lockunlock'])) $data['lock_unlock'] =  '1';
-		if(isset($data['dirtyclean'])) $data['dirty_clean'] =  '1';
+		$request		= [];
+		if(isset($data['lockunlock'])) $request['lock_unlock'] =  $data['lockunlock'];
+		if(isset($data['dirtyclean'])) $request['dirty_clean'] =  $data['dirtyclean'];
 		
-		if(!empty($data)) $stall = $this->db->table('stall')->update($condition , ['id' => $stallid]);
+		if(!empty($request)) $stall = $this->db->table('stall')->update($condition , ['id' => $stallid]);
 		
 		if(isset($stall) && $this->db->transStatus() === FALSE){
 			$this->db->transRollback();

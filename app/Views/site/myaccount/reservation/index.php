@@ -58,17 +58,17 @@
 											$stallname = '';
 											foreach ($data['barnstall'] as $stalls) { 
 												if($userdetail['type'] =='6'){ 
-												$btnlockunlock ='<button data-stallid="'.$stalls['stall_id'].'" class="btn btn-primary lockunlock">Lock</button>';
-												$btndirtyclean ='<button data-stallid="'.$stalls['stall_id'].' " class="btn btn-primary dirtyclean">Dirty</button>';
+													$btnlockunlock ='<button data-stallid="'.$stalls['stall_id'].'" class="btn btn-primary lockunlock">Lock</button>';
+													$btndirtyclean ='<button data-stallid="'.$stalls['stall_id'].' " class="btn btn-primary dirtyclean">Dirty</button>';
 
-												if($stalls['lockunlock']=='1'){
-													$btnlockunlock = '<button class="btn btn-primary">Unlock</button>'; 
-												}
-												if($stalls['dirtyclean']=='1'){
-													$btndirtyclean = '<button class="btn btn-primary">Clean</button>'; 
-												}
-											
-												$stallname .= $stalls['stallname'].$btnlockunlock.$btndirtyclean.'<br>';
+													if($stalls['lockunlock']=='1'){
+														$btnlockunlock = '<button class="btn btn-primary">Unlock</button>'; 
+													}
+													if($stalls['dirtyclean']=='1'){
+														$btndirtyclean = '<button class="btn btn-primary">Clean</button>'; 
+													}
+												
+													$stallname .= $stalls['stallname'].$btnlockunlock.$btndirtyclean.'<br>';
 												}else{
 													$stallname .= $stalls['stallname'];
 												}
