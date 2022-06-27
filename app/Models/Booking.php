@@ -273,10 +273,14 @@ class Booking extends BaseModel
 		$this->db->transStart();
 
 		$stallid 	= $data['stallid'];
-		$condition 	= (isset($data['lockunlock'])) ? ['lock_unlock' => '1'] : ['dirty_clean' => '1' ];
-		$stall 		= $this->db->table('stall')->update($condition , ['id' => $stallid]);
 		
-		if($stall && $this->db->transStatus() === FALSE){
+		$data		= [];
+		if(isset($data['lockunlock'])) $data['lock_unlock'] =  '1';
+		if(isset($data['dirtyclean'])) $data['dirty_clean'] =  '1';
+		
+		if(!empty($data)) $stall = $this->db->table('stall')->update($condition , ['id' => $stallid]);
+		
+		if(isset($stall) && $this->db->transStatus() === FALSE){
 			$this->db->transRollback();
 			return false;
 		}else{
