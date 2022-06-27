@@ -26,8 +26,9 @@ class Index extends BaseController
 		$offset = $page * $perpage;
 		$date	= date('Y-m-d');
 
-		$userid = getSiteUserID();
-		$allids = getStallManagerIDS($userid);
+    	$userdetail 	= getSiteUserDetails();
+		$userid 		= ($userdetail['type']=='6') ? $userdetail['parent_id'] : getSiteUserID();
+		$allids 		= getStallManagerIDS($userid);
 		array_push($allids, $userid);
 		
 		$bookingcount = $this->booking->getBooking('count', ['booking', 'event', 'users'], ['userid'=> $allids, 'gtenddate'=> $date]);

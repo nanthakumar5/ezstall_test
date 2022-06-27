@@ -153,7 +153,7 @@ class Booking extends BaseModel
 							$bookingdetails = $bookingdetails
 							->join('barn b', 'b.id = bd.barn_id', 'left')
 							->join('stall s','s.id  = bd.stall_id', 'left')
-							->select('bd.*, b.name barnname, s.name stallname');
+							->select('bd.*, b.name barnname, s.name stallname, s.lock_unlock lockunlock, s.dirty_clean dirtyclean');
 						}elseif($flag==3 || $flag==4){
 							$bookingdetails = $bookingdetails
 							->join('products p', 'p.id = bd.product_id', 'left')
@@ -177,7 +177,7 @@ class Booking extends BaseModel
 						$bookingdetails = $bookingdetails
 						->join('barn b', 'b.id = bd.barn_id', 'left')
 						->join('stall s','s.id  = bd.stall_id', 'left')
-						->select('bd.*, b.name barnname, s.name stallname');
+						->select('bd.*, b.name barnname, s.name stallname, s.lock_unlock lockunlock, s.dirty_clean dirtyclean');
 					}elseif($flag==3 || $flag==4){
 						$bookingdetails = $bookingdetails
 						->join('products p', 'p.id = bd.product_id', 'left')
@@ -267,4 +267,27 @@ class Booking extends BaseModel
 			}
         }
     }
+    
+    public function delete($data)
+	{
+		$this->db->transStart();
+
+		$stallid = $data['stallid'];
+		$lockunlock  	= isset($data['lockunlock']) ? $data['lockunlock'] : '';
+		$dirtyclean   	= isset($data['dirtyclean']) ? $data['dirtyclean'] : '';
+		
+		if($lockunlock=='1'){
+			$stall = $this->db->table('stall')->update(['lock_unlock' => '1'], ['id' => $stallid]);
+		}else if($dirtyclean=='1'){
+			$stall = $this->db->table('stall')->update(['dirty_clean' => '1' ], ['id' => $stallid]);
+		}
+		
+		if($stall && $this->db->transStatus() === FALSE){
+			$this->db->transRollback();
+			return false;
+		}else{
+			$this->db->transCommit();
+			return true;
+		}
+	}
 }
