@@ -270,14 +270,14 @@ class Booking extends BaseModel
     }
     
     public function updatedata($data)
-	{
+	{ 
 		$this->db->transStart();
 
 		$stallid 	= $data['stallid'];
 		
 		$request		= [];
-		if(isset($data['lockunlock'])) $request['lock_unlock'] =  $data['lockunlock'];
-		if(isset($data['dirtyclean'])) $request['dirty_clean'] =  $data['dirtyclean'];
+		if(isset($data['lockunlock'])) $request['lock_unlock'] 	=  $data['lockunlock'];
+		if(isset($data['dirtyclean'])) $request['dirty_clean'] 	=  $data['dirtyclean'];
 		
 		if(!empty($request)) $stall = $this->db->table('stall')->update($request , ['id' => $stallid]);
 		

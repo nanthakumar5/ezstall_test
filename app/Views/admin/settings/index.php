@@ -20,6 +20,7 @@
 		$transactionfee 	= isset($result['transactionfee']) ? $result['transactionfee'] : '';
 		$producereventfee 	= isset($result['producereventfee']) ? $result['producereventfee'] : '';
 		$facilitystallfee 	= isset($result['facilitystallfee']) ? $result['facilitystallfee'] : '';
+		$googleanalytics 	= isset($result['googleanalytics']) ? $result['googleanalytics'] : '';
 	?>
 	<section class="content-header">
 		<div class="container-fluid">
@@ -199,6 +200,32 @@
 			</div>
 		</div>
 	</section>
+
+	<section class="content">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">Google Analytics</h3>
+			</div>
+			<div class="card-body">
+				<form method="post" id="form4" action="<?php echo getAdminUrl(); ?>/settings" autocomplete="off">
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Google analytics</label>
+									<textarea class="form-control" id="googleanalytics" name="googleanalytics" placeholder="Enter Google Analytics" rows="3"><?php echo $googleanalytics?></textarea>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<input type="hidden" name="actionid" value="1">
+								<input type="submit" class="btn btn-primary" value="Submit">
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
 <?php $this->endSection(); ?>
 
 <?php $this->section('js') ?>
@@ -265,6 +292,16 @@
                         required  : true
                     },
 					facilitystallfee        : {
+                        required  : true
+                    }
+                    
+                },
+
+            );
+            validation(
+				'#form4',
+                {
+					googleanalytics        : {
                         required  : true
                     }
                     

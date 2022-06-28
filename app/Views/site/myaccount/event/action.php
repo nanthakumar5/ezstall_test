@@ -285,6 +285,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 <?php $this->section('js') ?>
 <?php echo $questionmodal; ?>
 
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRvTJ00O76SJefErQP2FFz4IDmCigbS6w&callback=initMap"></script>
 <script> 
 	var barn				 	= $.parseJSON('<?php echo addslashes(json_encode($barn)); ?>');
 	var rvbarn					= $.parseJSON('<?php echo addslashes(json_encode($rvbarn)); ?>');
@@ -418,5 +419,36 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 			})
 		}, 100);
 	}
+
+	var geocoder;
+  	var map;
+
+	$("#location").keyup(function(){ 
+		var location = $(this).val();
+		
+	});
+	  	function initMap() {
+	        var map = new google.maps.Map(document.getElementById('map'), {
+	          zoom: 15,
+	        });
+	        geocoder = new google.maps.Geocoder();
+	        codeAddress(geocoder, map);
+	  	}
+
+	  	function codeAddress(geocoder, map) {
+	        geocoder.geocode({'location': location}, function(results, status) {
+	          if (status === 'OK') { 
+	            // map.setCenter(results[0].geometry.location);
+	            // var marker = new google.maps.Marker({
+	            //   map: map,
+	            //   position: results[0].geometry.location
+	            // });
+	          } else {
+	            alert('Geocode was not successful for the following reason: ' + status);
+	          }
+	        });
+	  	}
+	  
+	
 </script>
 <?php $this->endSection(); ?>
