@@ -72,52 +72,53 @@
 </section>
 <?php $this->endSection(); ?>
 <?php $this->section('js') ?>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRvTJ00O76SJefErQP2FFz4IDmCigbS6w&callback=initMap"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $googleapikey; ?>"></script>
 <script>
- 	var geocoder;
-  	var map;
   	var address = "<?php echo $settings['address'];?>";
-		$(function(){
-			validation(
-				'#form',
-				{
-					name 	     : {
-						required	: 	true
-					},
-					email  		: {	
-						required	: 	true,
-						email     	: true   
-					},
-					subject   	: {
-						required	: 	true
-					},
-					message 	 : {
-						required	: 	true
-					}
+	
+	$(function(){
+		validation(
+			'#form',
+			{
+				name 	     : {
+					required	: 	true
+				},
+				email  		: {	
+					required	: 	true,
+					email     	: true   
+				},
+				subject   	: {
+					required	: 	true
+				},
+				message 	 : {
+					required	: 	true
 				}
-			);
+			}
+		);
+		
+		initMap();
+	});
+
+	function initMap() {
+		var map = new google.maps.Map(document.getElementById('map'), {
+		  zoom: 15,
 		});
+		var geocoder = new google.maps.Geocoder();
+		codeAddress(geocoder, map);
+	}
 
-	  	function initMap() {
-	        var map = new google.maps.Map(document.getElementById('map'), {
-	          zoom: 15,
-	        });
-	        geocoder = new google.maps.Geocoder();
-	        codeAddress(geocoder, map);
-	  	}
-
-	  	function codeAddress(geocoder, map) {
-	        geocoder.geocode({'address': address}, function(results, status) {
-	          if (status === 'OK') {
-	            map.setCenter(results[0].geometry.location);
-	            var marker = new google.maps.Marker({
-	              map: map,
-	              position: results[0].geometry.location
-	            });
-	          } else {
-	            alert('Geocode was not successful for the following reason: ' + status);
-	          }
-	        });
-	  	}
+	function codeAddress(geocoder, map) {
+		geocoder.geocode({'address': address}, function(results, status) {
+			if (status === 'OK') {
+				map.setCenter(results[0].geometry.location);
+				var marker = new google.maps.Marker({
+					map: map,
+					position: results[0].geometry.location
+				});
+			} else {
+				alert('Geocode was not successful for the following reason: ' + status);
+			}
+		});
+	}
 </script>
 <?php $this->endSection(); ?>

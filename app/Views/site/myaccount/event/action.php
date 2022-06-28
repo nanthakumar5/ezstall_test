@@ -6,6 +6,8 @@ $id 					= isset($result['id']) ? $result['id'] : '';
 $name 					= isset($result['name']) ? $result['name'] : '';
 $description 		    = isset($result['description']) ? $result['description'] : '';
 $location 				= isset($result['location']) ? $result['location'] : '';
+$latitude 				= isset($result['latitude']) ? $result['latitude'] : '';
+$longitude 				= isset($result['longitude']) ? $result['longitude'] : '';
 $mobile 				= isset($result['mobile']) ? $result['mobile'] : '';
 $start_date 		    = isset($result['start_date']) ? dateformat($result['start_date']) : '';
 $end_date 				= isset($result['end_date']) ? dateformat($result['end_date']) : '';
@@ -58,6 +60,8 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 							<div class="form-group">
 								<label>Location</label>								
 								<input type="text" name="location" class="form-control" id="location" placeholder="Enter Location" value="<?php echo $location; ?>">
+								<input type="hidden" name="latitude" id="latitude" value="<?php echo $latitude; ?>">
+								<input type="hidden" name="longitude" id="longitude" value="<?php echo $longitude; ?>">
 							</div>
 						</div>
 						<div class="col-md-6 my-2">
@@ -284,8 +288,6 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 <?php $this->endSection(); ?>
 <?php $this->section('js') ?>
 <?php echo $questionmodal; ?>
-
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRvTJ00O76SJefErQP2FFz4IDmCigbS6w&callback=initMap"></script>
 <script> 
 	var barn				 	= $.parseJSON('<?php echo addslashes(json_encode($barn)); ?>');
 	var rvbarn					= $.parseJSON('<?php echo addslashes(json_encode($rvbarn)); ?>');
@@ -420,35 +422,29 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 		}, 100);
 	}
 
-	var geocoder;
-  	var map;
+	function debounce(callback, wait) {
+		let timeout;
+		return (args) => {
+			clearTimeout(timeout);
+			timeout = setTimeout(function () { callback.apply(this, args); }, wait);
+		};
+	}
 
-	$("#location").keyup(function(){ 
-		var location = $(this).val();
-		
-	});
-	  	function initMap() {
-	        var map = new google.maps.Map(document.getElementById('map'), {
-	          zoom: 15,
-	        });
-	        geocoder = new google.maps.Geocoder();
-	        codeAddress(geocoder, map);
-	  	}
-
-	  	function codeAddress(geocoder, map) {
-	        geocoder.geocode({'location': location}, function(results, status) {
-	          if (status === 'OK') { 
-	            // map.setCenter(results[0].geometry.location);
-	            // var marker = new google.maps.Marker({
-	            //   map: map,
-	            //   position: results[0].geometry.location
-	            // });
-	          } else {
-	            alert('Geocode was not successful for the following reason: ' + status);
-	          }
-	        });
-	  	}
-	  
+	document.getElementById("location").addEventListener('keyup', debounce( () => {
+		getCoordinates(document.getElementById("location").value);
+	}, 1000))
 	
+	function getCoordinates(address){
+		fetch("https://maps.googleapis.com/maps/api/geocode/json?address="+address+"&key=<?php echo $googleapikey; ?>")
+		.then(response => response.json())
+		.then(data => {
+			if(data.status=="OK"){
+				const latitude = data.results[0].geometry.location.lat;
+				const longitude = data.results[0].geometry.location.lng;
+				$('#latitude').val(latitude);
+				$('#longitude').val(longitude);
+			}
+		})
+	}
 </script>
 <?php $this->endSection(); ?>

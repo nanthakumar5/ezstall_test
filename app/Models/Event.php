@@ -206,6 +206,8 @@ class Event extends BaseModel
 		if(isset($data['name']) && $data['name']!='')      		        		$request['name'] 				= $data['name'];
 		if(isset($data['description']) && $data['description']!='')     		$request['description']    	 	= $data['description'];
 		if(isset($data['location']) && $data['location']!='')           		$request['location'] 			= $data['location'];
+		if(isset($data['latitude']) && $data['latitude']!='')           		$request['latitude'] 			= $data['latitude'];
+		if(isset($data['longitude']) && $data['longitude']!='')           		$request['longitude'] 			= $data['longitude'];
 		if(isset($data['mobile']) && $data['mobile']!='')      	        		$request['mobile'] 				= $data['mobile'];
 		if(isset($data['start_date']) && $data['start_date']!='')       		$request['start_date']			= date('Y-m-d', strtotime($data['start_date']));
 		if(isset($data['end_date']) && $data['end_date']!='')           		$request['end_date'] 			= date('Y-m-d', strtotime($data['end_date']));

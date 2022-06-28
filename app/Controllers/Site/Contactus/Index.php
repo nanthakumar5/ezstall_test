@@ -23,6 +23,7 @@ class Index extends BaseController
 			return redirect()->to(base_url().'/contactus'); 
     	}
 
+		$data['googleapikey'] = $this->config->googleapikey;
 		$data['settings'] = $this->settings->getSettings('row', ['settings']);
 
 		return view('site/contactus/index',$data);

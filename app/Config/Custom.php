@@ -17,4 +17,5 @@ class Custom extends BaseConfig
 	public $yesno 				= ['1' => 'Yes', '2' => 'No'];
 	public $chargingflag 		= ['1' => 'Per Night', '2' => 'Per Week', '3' => 'Per Month', '4' => 'Flat Rate'];
 	public $currencysymbol 		= "$";
+	public $googleapikey 		= "AIzaSyDRvTJ00O76SJefErQP2FFz4IDmCigbS6w";
 }
