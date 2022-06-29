@@ -78,6 +78,7 @@ $routes->get('logout', 'Site\Logout\Index::index');
 
 $routes->group('myaccount', ['filter' => 'siteauthentication2'], function($routes){
 	$routes->match(['get','post'], 'dashboard', 'Site\Myaccount\Dashboard\Index::index');
+    $routes->match(['get','post'], 'updatedata','Site\Myaccount\Dashboard\Index::updatedata');
 	
     $routes->match(['get','post'], 'events', 'Site\Myaccount\Event\Index::index');
     $routes->match(['get','post'], 'events/add', 'Site\Myaccount\Event\Index::action'); 

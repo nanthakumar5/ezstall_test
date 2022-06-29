@@ -4735,3 +4735,26 @@ div#replylist {
 .rate-select-layer span {
     color: #ffc800;
 }
+
+.btn_dash_lock {
+    border: none;
+    background-color: #171717;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px 15px;
+}
+
+.btn_dash_dirty {
+    border: none;
+    background-color: #171717;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px 15px;
+}
+
+.dash_border_ {
+    border: 1px solid #b9b9b9;
+    padding: 12px;
+    border-radius: 5px;
+    border-left: 4px solid #e00000;
+}

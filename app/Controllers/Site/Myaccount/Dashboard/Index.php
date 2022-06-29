@@ -24,6 +24,10 @@ class Index extends BaseController
       	$countcurrentstall 		= 0;
       	$countcurrentevent  	= [];
 		
+		$yesterday 	=  date("Y-m-d", strtotime("yesterday")); 
+		$tday 		=  date("Y-m-d", strtotime("today"));
+
+
      	$date				= date('Y-m-d');
     	$userdetail 		= getSiteUserDetails();
     	$usertype 			= $userdetail['type'];
@@ -31,27 +35,30 @@ class Index extends BaseController
 		$parentdetails 		= getSiteUserDetails($parentid);
 		$parenttype   		= $parentdetails ? $parentdetails['type'] : '';
     	$data['usertype'] 	= $this->config->usertype;
-    	$userid 			= ($usertype=='4') ? $parentdetails['id'] : $userdetail['id'];
+    	$userid 			= ($usertype=='4' || $usertype=='6') ? $parentdetails['id'] : $userdetail['id'];
 		$allids 			= getStallManagerIDS($userid); 
 		array_push($allids, $userid);
-		
+
       	if($usertype=='3' || ($usertype=='4' && $parenttype == '3')){ 
       		$currentreservation = $this->event->getEvent('all', ['event', 'barn', 'stall'],['status' => ['1'], 'userids' => $allids, 'type' => '1', 'gtenddate' => $date]);
       	}
+      	
       	if($usertype=='2' || ($usertype=='4' && $parenttype == '2')){
       		$currentreservation = $this->event->getEvent('all', ['event', 'barn', 'stall'],['status' => ['1'], 'userids' => $allids, 'type' => '2', 'fenddate' => $date]);
       	}
       	
       	if($usertype=='2' || $usertype =='3' || ($usertype=='4' && $parenttype == '2') || ($usertype=='4' && $parenttype == '3')){
-	  		foreach ($currentreservation as $event) { 
+	  		foreach ($currentreservation as $event) {  
 	  			foreach ($event['barn'] as $barn) {
 					$countcurrentstall += count(array_column($barn['stall'], 'id'));
 				}
-			
+
 				$bookedevents = $this->booking->getBooking('all', ['booking','event','barnstall'],['eventid'=> $event['id'], 'status' => '1']);
 				if(count($bookedevents) > 0){
+					$data['stalldetail'] = $bookedevents;
 					foreach($bookedevents as $bookedevent){
 						$barnstall = $bookedevent['barnstall'];
+
 						if(count($barnstall) > 0) $countcurrentbooking += count(array_column($barnstall, 'stall_id'));
 					}
 				}
@@ -101,7 +108,13 @@ class Index extends BaseController
     		$data['countpayedamount'] 	= $countpayedamount;
     		$data['countcurrentstall'] 	= $countcurrentstall;
     	}
-      	
+
+		if($usertype=='6'){
+    		$checkinstall = $this->booking->getBooking('all', ['booking','event','barnstall'],['userid'=> $allids, 'stallcheck_in'=>[$yesterday, $tday]]);
+
+      		$data['checkinstall'] 			= $checkinstall;
+      	}
+
       	$data['userdetail'] 			= $userdetail;
       	$data['countcurrentstall'] 		= $countcurrentstall; 
       	$data['countcurrentbooking'] 	= $countcurrentbooking;
@@ -111,5 +124,15 @@ class Index extends BaseController
       	$data['countpastamount'] 		= $countpastamount;
 		
 		return view('site/myaccount/dashboard/index',$data);
+	}
+
+	public function updatedata(){
+		if($this->request->getMethod()=='post'){ 
+    		$requestData 	= $this->request->getPost();
+    		if(isset($requestData['lockunlock']) || isset($requestData['dirtyclean'])){
+    			$result = $this->booking->updatedata($requestData);
+	    	}
+			return redirect()->to(base_url().'/myaccount/dashboard'); 
+        }
 	}
 }
