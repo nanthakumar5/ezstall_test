@@ -38,6 +38,9 @@
 					</div>
 				</div>
 				<?php echo ucfirst($description);?>
+				<?php if($detail['stallmap']!=""){ ?>
+					<button class="ucEventdetBtn"><a href="<?php echo base_url();?>/facility/download/<?php echo $detail['stallmap'] ?>" class="text-decoration-none text-white"><img src="<?php echo base_url() ?>/assets/site/img/flyer.png"> Download Stall Map</a></button>
+				<?php } ?>
 			</div>
 			<div class="row m-0 p-0">
 				<div class="col-md-9">

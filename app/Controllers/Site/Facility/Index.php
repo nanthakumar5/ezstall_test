@@ -58,4 +58,13 @@ class Index extends BaseController
 
     	return view('site/facility/detail',$data);
     }
+	
+	public function download($filename)
+	{  
+		$filepath   = base_url().'/assets/uploads/stallmap/'.$filename;		
+		header("Content-Type: application/octet-stream"); 
+        header("Content-Disposition: attachment; filename=\"". basename($filepath) ."\"");
+        readfile ($filepath);
+        exit();
+	}
 }
