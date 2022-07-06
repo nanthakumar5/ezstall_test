@@ -360,8 +360,8 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 		questionpopup1(2, 'charging', charging_flag)
 		questionpopup1(2, 'notification', notification_flag)
 		
-		barnstall('barn', [['.barnbtn'], ['.barntab', '.stalltab'], [0, 0], ['#barnvalidation']], [barn, occupied, reserved])
-		barnstall('rvhookups', [['.rvhookupsbtn'], ['.rvhookupsbarntab', '.rvhookupsstalltab'], [0, 0], ['#rvhookupsvalidation']], [rvbarn, occupied, reserved])
+		barnstall('barn', [['.barnbtn'], ['.barntab', '.stalltab'], [0, 0], ['#barnvalidation'], [3]], [barn, occupied, reserved])
+		barnstall('rvhookups', [['.rvhookupsbtn'], ['.rvhookupsbarntab', '.rvhookupsstalltab'], [0, 0], ['#rvhookupsvalidation'], [3]], [rvbarn, occupied, reserved])
 		products('feed', [['.feedbtn'], ['.feedlist'], [0]], [feed])
 		products('shavings', [['.shavingsbtn'], ['.shavingslist'], [0]], [shaving])
 	});

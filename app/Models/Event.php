@@ -325,6 +325,7 @@ class Event extends BaseModel
 					$stallid        	 	= $stalldata['id']!='' ? $stalldata['id'] : '';
 					$stall['event_id'] 	 	= $extras[0];
 					$stall['barn_id']    	= $barninsertid;
+					$stall['charging_id']  	= $stalldata['chargingflag'];
 					$stall['name']       	= $stalldata['name'];
 					$stall['price']      	= $stalldata['price'];
 					$stall['status']     	= $stalldata['status'];

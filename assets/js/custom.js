@@ -2,7 +2,7 @@ function baseurl(){
 	var base = window.location;
 
 	if(base.host=='localhost'){
-		return base.protocol + "//" + base.host + "/nantha/ezstall2/";
+		return base.protocol + "//" + base.host + "/ezstall2/";
 	}else{
 		return base.protocol + "//" + base.host + "/ezstall2/";
 	}
@@ -336,6 +336,8 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 	var barnIndex 		= barnstallitem[2][0];
 	var stallIndex 		= barnstallitem[2][1];
 	var barn_validation = barnstallitem[3][0];
+	var usertype		= barnstallitem[4][0]; 
+	var charging_flagdata	= barnstallitem[4][1];  
 	
 	var bsresult = barnstallresult[0] ? barnstallresult[0] : [];
 	var occupied = barnstallresult[1] ? barnstallresult[1] : [];
@@ -411,8 +413,9 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 	
 	
 	function stalldata(barnIndex, result=[])
-	{  
+	{ 
 		var stallId       		= result['id'] ? result['id'] : '';
+		var charging_flags      = result['charging_id'] ? result['charging_id'] : ''; 
 		var stallName     		= result['name'] ? result['name'] : '';
 		var stallPrice    		= result['price'] ? result['price'] : '';
 		var stallImage    		= result['image'] ? result['image'] : '';
@@ -425,6 +428,20 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 		}else{
 			var stallImages   	= baseurl()+'assets/images/upload.png';
 		}
+
+		var  charging_flag = '';
+		var datasss = '';
+		if(usertype=='2'){ 
+			$.each(charging_flagdata, function(i,v){
+	        	var selected = i==charging_flags ? 'selected' : '';
+	            charging_flag += '<option value='+i+' '+selected+'>'+v+'</option>';
+	        })
+			var datasss = '<div class="col-md-6 mb-3">\
+							    <select class="form-control" id="stall_'+barnstallname+'_'+stallIndex+'_chargingflag" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][chargingflag]">\
+							    '+charging_flag+'\
+							    </select>\
+							</div>';
+		}
 		
 		var availability = '<a href="javascript:void(0);" class="dash-stall-remove fs-7 stallremovebtn_'+barnstallname+'" data-barnIndex="'+barnIndex+'"><i class="fas fa-times text-white"></i></a>';
 		if($.inArray(stallId, occupied) !== -1)	availability = '<span class="red-box"></span>';
@@ -432,13 +449,14 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 
 		var data='\
 		<div class="row mb-2 dash-stall-base">\
+			'+datasss+'\
 			<div class="col-md-6 mb-3">\
 				<input type="text" id="stall_'+barnstallname+'_'+stallIndex+'_name" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][name]" class="form-control  fs-7" placeholder="Stall Name" value="'+stallName+'">\
 			</div>\
-			<div class="col-md-2 mb-3">\
+			<div class="col-md-6 mb-3">\
 				<input type="text" id="stall_'+barnstallname+'_'+stallIndex+'_price" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][price]" class="form-control fs-7" placeholder="Price" value="'+stallPrice+'">\
 			</div>\
-			<div class="col-md-3 mb-3">\
+			<div class="col-md-5 mb-3">\
 				<a href="'+stallImages+'" target="_blank">\
 					<img src="'+stallImages+'" class="stall_image_source_'+barnstallname+'_'+stallIndex+'" width="40" height="35">\
 				</a>\

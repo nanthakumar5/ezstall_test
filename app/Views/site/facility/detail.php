@@ -78,6 +78,16 @@
 							$tabcontent .= '<div class="tab-pane fade'.$barnactive.'" id="barn'.$barnid.'" role="tabpanel" aria-labelledby="nav-home-tab">
 												<ul class="list-group">';
 							foreach($barndata['stall'] as $stalldata){ 
+								if($stalldata['charging_id']=='1'){
+									$typeofprice = 'night_price';
+								}else if($stalldata['charging_id']=='2'){
+									$typeofprice = 'week_price';
+								}else if($stalldata['charging_id']=='3'){
+									$typeofprice = 'month_price';
+								}else if($stalldata['charging_id']=='4'){
+									$typeofprice = 'flat_price';
+								}
+
 								$boxcolor  = 'green-box';
 								$checkboxstatus = '';
 
@@ -85,7 +95,7 @@
 									$checkboxstatus = 'disabled';
 								}
 
-								$tabcontent .= 	'<li class="list-group-item">
+								$tabcontent .= 	'<li class="list-group-item '.$typeofprice.'">
 													<input class="form-check-input eventbarnstall stallid me-1" data-stallenddate="'.$stalldata['end_date'].'" data-price="'.$stalldata['price'].'" data-barnid="'.$stalldata['barn_id'].'" value="'.$stalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
 													'.$stalldata['name'].'
 													<span class="'.$boxcolor.' stallavailability" data-stallid="'.$stalldata['id'].'" ></span>
@@ -128,6 +138,16 @@
 								$tabcontent .= '<div class="tab-pane fade'.$rvactive.'" id="barn'.$rvid.'" role="tabpanel" aria-labelledby="nav-home-tab">
 								<ul class="list-group">';
 								foreach($rvdata['rvstall'] as $rvstalldata){
+									if($rvstalldata['charging_id']=='1'){
+										$typeofprice = 'night_price';
+									}else if($rvstalldata['charging_id']=='2'){
+										$typeofprice = 'week_price';
+									}else if($rvstalldata['charging_id']=='3'){
+										$typeofprice = 'month_price';
+									}else if($rvstalldata['charging_id']=='4'){
+										$typeofprice = 'flat_price';
+									}
+
 									$boxcolor  = 'green-box';
 									$checkboxstatus = '';
 
@@ -135,7 +155,7 @@
 										$checkboxstatus = 'disabled';
 									}
 
-									$tabcontent .= 	'<li class="list-group-item rvhookups">
+									$tabcontent .= 	'<li class="list-group-item '.$typeofprice.'">
 									<input class="form-check-input rvbarnstall stallid me-1" data-price="'.$rvstalldata['price'].'" data-barnid="'.$rvstalldata['barn_id'].'" data-flag="2" value="'.$rvstalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
 									'.$rvstalldata['name'].'
 									<span class="'.$boxcolor.' stallavailability" data-stallid="'.$rvstalldata['id'].'" ></span>
@@ -273,6 +293,25 @@
 		setTimeout(function(){
 			var startdate 	= $("#startdate").val(); 
 			var enddate   	= $("#enddate").val(); 
+			var startdates 		= new Date(startdate);
+			var enddates 		= new Date(enddate);
+			var stallinterval  	= enddates.getTime() - startdates.getTime(); 
+			var intervaldays 	= stallinterval / (1000 * 3600 * 24); 
+				$('.week_price').show();
+				$('.month_price').show();
+				$('.night_price').show();
+				$('.flat_price').show();
+			if(intervaldays%7==0){
+			  	$('.night_price').hide();
+			  	$('.month_price').hide();
+			}else if(intervaldays < 7 || (intervaldays > 7 && intervaldays < 29)){ 
+				$('.week_price').hide();
+				$('.month_price').hide();
+			}else if(intervaldays%30==0){ 
+				$('.week_price').hide();
+				$('.night_price').hide();
+			}
+
 
 			if(startdate!='' && enddate!=''){
 				cart({type : '2', checked : 0}); 
@@ -477,7 +516,7 @@
 			data,
 			{ 
 				asynchronous : 1,
-				success  : function(result){
+				success  : function(result){ console.log(result);
 					if(Object.keys(result).length){  
 						$("#startdate").val(result.check_in); 
 						$("#enddate").val(result.check_out); 
@@ -491,6 +530,18 @@
 						var shavingdata = cartsummary(2, 'SHAVING', result.shaving);
 						
 						var total = (parseFloat(result.price)+parseFloat((transactionfee/100) * result.price)).toFixed(2);
+
+						if(result.interval%7==0){
+						 	$('.night_price').hide();
+			  				$('.month_price').hide();
+			  			}else if(result.interval%30==0){
+						 	$('.week_price').hide();
+							$('.night_price').hide();
+			  			}else{
+			  				$('.week_price').hide();
+							$('.month_price').hide();
+			  			}
+
 						var result ='\
 						<div class="w-100">\
 							<div class="border rounded pt-4 ps-3 pe-3 mb-5">\
@@ -540,7 +591,15 @@
 						data += '<div><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
 					}
 					
-					data += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+currencysymbol+v.price+'x'+v.interval+') '+currencysymbol+v.total+'</span></div>';
+					if(v.interval%7==0){
+						var intervalss = v.interval/7;
+					}else if(v.interval%30==0){
+						var intervalss = v.interval/30; 
+					}else{ 
+						var intervalss = v.interval
+					}
+
+					data += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+currencysymbol+v.price+'x'+intervalss+') '+currencysymbol+v.total+'</span></div>';
 					$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
 					name = v.barn_name;
 				});

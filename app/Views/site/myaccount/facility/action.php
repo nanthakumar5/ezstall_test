@@ -123,15 +123,6 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 									</div>
 								</div>
 								<div class="d-flex justify-content-between flex-wrap align-items-center my-3">
-									<p>How will you be charging for your stalls? </p>
-									<div>
-										<?php foreach($chargingflag as $key => $data){ ?>
-											<button type="button" class="btn questionmodal_charging event_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
-										<?php } ?>
-										<input type="hidden" value="" class="charging_flag" name="charging_flag">
-									</div>
-								</div>
-								<div class="d-flex justify-content-between flex-wrap align-items-center my-3">
 									<p>Send a text message to users when their stall is unlocked and ready for use? </p>
 									<div>
 										<?php foreach($yesno as $key => $data){ ?>
@@ -285,7 +276,9 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 <?php echo $stripe; ?>
 <?php echo $questionmodal; ?>
 <script>
+
 	var barn				 	= $.parseJSON('<?php echo addslashes(json_encode($barn)); ?>'); 
+	var chargingflag			= $.parseJSON('<?php echo addslashes(json_encode($chargingflag)); ?>'); 
 	var rvbarn					= $.parseJSON('<?php echo addslashes(json_encode($rvbarn)); ?>');
 	var feed				 	= $.parseJSON('<?php echo addslashes(json_encode($feed)); ?>');
 	var shaving					= $.parseJSON('<?php echo addslashes(json_encode($shaving)); ?>');
@@ -298,7 +291,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 	var feed_flag				= '<?php echo $feed_flag ?>';
 	var shaving_flag			= '<?php echo $shaving_flag ?>';
 	var rv_flag				 	= '<?php echo $rv_flag ?>';
-	var charging_flag			= '<?php echo $charging_flag ?>';
+	var charging_flag			= '<?php echo $charging_flag ?>'; 
 	var notification_flag		= '<?php echo $notification_flag ?>';
 
 	
@@ -338,8 +331,8 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 		questionpopup1(2, 'charging', charging_flag)
 		questionpopup1(2, 'notification', notification_flag)
 
-		barnstall('barn', [['.barnbtn'], ['.barntab', '.stalltab'], [0, 0], ['#barnvalidation']], [barn, occupied, reserved])
-		barnstall('rvhookups', [['.rvhookupsbtn'], ['.rvhookupsbarntab', '.rvhookupsstalltab'], [0, 0], ['#rvhookupsvalidation']], [rvbarn, occupied, reserved])
+		barnstall('barn', [['.barnbtn'], ['.barntab', '.stalltab'], [0, 0], ['#barnvalidation'], [2, chargingflag]], [barn, occupied, reserved])
+		barnstall('rvhookups', [['.rvhookupsbtn'], ['.rvhookupsbarntab', '.rvhookupsstalltab'], [0, 0], ['#rvhookupsvalidation'], [2, chargingflag]], [rvbarn, occupied, reserved])
 		products('feed', [['.feedbtn'], ['.feedlist'], [0]], [feed])
 		products('shavings', [['.shavingsbtn'], ['.shavingslist'], [0]], [shaving])
 

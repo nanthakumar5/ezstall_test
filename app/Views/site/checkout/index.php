@@ -143,8 +143,16 @@
 										$barnstalldata .= '<div><span class="col-12 fw-bold">'.$barnname.'</span></div>';
 										echo '<p>'.$barnname.'</p>';
 									}
+									
+									if($data['interval']%7==0){
+										$intervalss = $data['interval']/7;
+									}else if($data['interval']%30==0){
+										$intervalss = $data['interval']/30; 
+									}else{ 
+										$intervalss = $data['interval'];
+									}
 
-									$barnstalldata .= '<div class="row"><span class="col-7 event_c_text">'.$data['stall_name'].'</span><span class="col-5 text-end event_c_text">('.$data['price'].'x'.$data['interval'].') '.$data['total'].'</span></div>';
+									$barnstalldata .= '<div class="row"><span class="col-7 event_c_text">'.$data['stall_name'].'</span><span class="col-5 text-end event_c_text">('.$data['price'].'x'.$intervalss.') '.$data['total'].'</span></div>';
 									echo '<p>'.$data['stall_name'].'</p>';
 								}
 								?>
@@ -163,7 +171,16 @@
 											$rvbarnstalldata .= '<div><span class="col-12 fw-bold">'.$rvbarnname.'</span></div>';
 											echo '<p>'.$rvbarnname.'</p>';
 										}
-										$rvbarnstalldata .= '<div class="row"><span class="col-7 event_c_text">'.$rvdata['stall_name'].'</span><span class="col-5 text-end event_c_text">('.$rvdata['price'].'x'.$rvdata['interval'].') '.$rvdata['total'].'</span></div>';
+
+										if($data['interval']%7==0){
+											$intervalss = $data['interval']/7;
+										}else if($data['interval']%30==0){
+											$intervalss = $data['interval']/30; 
+										}else{ 
+											$intervalss = $data['interval'];
+										}
+										
+										$rvbarnstalldata .= '<div class="row"><span class="col-7 event_c_text">'.$rvdata['stall_name'].'</span><span class="col-5 text-end event_c_text">('.$rvdata['price'].'x'.$intervalss.') '.$rvdata['total'].'</span></div>';
 										echo '<p>'.$rvdata['stall_name'].'</p>';
 									}
 									?>
