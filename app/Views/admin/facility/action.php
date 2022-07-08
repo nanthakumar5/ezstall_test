@@ -14,7 +14,6 @@ $stallmap      			= isset($result['stallmap']) ? $result['stallmap'] : '';
 $stallmap 				= filedata($stallmap, base_url().'/assets/uploads/stallmap/');
 $image 				    = filedata($image, base_url().'/assets/uploads/event/');
 $pageaction 			= $id=='' ? 'Add' : 'Update';
-
 ?>
 <section class="content-header">
 	<div class="container-fluid">
@@ -299,6 +298,9 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 		var stallPrice    		= result['price'] ? result['price'] : '';
 		var stallImage    		= result['image'] ? result['image'] : '';
 		var stallBulkImage    	= result['bulkimage'] ? result['bulkimage'] : '';
+		var block_unblock    	= result['block_unblock'] ? result['block_unblock'] : '';
+		var checked				= (block_unblock=='1') ? 'checked' : '';
+
 		if(stallImage!='' && stallBulkImage==''){
 			var stallImages   	= '<?php echo base_url()?>/assets/uploads/stall/'+stallImage;
 		}else if(stallBulkImage!=''){
@@ -307,6 +309,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 			var stallImages   	= '<?php echo base_url()?>/assets/images/upload.png';
 		}
 		
+
 		var availability = '<a href="javascript:void(0);" class="dash-stall-remove fs-7 stallremovebtn" data-barnIndex="'+barnIndex+'"><i class="fas fa-times text-white"></i></a>';
 		if($.inArray(stallId, occupied) !== -1)	availability = '<span class="red-box"></span>';
 		if($.inArray(stallId, reserved) !== -1)	availability = '<span class="yellow-box"></span>';
@@ -328,14 +331,17 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 				<span class="stall_image_msg'+stallIndex+'"></span>\
 				<input type="hidden" name="barn['+barnIndex+'][stall]['+stallIndex+'][image]" class="stall_image_input'+stallIndex+'" value="'+stallImage+'">\
 			</div>\
+			<div class="col-md-2 mb-3">\
+				\<input type="checkbox" id="block_unblock'+stallIndex+'" name="barn['+barnIndex+'][stall]['+stallIndex+'][block_unblock]" '+checked+' value="1">block/unblock\
+			</div>\
 			<div class="col-md-1 mb-3">\
 				<input type="hidden" name="barn['+barnIndex+'][stall]['+stallIndex+'][id]" value="'+stallId+'">\
 				<input type="hidden" name="barn['+barnIndex+'][stall]['+stallIndex+'][status]" value="1">\
 				'+availability+'\
 			</div>\
 		</div>\
-		';
-		
+		'; 
+
 		$(document).find('#stallvalidation'+barnIndex).val('1');
 		$(document).find('#stallvalidation'+barnIndex).valid();
 		
@@ -347,7 +353,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 		$(document).find('#stall'+stallIndex+'price').rules("add", {required: true, messages: {required: "Price field is required."}});
 		++stallIndex;
 	}
-	
+
 	$(document).on('keyup', '.barnnametextbox', function(){
 		$(this).parent().find('.barnametext').text($(this).val());
 	})

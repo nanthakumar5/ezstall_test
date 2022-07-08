@@ -77,7 +77,7 @@
 
 							$tabcontent .= '<div class="tab-pane fade'.$barnactive.'" id="barn'.$barnid.'" role="tabpanel" aria-labelledby="nav-home-tab">
 												<ul class="list-group">';
-							foreach($barndata['stall'] as $stalldata){ 
+							foreach($barndata['stall'] as $stalldata){  
 								if($stalldata['charging_id']=='1'){
 									$typeofprice = 'night_price';
 								}else if($stalldata['charging_id']=='2'){
@@ -86,14 +86,17 @@
 									$typeofprice = 'month_price';
 								}else if($stalldata['charging_id']=='4'){
 									$typeofprice = 'flat_price';
+								}else{
+									$typeofprice = '';
 								}
 
-								$boxcolor  = 'green-box';
+								$boxcolor  = ($stalldata['block_unblock']=='1') ? 'brown-box': 'green-box';
 								$checkboxstatus = '';
 
-								if($cartevent=='1'){
+								if($cartevent=='1' || $stalldata['block_unblock']=='1'){
 									$checkboxstatus = 'disabled';
 								}
+
 
 								$tabcontent .= 	'<li class="list-group-item '.$typeofprice.'">
 													<input class="form-check-input eventbarnstall stallid me-1" data-stallenddate="'.$stalldata['end_date'].'" data-price="'.$stalldata['price'].'" data-barnid="'.$stalldata['barn_id'].'" value="'.$stalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
@@ -118,6 +121,7 @@
 										<p><span class="yellow-circle"></span>Reserved</p>
 										<p><span class="red-circle"></span>Occupied</p>
 										<p><span class="brown-circle"></span>Expired</p>
+										<p><span class="brown-circle"></span>Block</p>
 									</div>
 								</div>
 							</div>    
