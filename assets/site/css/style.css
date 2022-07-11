@@ -1764,6 +1764,15 @@ span.brown-box {
     border-radius: 5px;
 }
 
+span.black-box {
+    width: 22px;
+    height: 22px;
+    background: #171717;
+    display: block;
+    float: right;
+    border-radius: 5px;
+}
+
 span.yellow-box {
     width: 22px;
     height: 22px;
@@ -1819,6 +1828,17 @@ span.brown-circle {
     width: 14px;
     height: 14px;
     background: #9b7c5d;
+    border-radius: 100%;
+    display: block;
+    float: left;
+    margin-right: 6px;
+    margin-top: 4px;
+}
+
+span.black-circle {
+    width: 14px;
+    height: 14px;
+    background: #171717;
     border-radius: 100%;
     display: block;
     float: left;

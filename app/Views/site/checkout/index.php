@@ -137,7 +137,7 @@
 								<?php
 								$barnstalldata = '';
 								$barnname = '';
-								foreach ($barnstall as $data) {
+								foreach ($barnstall as $data) { 
 									if($barnname!=$data['barn_name']){
 										$barnname = $data['barn_name'];
 										$barnstalldata .= '<div><span class="col-12 fw-bold">'.$barnname.'</span></div>';
@@ -172,12 +172,12 @@
 											echo '<p>'.$rvbarnname.'</p>';
 										}
 
-										if($data['interval']%7==0){
-											$intervalss = $data['interval']/7;
-										}else if($data['interval']%30==0){
-											$intervalss = $data['interval']/30; 
+										if($rvdata['interval']%7==0){
+											$intervalss = $rvdata['interval']/7;
+										}else if($rvdata['interval']%30==0){
+											$intervalss = $rvdata['interval']/30; 
 										}else{ 
-											$intervalss = $data['interval'];
+											$intervalss = $rvdata['interval'];
 										}
 										
 										$rvbarnstalldata .= '<div class="row"><span class="col-7 event_c_text">'.$rvdata['stall_name'].'</span><span class="col-5 text-end event_c_text">('.$rvdata['price'].'x'.$intervalss.') '.$rvdata['total'].'</span></div>';
@@ -231,10 +231,12 @@
 			<div class="border rounded pt-4 ps-3 pe-3 mb-5">
 				<div class="row mb-2">
 					<div class="row"><span class="col-6 fw-bold">Total Day :</span><span class="col-6 fw-bold text-end"><?php echo $cartdetail['interval']; ?></span></div>
+					<?php if(count($barnstall) > 0){ ?>
 					<div>
 						<div class="event_cart_title"><span class="col-12 fw-bold">STALL</span></div>
 						<p><?php echo $barnstalldata; ?></p>
 					</div>
+					<?php } ?>
 					<?php if(count($rvbarnstall) > 0){ ?>
 						<div>
 							<div class="event_cart_title"><span class="col-12 fw-bold">RV HOOKUP</span></div>

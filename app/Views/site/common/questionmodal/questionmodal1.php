@@ -32,14 +32,16 @@
 					<?php } ?>
 				</div>
 			</div>
-			<div class="modal-body modalcarousel displaynone">
-				How will you be charging for your stalls?
-				<div class="d-flex flex-wrap flex-column align-items-center">
-					<?php foreach($chargingflag as $key => $data){ ?>
-						<button type="button" data-type="charging" class="btn questionmodal_charging model_btn m-2 w-50 questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
-					<?php } ?>
+			<?php if(isset($facility_status)!='1'){ ?>
+				<div class="modal-body modalcarousel displaynone">
+					How will you be charging for your stalls?
+					<div class="d-flex flex-wrap flex-column align-items-center">
+						<?php foreach($chargingflag as $key => $data){ ?>
+							<button type="button" data-type="charging" class="btn questionmodal_charging model_btn m-2 w-50 questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+						<?php } ?>
+					</div>
 				</div>
-			</div>
+			<?php } ?>
 			<div class="modal-body modalcarousel displaynone">
 				Send a text message to users when their
 				stall is unlocked and ready for use?

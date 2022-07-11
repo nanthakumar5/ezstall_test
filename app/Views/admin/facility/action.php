@@ -188,7 +188,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 <?php $this->section('js') ?>
 <script>
 	var barn				 	= $.parseJSON('<?php echo addslashes(json_encode($barn)); ?>'); 
-	var statuslist		 		= $.parseJSON('<?php echo addslashes(json_encode($statuslist)); ?>');
+	var chargingflagdata		= $.parseJSON('<?php echo addslashes(json_encode($charging_flag)); ?>');
 	var barnIndex        		= '0';
 	var stallIndex       		= '0';
 	var occupied 	 			= $.parseJSON('<?php echo json_encode((isset($occupied)) ? $occupied : []); ?>');
@@ -299,6 +299,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 		var stallImage    		= result['image'] ? result['image'] : '';
 		var stallBulkImage    	= result['bulkimage'] ? result['bulkimage'] : '';
 		var block_unblock    	= result['block_unblock'] ? result['block_unblock'] : '';
+		var charging_flags      = result['charging_id'] ? result['charging_id'] : ''; 
 		var checked				= (block_unblock=='1') ? 'checked' : '';
 
 		if(stallImage!='' && stallBulkImage==''){
@@ -309,6 +310,14 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 			var stallImages   	= '<?php echo base_url()?>/assets/images/upload.png';
 		}
 		
+		var charging_flag = '';
+
+		$.each(chargingflagdata, function(i,v){
+	        	var selected = i==charging_flags ? 'selected' : '';
+	            charging_flag += '<option value='+i+' '+selected+'>'+v+'</option>';
+	        })
+
+			var chargingprice_flag = '';
 
 		var availability = '<a href="javascript:void(0);" class="dash-stall-remove fs-7 stallremovebtn" data-barnIndex="'+barnIndex+'"><i class="fas fa-times text-white"></i></a>';
 		if($.inArray(stallId, occupied) !== -1)	availability = '<span class="red-box"></span>';
@@ -316,6 +325,11 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 
 		var data='\
 		<div class="row mb-2 dash-stall-base">\
+			<div class="col-md-6 mb-3">\
+				<select class="form-control" id="stall'+stallIndex+'chargingflag" name="barn['+barnIndex+'][stall]['+stallIndex+'][chargingflag]">\
+							    '+charging_flag+'\
+				</select>\
+			</div>\
 			<div class="col-md-6 mb-3">\
 				<input type="text" id="stall'+stallIndex+'name" name="barn['+barnIndex+'][stall]['+stallIndex+'][name]" class="form-control  fs-7" placeholder="Stall Name" value="'+stallName+'">\
 			</div>\

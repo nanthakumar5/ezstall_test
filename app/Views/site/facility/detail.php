@@ -77,8 +77,8 @@
 
 							$tabcontent .= '<div class="tab-pane fade'.$barnactive.'" id="barn'.$barnid.'" role="tabpanel" aria-labelledby="nav-home-tab">
 												<ul class="list-group">';
-							foreach($barndata['stall'] as $stalldata){  
-								if($stalldata['charging_id']=='1'){
+							foreach($barndata['stall'] as $stalldata){ 
+								if($stalldata['charging_id']=='1'){ 
 									$typeofprice = 'night_price';
 								}else if($stalldata['charging_id']=='2'){
 									$typeofprice = 'week_price';
@@ -90,10 +90,10 @@
 									$typeofprice = '';
 								}
 
-								$boxcolor  = ($stalldata['block_unblock']=='1') ? 'brown-box': 'green-box';
+								$boxcolor  = 'green-box';
 								$checkboxstatus = '';
 
-								if($cartevent=='1' || $stalldata['block_unblock']=='1'){
+								if($cartevent=='1'){
 									$checkboxstatus = 'disabled';
 								}
 
@@ -121,7 +121,7 @@
 										<p><span class="yellow-circle"></span>Reserved</p>
 										<p><span class="red-circle"></span>Occupied</p>
 										<p><span class="brown-circle"></span>Expired</p>
-										<p><span class="brown-circle"></span>Block</p>
+										<p><span class="black-circle"></span>Block</p>
 									</div>
 								</div>
 							</div>    
@@ -181,6 +181,7 @@
 											<p><span class="green-circle"></span>Available</p>
 											<p><span class="yellow-circle"></span>Reserved</p>
 											<p><span class="red-circle"></span>Occupied</p>
+											<p><span class="brown-circle"></span>Block</p>
 										</div>
 									</div>
 								</div>    
@@ -297,23 +298,24 @@
 		setTimeout(function(){
 			var startdate 	= $("#startdate").val(); 
 			var enddate   	= $("#enddate").val(); 
-			var startdates 		= new Date(startdate);
-			var enddates 		= new Date(enddate);
-			var stallinterval  	= enddates.getTime() - startdates.getTime(); 
-			var intervaldays 	= stallinterval / (1000 * 3600 * 24); 
-				$('.week_price').show();
-				$('.month_price').show();
-				$('.night_price').show();
-				$('.flat_price').show();
-			if(intervaldays%7==0){
-			  	$('.night_price').hide();
-			  	$('.month_price').hide();
-			}else if(intervaldays < 7 || (intervaldays > 7 && intervaldays < 29)){ 
-				$('.week_price').hide();
-				$('.month_price').hide();
-			}else if(intervaldays%30==0){ 
-				$('.week_price').hide();
-				$('.night_price').hide();
+			if(enddate!=""){
+				var startdates 		= new Date(startdate);
+				var enddates 		= new Date(enddate);
+				var stallinterval  	= enddates.getTime() - startdates.getTime(); 
+				var intervaldays 	= stallinterval / (1000 * 3600 * 24); 
+					$('.week_price').show();
+					$('.month_price').show();
+					$('.night_price').show();
+				if(intervaldays%7==0){
+				  	$('.night_price').hide();
+				  	$('.month_price').hide();
+				}else if(intervaldays%30==0){ 
+					$('.week_price').hide();
+					$('.night_price').hide();
+				}else{
+					$('.week_price').hide();
+					$('.month_price').hide();
+				}
 			}
 
 
@@ -343,7 +345,7 @@
 		});
 	}
 	
-	function occupiedreserved(startdate, enddate, stallid=''){
+	function occupiedreserved(startdate, enddate, stallid=''){ 
 		var result = 1;
 		ajax(
 			'<?php echo base_url()."/ajax/ajaxoccupied"; ?>',
@@ -380,6 +382,20 @@
 						
 						$('.stallid[value='+i+']').prop('checked', true).attr('disabled', 'disabled');
 						$('.stallavailability[data-stallid='+i+']').removeClass("green-box").addClass("yellow-box");
+					});
+				}
+			}
+		)
+
+		ajax(
+			'<?php echo base_url()."/ajax/ajaxblockunblock"; ?>',
+			{ eventid : eventid},
+			{
+				asynchronous : 1,
+				success : function(data){
+					$(data.success).each(function(i,v){
+						$('.stallid[value='+v+']').attr('disabled', 'disabled');
+						$('.stallavailability[data-stallid='+v+']').removeClass("green-box").addClass("black-box");
 					});
 				}
 			}
@@ -520,7 +536,7 @@
 			data,
 			{ 
 				asynchronous : 1,
-				success  : function(result){ console.log(result);
+				success  : function(result){
 					if(Object.keys(result).length){  
 						$("#startdate").val(result.check_in); 
 						$("#enddate").val(result.check_out); 

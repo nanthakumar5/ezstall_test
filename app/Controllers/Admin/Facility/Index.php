@@ -102,6 +102,7 @@ class Index extends BaseController
         }
 		
 		$data['statuslist'] = $this->config->status1;
+		$data['charging_flag'] = $this->config->chargingflag;
 		return view('admin/facility/action', $data);
 	}	
 	

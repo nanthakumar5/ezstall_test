@@ -27,8 +27,9 @@ class Stall extends BaseModel
 		
 		if(isset($requestdata['id'])) 					$query->where('s.id', $requestdata['id']);
 		if(isset($requestdata['name'])) 				$query->where('s.name', $requestdata['name']);
-		if(isset($requestdata['event_id'])) 			$query->where('s.event_id', $requestdata['event_id']);
+		if(isset($requestdata['event_id'])) 			$query->where('s.event_id', $requestdata['event_id']); 
 		if(isset($requestdata['barn_id'])) 			    $query->where('s.barn_id', $requestdata['barn_id']);
+		if(isset($requestdata['block_unblock'])) 		$query->where('s.block_unblock', $requestdata['block_unblock']);
 		if(isset($requestdata['e.id'])) 				$query->where('e.id', $requestdata['e.id']);
 		if(isset($requestdata['start_date'])) 			$query->where('e.start_date', $requestdata['start_date']);
 		if(isset($requestdata['end_date'])) 			$query->where('e.end_date', $requestdata['end_date']);

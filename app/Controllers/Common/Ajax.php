@@ -28,7 +28,7 @@ class Ajax extends BaseController
 		$checkout = formatdate($this->request->getPost('checkout'));
 		$result = getOccupied($eventid, ['checkin' => $checkin, 'checkout' => $checkout]);
 		
-		echo json_encode(['success' => $result]);
+		echo json_encode(['success' => $result]); 
 	}
 	
 	public function ajaxreserved()
@@ -37,8 +37,14 @@ class Ajax extends BaseController
 		$checkin = formatdate($this->request->getPost('checkin'));
 		$checkout = formatdate($this->request->getPost('checkout'));
 		$result = getReserved($eventid, ['checkin' => $checkin, 'checkout' => $checkout]);
-		
 		echo json_encode(['success' => $result]);
+	}
+
+	public function ajaxblockunblock()
+	{  
+		$eventid 	= $this->request->getPost('eventid'); 
+		$result 	= getBlockunblock($eventid);
+		echo json_encode(['success' => $result]); 
 	}
 	
 	public function ajaxproductquantity()

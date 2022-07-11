@@ -278,7 +278,8 @@ function getCart($type=''){
 					'total' 		=> $res['price'] * $intervalss
 				];
 				
-				$price += $res['price'] * $interval;
+				$price += $res['price'] * $intervalss;
+
 			}else if($res['flag']=='2'){
 				$rvbarnstall[] = [
 					'barn_id' 		=> $res['barn_id'], 
@@ -313,7 +314,8 @@ function getCart($type=''){
 				$price += $res['price'] * $res['quantity'];
 			}
 		}
-		
+
+
 		$barnstallcolumn = array_column($barnstall, 'barn_id');
 		array_multisort($barnstallcolumn, SORT_ASC, $barnstall);
 		$rvbarnstallcolumn = array_column($rvbarnstall, 'barn_id');
@@ -322,7 +324,6 @@ function getCart($type=''){
 		array_multisort($feedcolumn, SORT_ASC, $feed);
 		$shavingcolumn = array_column($shaving, 'product_id');
 		array_multisort($shavingcolumn, SORT_ASC, $shaving);
-		
 		return [
 			'event_id'			=> $event_id, 
 			'event_name'		=> $event_name, 
@@ -359,7 +360,7 @@ function getOccupied($eventid, $extras=[]){
 	return (count($occupied) > 0) ? explode(',', implode(',', $occupied)) : [];
 }
 
-function getReserved($eventid, $extras=[]){
+function getReserved($eventid, $extras=[]){ 
 	$condition 	= ['eventid' => $eventid];
 	if(count($extras) > 0) $condition 	= $condition+$extras;
 	
@@ -367,6 +368,14 @@ function getReserved($eventid, $extras=[]){
 	$cart	= $cart->getCart('all', ['cart'], $condition);
 	
 	return (count($cart) > 0) ? array_column($cart, 'user_id', 'stall_id') : [];
+}
+
+function getBlockunblock($eventid){ 
+	$condition 	= ['event_id' => $eventid, 'block_unblock' => '1', 'status' => ['1']];
+	
+	$stall	= new \App\Models\Stall;
+	$blockunblock	= $stall->getStall('all', ['stall'], $condition);
+	return (count($blockunblock) > 0) ? array_column($blockunblock, 'id') : [];
 }
 
 function getProductQuantity($eventid, $extras=[]){

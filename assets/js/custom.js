@@ -330,13 +330,13 @@ $('#sidebarCollapse').click(function() {
 });
 
 function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
-	var selector_btn1 	= barnstallitem[0][0];
-	var barn_append 	= barnstallitem[1][0];
-	var stall_append 	= barnstallitem[1][1];
-	var barnIndex 		= barnstallitem[2][0];
-	var stallIndex 		= barnstallitem[2][1];
-	var barn_validation = barnstallitem[3][0];
-	var usertype		= barnstallitem[4][0]; 
+	var selector_btn1 		= barnstallitem[0][0];
+	var barn_append 		= barnstallitem[1][0];
+	var stall_append 		= barnstallitem[1][1];
+	var barnIndex 			= barnstallitem[2][0];
+	var stallIndex 			= barnstallitem[2][1];
+	var barn_validation 	= barnstallitem[3][0];
+	var usertype			= barnstallitem[4][0]; 
 	var charging_flagdata	= barnstallitem[4][1];  
 	
 	var bsresult = barnstallresult[0] ? barnstallresult[0] : [];
@@ -420,6 +420,8 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 		var stallPrice    		= result['price'] ? result['price'] : '';
 		var stallImage    		= result['image'] ? result['image'] : '';
 		var stallBulkImage    	= result['bulkimage'] ? result['bulkimage'] : '';
+		var block_unblock      	= result['block_unblock'] ? result['block_unblock'] : ''; 
+		var checked	= (block_unblock=='1') ? 'checked' : '';
 		
 		if(stallImage!='' && stallBulkImage==''){
 			var stallImages   	= baseurl()+'assets/uploads/stall/'+stallImage;
@@ -429,18 +431,24 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 			var stallImages   	= baseurl()+'assets/images/upload.png';
 		}
 
-		var  charging_flag = '';
-		var datasss = '';
-		if(usertype=='2'){ 
+		var charging_flag = '';
+		var chargingprice_flag= '';
+		var blockunblock = '';
+		if(usertype!='3'){ 
 			$.each(charging_flagdata, function(i,v){
 	        	var selected = i==charging_flags ? 'selected' : '';
 	            charging_flag += '<option value='+i+' '+selected+'>'+v+'</option>';
 	        })
-			var datasss = '<div class="col-md-6 mb-3">\
+
+			var chargingprice_flag = '<div class="col-md-6 mb-3">\
 							    <select class="form-control" id="stall_'+barnstallname+'_'+stallIndex+'_chargingflag" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][chargingflag]">\
 							    '+charging_flag+'\
 							    </select>\
 							</div>';
+
+			var blockunblock = '<div class="col-md-6 mb-3">\
+				<input type="checkbox" id="stall_'+barnstallname+'_'+stallIndex+'_block_unblock" '+checked+' name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][block_unblock]" value="1">block/unblock\
+			</div>';
 		}
 		
 		var availability = '<a href="javascript:void(0);" class="dash-stall-remove fs-7 stallremovebtn_'+barnstallname+'" data-barnIndex="'+barnIndex+'"><i class="fas fa-times text-white"></i></a>';
@@ -449,14 +457,14 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 
 		var data='\
 		<div class="row mb-2 dash-stall-base">\
-			'+datasss+'\
+			'+chargingprice_flag+'\
 			<div class="col-md-6 mb-3">\
 				<input type="text" id="stall_'+barnstallname+'_'+stallIndex+'_name" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][name]" class="form-control  fs-7" placeholder="Stall Name" value="'+stallName+'">\
 			</div>\
 			<div class="col-md-6 mb-3">\
 				<input type="text" id="stall_'+barnstallname+'_'+stallIndex+'_price" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][price]" class="form-control fs-7" placeholder="Price" value="'+stallPrice+'">\
 			</div>\
-			<div class="col-md-5 mb-3">\
+			<div class="col-md-3 mb-3">\
 				<a href="'+stallImages+'" target="_blank">\
 					<img src="'+stallImages+'" class="stall_image_source_'+barnstallname+'_'+stallIndex+'" width="40" height="35">\
 				</a>\
@@ -465,6 +473,7 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 				<span class="stall_image_msg'+stallIndex+'"></span>\
 				<input type="hidden" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][image]" class="stall_image_input_'+barnstallname+'_'+stallIndex+'" value="'+stallImage+'">\
 			</div>\
+			'+blockunblock+'\
 			<div class="col-md-1 mb-3 delete">\
 				<input type="hidden" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][id]" value="'+stallId+'" class="stall_id">\
 				<input type="hidden" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][status]" value="1">\
