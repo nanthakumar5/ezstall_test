@@ -8,6 +8,7 @@
 		$email 					= isset($result['email']) ? $result['email'] : '';
 		$type 					= isset($result['type']) ? $result['type'] : '';
 		$parentid 				= isset($result['parent_id']) ? $result['parent_id'] : '';
+		$stripe_account_id 		= isset($result['stripe_account_id']) ? $result['stripe_account_id'] : '';
 		$status 				= isset($result['status']) ? $result['status'] : '';
 		$pageaction 			= $id=='' ? 'Add' : 'Update';
 	?>
@@ -68,6 +69,12 @@
 									<?php ?>
 								</div>
 							</div>
+							<div class="col-md-12 stripaccountid">
+								<div class="form-group">
+									<label>Strip Account ID</label>
+									 <textarea name="stripe_account_id" id="stripe_account_id" class="form-control" rows="3"><?php echo $stripe_account_id; ?></textarea>
+								</div>
+							</div>
 							<div class="col-md-12 parentid">
 								<div class="form-group">
 									<label>Parent ID</label>
@@ -100,6 +107,7 @@
 
 		$(function(){ 
 			parentid(type);
+			stripaccountid(type);
 			validation(
 				'#form',
 				{
@@ -140,6 +148,7 @@
 
 		$('.usertype').change(function(){ 
 			parentid($(this).val());
+			stripaccountid($(this).val());
 		});	
 
 		function parentid(val){ 
@@ -147,6 +156,14 @@
                 $('.parentid').removeClass('displaynone');
             }else{
                 $('.parentid').addClass('displaynone');
+            }           
+        }
+
+		function stripaccountid(val){ 
+            if(val=='2' || val=='3'){ 
+                $('.stripaccountid').removeClass('displaynone');
+            }else{
+                $('.stripaccountid').addClass('displaynone');
             }           
         }	
 	</script>

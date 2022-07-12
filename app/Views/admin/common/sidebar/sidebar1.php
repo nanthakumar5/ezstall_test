@@ -29,6 +29,12 @@
 	</a>
 </li>
 <li class="nav-item">
+	<a href="<?php echo getAdminUrl().'/stripepayments'; ?>" class="nav-link nav-hov">
+		<i class="nav-icon far fa-credit-card"></i>
+		<p>Stripe Payments</p>
+	</a>
+</li>
+<li class="nav-item">
 	<a href="<?php echo getAdminUrl().'/plan'; ?>" class="nav-link nav-hov">
 		<i class="nav-icon fas fa-tasks"></i>
 		<p>Plans</p>

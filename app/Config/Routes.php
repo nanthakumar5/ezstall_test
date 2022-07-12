@@ -188,6 +188,11 @@ $routes->group('administrator', ['filter' => 'adminauthentication2'], function($
     $routes->post('payments/DTpayments', 'Admin\Payments\Index::DTpayments');
     $routes->get('payments/view/(:num)', 'Admin\Payments\Index::view/$1');
 
+    // Stripe Payments
+    $routes->match(['get', 'post'], 'stripepayments', 'Admin\StripePayments\Index::index');
+    $routes->match(['get', 'post'], 'stripepayments/action', 'Admin\StripePayments\Index::action');
+    $routes->post('stripepayments/DTstripepayments', 'Admin\StripePayments\Index::DTstripepayments');
+
     //Reservations
     $routes->match(['get','post'],'reservations', 'Admin\Reservations\Index::index');
     $routes->post('reservations/DTreservations', 'Admin\Reservations\Index::DTreservations');

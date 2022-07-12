@@ -367,5 +367,26 @@ class Stripe extends BaseModel
             print_r($e->getMessage());
             die;
         }
-    }  
+    }
+
+    function createTransfer($accountId, $amount)
+    {
+        try{
+			$settings = getSettings();
+			$stripe = new \Stripe\StripeClient($settings['stripeprivatekey']);
+			$currency = "usd";
+
+            $data = $stripe->transfers->create([
+  				'amount' 			=> $amount,
+  				'currency' 			=> $currency,
+  				'destination' 		=> $accountId
+			]);
+
+			return $data;
+
+        }catch(Exception $e){
+            print_r($e->getMessage());
+            die;
+        }
+    }    
 }

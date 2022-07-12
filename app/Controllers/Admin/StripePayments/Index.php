@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Controllers\Admin\StripePayments;
+
+use App\Controllers\BaseController;
+
+use App\Models\StripePayments;
+use App\Models\Users;
+use App\Models\Stripe;
+
+class Index extends BaseController
+{
+	public function __construct()
+	{  
+		$this->stripepayments  = new StripePayments();
+		$this->users  = new Users();
+		$this->stripe  = new Stripe();
+    }
+	
+	public function index()
+	{
+		return view('admin/stripepayments/index');
+	}
+
+	public function DTstripepayments()
+	{
+		$post 			= $this->request->getPost();
+		$totalcount 	= $this->stripepayments->getStripePayments('count', ['stripepayment','users'], ['status' => ['1']]+$post);
+		$results 		= $this->stripepayments->getStripePayments('all', ['stripepayment','users'], ['status' => ['1']]+$post);
+		$currencysymbol = $this->config->currencysymbol;
+		$totalrecord 	= [];
+				
+		if(count($results) > 0){
+			foreach($results as $key => $result){
+				
+				$totalrecord[] = 	[
+										'username' 			=> 	$result['username'],
+										'amount' 			=> 	$currencysymbol.$result['amount'],
+
+									];
+			}
+		}
+		
+		$json = array(
+			"draw"            => intval($post['draw']),   
+			"recordsTotal"    => intval($totalcount),  
+			"recordsFiltered" => intval($totalcount),
+			"data"            => $totalrecord
+		);
+
+		echo json_encode($json);
+	}
+
+	public function action()
+	{	
+		if ($this->request->getMethod()=='post')
+        {
+			$requestdata = $this->request->getPost();
+			$requestdata['userid'] = getAdminUserID();
+			$requestdata['status'] = '1';
+			$amount = $requestdata['amount'];
+
+            $result = $this->stripepayments->action($requestdata);
+
+			if($result){
+
+				$users = $this->users->getUsers('row', ['users'], ['id' => $requestdata['user_id'], 'status' => ['1']]);
+				$stripeaccountId = $users['stripe_account_id'];
+
+            	//$transfer = $this->stripe->createTransfer($stripeaccountId,$amount);
+      			
+	            $result = $this->stripepayments->action($requestdata);
+				$this->session->setFlashdata('success', 'Paid successfully.');
+				return redirect()->to(getAdminUrl().'/stripepayments'); 
+			}else{
+				$this->session->setFlashdata('danger', 'Try Later.');
+				return redirect()->to(getAdminUrl().'/stripepayments'); 
+			}
+        }
+
+		return view('admin/stripepayments/action');
+	}		
+}
