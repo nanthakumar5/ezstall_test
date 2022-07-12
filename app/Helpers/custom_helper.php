@@ -245,12 +245,12 @@ function getCart($type=''){
 	if($type!='') $condition['type'] = $type;
 	$cart 		    = new \App\Models\Cart;
 	$result         = $cart->getCart('all', ['cart', 'event', 'barn', 'stall', 'product'], $condition);
-	
 	if($result){
 		$event_id 				= array_unique(array_column($result, 'event_id'))[0];
 		$event_name 			= array_unique(array_column($result, 'eventname'))[0];
 		$event_location 		= array_unique(array_column($result, 'eventlocation'))[0];
 		$event_description 		= array_unique(array_column($result, 'eventdescription'))[0];
+		$cleaning_fee 			= array_unique(array_column($result, 'eventcleaningfee'))[0];
 	    $check_in       		= formatdate(array_unique(array_column($result, 'check_in'))[0], 1);
 	    $check_out      		= formatdate(array_unique(array_column($result, 'check_out'))[0], 1);
 	    $start          		= strtotime(array_unique(array_column($result, 'check_in'))[0]);
@@ -329,6 +329,7 @@ function getCart($type=''){
 			'event_name'		=> $event_name, 
 			'event_location' 	=> $event_location, 
 			'event_description' => $event_description, 
+			'cleaning_fee' 		=> $cleaning_fee, 
 			'barnstall'			=> $barnstall,
 			'rvbarnstall'		=> $rvbarnstall, 
 			'feed'				=> $feed, 

@@ -16,7 +16,7 @@ class Cart extends BaseModel
 		}
 
 		if(in_array('event', $querydata)){
-			$data		= 	['e.name eventname, e.location eventlocation, e.description eventdescription'];							
+			$data		= 	['e.name eventname, e.location eventlocation, e.description eventdescription, e.cleaning_fee eventcleaningfee'];							
 			$select[] 	= 	implode(',', $data);
 		}
 		

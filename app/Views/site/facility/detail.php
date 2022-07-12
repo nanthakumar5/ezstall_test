@@ -536,7 +536,7 @@
 			data,
 			{ 
 				asynchronous : 1,
-				success  : function(result){
+				success  : function(result){ 
 					if(Object.keys(result).length){  
 						$("#startdate").val(result.check_in); 
 						$("#enddate").val(result.check_out); 
@@ -548,8 +548,14 @@
 						var rvbarnstalldata = cartsummary(1, 'RV HOOKUP', result.rvbarnstall);
 						var feeddata = cartsummary(2, 'FEED', result.feed);
 						var shavingdata = cartsummary(2, 'SHAVING', result.shaving);
+						var stallcleaning_fee = (result.cleaning_fee!='') ? result.cleaning_fee : '0';
 						
-						var total = (parseFloat(result.price)+parseFloat((transactionfee/100) * result.price)).toFixed(2);
+						var total = (parseFloat(stallcleaning_fee)+parseFloat(result.price)+parseFloat((transactionfee/100) * result.price)).toFixed(2);
+						var cleaning_fee = '';
+						if(result.cleaning_fee!=''){
+							var cleaning_fee = '<div class="col-8 event_c_text">Cleaning Fee</div>\
+									<div class="col-4 event_c_text text-end">'+currencysymbol+parseFloat(result.cleaning_fee).toFixed(2)+'\</div>';
+						}
 
 						if(result.interval%7==0){
 						 	$('.night_price').hide();
@@ -579,6 +585,7 @@
 									<div class="col-4 event_c_text text-end">'+currencysymbol+result.price.toFixed(2)+'\</div>\
 									<div class="col-8 event_c_text">Transaction Fees</div>\
 									<div class="col-4 event_c_text text-end">'+currencysymbol+((transactionfee/100) * result.price).toFixed(2)+'\</div>\
+										'+cleaning_fee+'\
 								</div>\
 								<div class="row mb-2 border-top mt-3 mb-3 pt-3">\
 									<div class="col-8 fw-bold ">Total Due</div>\

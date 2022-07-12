@@ -16,7 +16,9 @@ $feed_flag 				= isset($result['feed_flag']) ? $result['feed_flag'] : '';
 $shaving_flag 			= isset($result['shaving_flag']) ? $result['shaving_flag'] : '';
 $rv_flag 				= isset($result['rv_flag']) ? $result['rv_flag'] : '';
 $charging_flag 			= isset($result['charging_flag']) ? $result['charging_flag'] : '';
+$cleaning_flag 			= isset($result['cleaning_flag']) ? $result['cleaning_flag'] : '';
 $notification_flag 		= isset($result['notification_flag']) ? $result['notification_flag'] : '';
+$cleaning_fee 			= isset($result['cleaning_fee']) ? $result['cleaning_fee'] : '';
 $barn        			= isset($result['barn']) ? $result['barn'] : [];
 $rvbarn        			= isset($result['rvbarn']) ? $result['rvbarn'] : [];
 $feed 					= isset($result['feed']) ? $result['feed'] : '';
@@ -123,6 +125,15 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 									</div>
 								</div>
 								<div class="d-flex justify-content-between flex-wrap align-items-center my-3">
+									<p>Collect the Cleaning fee from Horse owner? </p>
+									<div>
+										<?php foreach($yesno as $key => $data){ ?>
+											<button type="button" class="btn questionmodal_cleaning event_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
+										<?php } ?>
+										<input type="hidden" value="" class="cleaning_flag" name="cleaning_flag">
+									</div>
+								</div>
+								<div class="d-flex justify-content-between flex-wrap align-items-center my-3">
 									<p>Send a text message to users when their stall is unlocked and ready for use? </p>
 									<div>
 										<?php foreach($yesno as $key => $data){ ?>
@@ -200,6 +211,20 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 							<div class="row">
 								<ul class="nav nav-pills flex-column col-md-3 rvhookupsbarntab" role="tablist"></ul>
 								<div class="tab-content col-md-9 rvhookupsstalltab"></div>
+							</div>
+						</div>
+					</div>
+					<div class="card-body p-0 cleaning_wrapper" style="display: none;">
+						<div class="container row mt-5 dash-barn-style mx-auto">
+							<div class="row align-items-center mb-4 p-0 cleaningfee">
+								<div class="col-md-3">
+									<h4 class="fw-bold mb-0 barntfontfee">Clenaing Fee</h4>
+								</div>
+								<div class="col-md-12 my-2">
+									<div class="form-group">						
+										<input type="text" name="cleaning_fee" class="form-control" id="cleaning_fee" placeholder="Enter Cleaning Fee" value="<?php echo $cleaning_fee ?>">
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -292,6 +317,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 	var shaving_flag			= '<?php echo $shaving_flag ?>';
 	var rv_flag				 	= '<?php echo $rv_flag ?>';
 	var charging_flag			= '<?php echo $charging_flag ?>'; 
+	var cleaning_flag			= '<?php echo $cleaning_flag ?>'; 
 	var notification_flag		= '<?php echo $notification_flag ?>';
 
 	
@@ -328,11 +354,12 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 		questionpopup1(1, 'rv', rv_flag)
 		questionpopup1(1, 'feed', feed_flag)
 		questionpopup1(1, 'shaving', shaving_flag)
+		questionpopup1(1, 'cleaning', cleaning_flag)
 		questionpopup1(2, 'charging', charging_flag)
 		questionpopup1(2, 'notification', notification_flag)
 
-		barnstall('barn', [['.barnbtn'], ['.barntab', '.stalltab'], [0, 0], ['#barnvalidation'], [2, chargingflag]], [barn, occupied, reserved])
-		barnstall('rvhookups', [['.rvhookupsbtn'], ['.rvhookupsbarntab', '.rvhookupsstalltab'], [0, 0], ['#rvhookupsvalidation'], [2, chargingflag]], [rvbarn, occupied, reserved])
+		barnstall('barn', [['.barnbtn'], ['.barntab', '.stalltab'], [0, 0], ['#barnvalidation'],[chargingflag, 2]], [barn, occupied, reserved])
+		barnstall('rvhookups', [['.rvhookupsbtn'], ['.rvhookupsbarntab', '.rvhookupsstalltab'], [0, 0], ['#rvhookupsvalidation'], [chargingflag, 2]], [rvbarn, occupied, reserved])
 		products('feed', [['.feedbtn'], ['.feedlist'], [0]], [feed])
 		products('shavings', [['.shavingsbtn'], ['.shavingslist'], [0]], [shaving])
 
@@ -352,6 +379,12 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
     	e.preventDefault();
         questionpopup1(1, 'rv', $(this).val())
     });
+
+    $('.questionmodal_cleaning').click(function(e){ 
+    	e.preventDefault();
+        questionpopup1(1, 'cleaning', $(this).val())
+    });
+
 
     $('.questionmodal_charging').click(function(e){ 
     	e.preventDefault();

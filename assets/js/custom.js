@@ -329,15 +329,15 @@ $('#sidebarCollapse').click(function() {
     $('.navbar-header').toggleClass("show-sidebar");
 });
 
-function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
+function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){  
 	var selector_btn1 		= barnstallitem[0][0];
 	var barn_append 		= barnstallitem[1][0];
 	var stall_append 		= barnstallitem[1][1];
 	var barnIndex 			= barnstallitem[2][0];
 	var stallIndex 			= barnstallitem[2][1];
 	var barn_validation 	= barnstallitem[3][0];
-	var usertype			= barnstallitem[4][0]; 
-	var charging_flagdata	= barnstallitem[4][1];  
+	var charging_flagdata	= barnstallitem[4][0];  
+	var usertype			= barnstallitem[4][1];  
 	
 	var bsresult = barnstallresult[0] ? barnstallresult[0] : [];
 	var occupied = barnstallresult[1] ? barnstallresult[1] : [];
@@ -430,26 +430,18 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 		}else{
 			var stallImages   	= baseurl()+'assets/images/upload.png';
 		}
-
-		var charging_flag = '';
-		var chargingprice_flag= '';
-		var blockunblock = '';
-		if(usertype!='3'){ 
+			var charging_flag= '';
 			$.each(charging_flagdata, function(i,v){
 	        	var selected = i==charging_flags ? 'selected' : '';
 	            charging_flag += '<option value='+i+' '+selected+'>'+v+'</option>';
 	        })
 
-			var chargingprice_flag = '<div class="col-md-6 mb-3">\
-							    <select class="form-control" id="stall_'+barnstallname+'_'+stallIndex+'_chargingflag" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][chargingflag]">\
-							    '+charging_flag+'\
-							    </select>\
-							</div>';
-
-			var blockunblock = '<div class="col-md-6 mb-3">\
-				<input type="checkbox" id="stall_'+barnstallname+'_'+stallIndex+'_block_unblock" '+checked+' name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][block_unblock]" value="1">block/unblock\
-			</div>';
-		}
+			var blockunblock = '';
+			if(usertype!=3){
+				var blockunblock = '<div class="col-md-6 mb-3">\
+					<input type="checkbox" id="stall_'+barnstallname+'_'+stallIndex+'_block_unblock" '+checked+' name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][block_unblock]" value="1">block/unblock\
+				</div>';
+			}
 		
 		var availability = '<a href="javascript:void(0);" class="dash-stall-remove fs-7 stallremovebtn_'+barnstallname+'" data-barnIndex="'+barnIndex+'"><i class="fas fa-times text-white"></i></a>';
 		if($.inArray(stallId, occupied) !== -1)	availability = '<span class="red-box"></span>';
@@ -457,7 +449,11 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 
 		var data='\
 		<div class="row mb-2 dash-stall-base">\
-			'+chargingprice_flag+'\
+			<div class="col-md-6 mb-3">\
+			    <select class="form-control" id="stall_'+barnstallname+'_'+stallIndex+'_chargingflag" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][chargingflag]">\
+			    '+charging_flag+'\
+			    </select>\
+			</div>\
 			<div class="col-md-6 mb-3">\
 				<input type="text" id="stall_'+barnstallname+'_'+stallIndex+'_name" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][name]" class="form-control  fs-7" placeholder="Stall Name" value="'+stallName+'">\
 			</div>\

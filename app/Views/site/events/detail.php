@@ -141,6 +141,18 @@ $comments        	= (isset($comments)) ? $comments : [];
 							$tabcontent .= '<div class="tab-pane fade'.$barnactive.'" id="barn'.$barnid.'" role="tabpanel" aria-labelledby="nav-home-tab">
 							<ul class="list-group">';
 							foreach($barndata['stall'] as $stalldata){
+								if($stalldata['charging_id']=='1'){ 
+									$typeofprice = 'night_price';
+								}else if($stalldata['charging_id']=='2'){
+									$typeofprice = 'week_price';
+								}else if($stalldata['charging_id']=='3'){
+									$typeofprice = 'month_price';
+								}else if($stalldata['charging_id']=='4'){
+									$typeofprice = 'flat_price';
+								}else{
+									$typeofprice = '';
+								}
+
 								$boxcolor  = 'green-box';
 								$checkboxstatus = '';
 
@@ -148,7 +160,7 @@ $comments        	= (isset($comments)) ? $comments : [];
 									$checkboxstatus = 'disabled';
 								}
 
-								$tabcontent .= 	'<li class="list-group-item">
+								$tabcontent .= 	'<li class="list-group-item '.$typeofprice.'">
 								<input class="form-check-input eventbarnstall stallid me-1" data-price="'.$stalldata['price'].'" data-barnid="'.$stalldata['barn_id'].'" data-flag="1" value="'.$stalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
 								'.$stalldata['name'].'
 								<span class="'.$boxcolor.' stallavailability" data-stallid="'.$stalldata['id'].'" ></span>
@@ -189,7 +201,17 @@ $comments        	= (isset($comments)) ? $comments : [];
 
 								$tabcontent .= '<div class="tab-pane fade'.$rvactive.'" id="barn'.$rvid.'" role="tabpanel" aria-labelledby="nav-home-tab">
 								<ul class="list-group">';
-								foreach($rvdata['rvstall'] as $rvstalldata){
+								foreach($rvdata['rvstall'] as $rvstalldata){ 
+									if($rvstalldata['charging_id']=='1'){
+										$typeofprice = 'night_price';
+									}else if($rvstalldata['charging_id']=='2'){
+										$typeofprice = 'week_price';
+									}else if($rvstalldata['charging_id']=='3'){
+										$typeofprice = 'month_price';
+									}else if($rvstalldata['charging_id']=='4'){
+										$typeofprice = 'flat_price';
+									}
+
 									$boxcolor  = 'green-box';
 									$checkboxstatus = '';
 
@@ -197,7 +219,7 @@ $comments        	= (isset($comments)) ? $comments : [];
 										$checkboxstatus = 'disabled';
 									}
 
-									$tabcontent .= 	'<li class="list-group-item rvhookups">
+									$tabcontent .= 	'<li class="list-group-item rvhookups '.$typeofprice.'">
 									<input class="form-check-input rvbarnstall stallid me-1" data-price="'.$rvstalldata['price'].'" data-barnid="'.$rvstalldata['barn_id'].'" data-flag="2" value="'.$rvstalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
 									'.$rvstalldata['name'].'
 									<span class="'.$boxcolor.' stallavailability" data-stallid="'.$rvstalldata['id'].'" ></span>
@@ -420,6 +442,25 @@ $comments        	= (isset($comments)) ? $comments : [];
 		setTimeout(function(){
 			var startdate 	= $("#startdate").val(); 
 			var enddate   	= $("#enddate").val(); 
+			if(enddate!=""){
+				var startdates 		= new Date(startdate);
+				var enddates 		= new Date(enddate);
+				var stallinterval  	= enddates.getTime() - startdates.getTime(); 
+				var intervaldays 	= stallinterval / (1000 * 3600 * 24); 
+					$('.week_price').show();
+					$('.month_price').show();
+					$('.night_price').show();
+				if(intervaldays%7==0){
+				  	$('.night_price').hide();
+				  	$('.month_price').hide();
+				}else if(intervaldays%30==0){ 
+					$('.week_price').hide();
+					$('.night_price').hide();
+				}else{
+					$('.week_price').hide();
+					$('.month_price').hide();
+				}
+			}
 
 			if(startdate!='' && enddate!=''){
 				cart({type : '1', checked : 0}); 
@@ -619,8 +660,27 @@ $comments        	= (isset($comments)) ? $comments : [];
 						var rvbarnstalldata = cartsummary(1, 'RV HOOKUP', result.rvbarnstall);
 						var feeddata = cartsummary(2, 'FEED', result.feed);
 						var shavingdata = cartsummary(2, 'SHAVING', result.shaving);
-						
-						var total = (parseFloat(result.price)+parseFloat((transactionfee/100) * result.price)).toFixed(2);
+						var stallcleaning_fee = (result.cleaning_fee!='') ? result.cleaning_fee : '0';
+
+						var total = (parseFloat(stallcleaning_fee)+parseFloat(result.price)+parseFloat((transactionfee/100) * result.price)).toFixed(2);
+
+						var cleaning_fee = '';
+						if(result.cleaning_fee!=''){
+							var cleaning_fee = '<div class="col-8 event_c_text">Cleaning Fee</div>\
+									<div class="col-4 event_c_text text-end">'+currencysymbol+parseFloat(result.cleaning_fee).toFixed(2)+'\</div>';
+						}
+
+						if(result.interval%7==0){
+						 	$('.night_price').hide();
+			  				$('.month_price').hide();
+			  			}else if(result.interval%30==0){
+						 	$('.week_price').hide();
+							$('.night_price').hide();
+			  			}else{
+			  				$('.week_price').hide();
+							$('.month_price').hide();
+			  			}
+
 						var result ='\
 						<div class="w-100">\
 							<div class="border rounded pt-4 ps-3 pe-3 mb-5">\
@@ -638,6 +698,7 @@ $comments        	= (isset($comments)) ? $comments : [];
 									<div class="col-4 event_c_text text-end">'+currencysymbol+result.price.toFixed(2)+'\</div>\
 									<div class="col-8 event_c_text">Transaction Fees</div>\
 									<div class="col-4 event_c_text text-end">'+currencysymbol+((transactionfee/100) * result.price).toFixed(2)+'\</div>\
+									'+cleaning_fee+'\
 								</div>\
 								<div class="row mb-2 border-top mt-3 mb-3 pt-3">\
 									<div class="col-8 fw-bold ">Total Due</div>\

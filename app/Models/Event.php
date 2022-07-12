@@ -220,6 +220,8 @@ class Event extends BaseModel
 		if(isset($data['rv_flag']) && $data['rv_flag']!='') 					$request['rv_flag'] 			= $data['rv_flag'];
 		if(isset($data['charging_flag']) && $data['charging_flag']!='') 		$request['charging_flag'] 		= $data['charging_flag'];
 		if(isset($data['notification_flag']) && $data['notification_flag']!='') $request['notification_flag'] 	= $data['notification_flag'];
+		if(isset($data['cleaning_flag']) && $data['cleaning_flag']!='') 		$request['cleaning_flag'] 	= $data['cleaning_flag'];
+		if(isset($data['cleaning_fee']) && $data['cleaning_fee']!='') 			$request['cleaning_fee'] 	= $data['cleaning_fee'];
 		if(isset($data['type']) && $data['type']!='')    		 				$request['type'] 				= $data['type'];
 		
 		if(isset($data['image']) && $data['image']!=''){
@@ -321,7 +323,7 @@ class Event extends BaseModel
 					$this->db->table('stall')->whereNotIn('id', $stallidcolumn)->update(['status' => '0'], ['barn_id' => $barninsertid, 'type' => $extras[2]]);
 				}
 				
-				foreach($barndata['stall'] as $stalldata){   
+				foreach($barndata['stall'] as $stalldata){  
 					$stallid        	 	= $stalldata['id']!='' ? $stalldata['id'] : '';
 					$stall['event_id'] 	 	= $extras[0];
 					$stall['barn_id']    	= $barninsertid;
@@ -330,8 +332,7 @@ class Event extends BaseModel
 					$stall['price']      	= $stalldata['price'];
 					$stall['block_unblock'] = isset($stalldata['block_unblock']) ? $stalldata['block_unblock'] : 0;
 					$stall['status']     	= $stalldata['status'];
-					$stall['type']		 	= $extras[2]; 
-						
+					$stall['type']		 	= $extras[2];
 					
 					if(isset($stalldata['image']) && $stalldata['image']!=''){
 						$stall['image'] = $stalldata['image'];		
@@ -345,6 +346,7 @@ class Event extends BaseModel
 						}
 						$this->db->table('stall')->insert($stall);
 					}else {
+						
 					   $this->db->table('stall')->update($stall, ['id' => $stallid]);
 					}	
 				}

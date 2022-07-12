@@ -91,7 +91,7 @@ class Index extends BaseController
 		
 		if ($this->request->getMethod()=='post')
 		{
-			$requestData 			= $this->request->getPost();
+			$requestData 			= $this->request->getPost(); 
 			if(isset($requestData['stripepayid'])) $payment = $this->stripe->action(['id' => $requestData['stripepayid']]);
 			
 			if(!isset($requestData['stripepayid']) || (isset($requestData['stripepayid']) && isset($payment))){
@@ -119,7 +119,7 @@ class Index extends BaseController
 		$data['stripe'] 		= view('site/common/stripe/stripe1');
 		$data['yesno'] 			= $this->config->yesno;
 		$data['chargingflag'] 	= $this->config->chargingflag;
-		$data['questionmodal'] 	= view('site/common/questionmodal/questionmodal1', ['yesno' => $data['yesno'], 'chargingflag' => $data['chargingflag'], 'facility_status' => '1']);
+		$data['questionmodal'] 	= view('site/common/questionmodal/questionmodal1', ['yesno' => $data['yesno'], 'facility_status' => '1']);
 		$data['settings'] 		= $settings;
 		
 		return view('site/myaccount/facility/action', $data);
