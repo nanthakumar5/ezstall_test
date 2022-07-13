@@ -279,7 +279,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 						<div class="container row mt-5 dash-barn-style mx-auto">
 							<div class="row align-items-center mb-4 p-0 cleaningfee">
 								<div class="col-md-3">
-									<h4 class="fw-bold mb-0 barntfontfee">Clenaing Fee</h4>
+									<h4 class="fw-bold mb-0 barntfontfee">Cleaning Fee</h4>
 								</div>
 								<div class="col-md-12 my-2">
 									<div class="form-group">						

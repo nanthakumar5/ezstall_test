@@ -33,7 +33,7 @@
 				</div>
 			</div>
 			<div class="modal-body modalcarousel displaynone">
-				Will you Collect the Cleaning fee from Horse owner?
+				Will you collect the Cleaning fee from Horse owner?
 				<div align="center" class="mt-3">
 					<?php foreach($yesno as $key => $data){ ?>
 						<button type="button" data-type="cleaning" class="btn questionmodal_cleaning model_btn questionmodal_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
