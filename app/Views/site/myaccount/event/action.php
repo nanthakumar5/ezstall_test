@@ -186,7 +186,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 									</div>
 								</div>
 								<div class="d-flex justify-content-between flex-wrap align-items-center my-3">
-									<p>Collect the Cleaning fee from Horse owner? </p>
+									<p>Will you collect the Cleaning fee from Horse owner? </p>
 									<div>
 										<?php foreach($yesno as $key => $data){ ?>
 											<button type="button" class="btn questionmodal_cleaning event_btn" value="<?php echo $key; ?>"><?php echo $data; ?></button>
