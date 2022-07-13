@@ -75,7 +75,7 @@ class Index extends BaseController
 	public function action($id='')
 	{
 		if($id!=''){
-			$result = $this->event->getEvent('row', ['event', 'barn', 'stall'], ['id' => $id, 'status' => ['1', '2'], 'type' => '1']);
+			$result = $this->event->getEvent('row', ['event', 'barn', 'stall', 'rvbarn', 'rvstall', 'feed', 'shaving'], ['id' => $id, 'status' => ['1', '2'], 'type' => '1']);
 			if($result){
 				$data['result'] = $result;
 			}else{
@@ -102,7 +102,10 @@ class Index extends BaseController
 			}
         }
 		
-		$data['statuslist'] = $this->config->status1;
+		$data['statuslist'] 	= $this->config->status1;
+		$data['yesno'] 			= $this->config->yesno;
+		$data['chargingflag'] 	= $this->config->chargingflag;
+		$data['googleapikey'] 	= $this->config->googleapikey;
 		
 		return view('admin/event/action', $data);
 	}	

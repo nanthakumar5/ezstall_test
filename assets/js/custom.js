@@ -600,6 +600,12 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 	/* END BULK UPLOAD */
 	
 	/* START STALL BULK UPLOAD */
+	var charging_flagmodal ='';
+		$.each(charging_flagdata, function(i,v){ 
+        	//var selected = i==1 ? 'selected' : '';
+            charging_flagmodal += '<option value='+i+'>'+v+'</option>';
+        })
+
 	var modal = '<div class="modal fade" id="bulkstallmodal_'+barnstallname+'" role="dialog">\
 					<div class="modal-dialog">\
 						<div class="modal-content">\
@@ -608,6 +614,14 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 								<button type="button" class="close" data-bs-dismiss="modal">&times;</button>\
 							</div>\
 							<div class="modal-body">\
+								<div class="col-md-12 my-2">\
+									<div class="form-group">\
+										<label>chargingflag</label>\
+										<select class="form-control stall_charging_id_'+barnstallname+'">\
+										'+charging_flagmodal+'\
+										</select>\
+									</div>\
+								</div>\
 								<div class="col-md-12 my-2">\
 									<div class="form-group">\
 										<label>Stall Name</label>\
@@ -677,6 +691,7 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 
 		var name          	= $('.stall_name_'+barnstallname).val();
 		var price        	= $('.stall_price_'+barnstallname).val();
+		var charging_id    = $('.stall_charging_id_'+barnstallname).val(); 
 		var image        	= $('.stall_image_'+barnstallname).val();
 		var stalltotal    	= $('.stall_total_'+barnstallname).val();
 		var stallnumber 	= $('.stall_number_'+barnstallname).val(); 
@@ -684,7 +699,7 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 
 		for(var i=0; i<stalltotal; i++){ 
 			var names = stallnumber!='' ? name+' '+stallnumber : name; 
-			stalldata(barnIndexValue, {name:names,price:price,status:1,bulkimage:image});
+			stalldata(barnIndexValue, {name:names,charging_id: charging_id,price:price,status:1,bulkimage:image});
 			if(stallnumber!='') stallnumber++ ;
 		}
 

@@ -11,7 +11,6 @@ $profileimage      		= isset($result['profile_image']) ? $result['profile_image'
 $profileimage 			= filedata($profileimage, base_url().'/assets/uploads/profile/');
 $stallmap      			= isset($result['stallmap']) ? $result['stallmap'] : '';
 $stallmap 				= filedata($stallmap, base_url().'/assets/uploads/stallmap/');
-$barn        			= isset($result['barn']) ? $result['barn'] : [];
 $feed_flag 				= isset($result['feed_flag']) ? $result['feed_flag'] : '';
 $shaving_flag 			= isset($result['shaving_flag']) ? $result['shaving_flag'] : '';
 $rv_flag 				= isset($result['rv_flag']) ? $result['rv_flag'] : '';
