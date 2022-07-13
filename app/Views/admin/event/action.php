@@ -233,11 +233,11 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 							<div class="col-md-2">
 								<p class="fs-2 fw-bold mb-0">Barn</p>
 							</div>
-							<div class="col-md-10 t-right p-0">
+							<div class="col-md-9 t-right p-0 respsm">
 								<input type="hidden" value="" name="barnvalidation" id="barnvalidation">
-								<a href="javascript:void(0);" class="btn btn-info addbulkbarnbtn">Add Bulk Barn</a>
-								<input type="file" class="bulkbarnfile" style="display:none;">
-								<button class="btn-stall barnbtn">Add Barn</button>
+								<a href="javascript:void(0);" class="btn btn-info bulkbtn_barn">Add Bulk Barn</a>
+								<input type="file" class="bulkfile_barn" style="display:none;">
+								<button class="btn-stall barnbtn" value="4" name="tst" id="tes">Add Barn</button>
 							</div>
 						</div>
 						<ul class="nav nav-pills flex-column col-md-3 barntab" role="tablist"></ul>
@@ -557,5 +557,28 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 			}
 		})
 	}
+
+	$(document).on('click','.addbulkbarnbtn', function () {
+		$('.bulkbarnfile').click();
+	});
+
+	$(document).on('change','.bulkbarnfile', function () {
+  		var formdata = new FormData();
+		formdata.append('file', $(this)[0].files[0]); 
+		
+		ajax(
+			'<?php echo base_url(); ?>/events/importbarnstall', 
+			formdata, 
+			{
+				contenttype : 1,
+				processdata : 1,
+				success: function(result) {
+					$(result).each(function(i, v){
+						barndata(v)
+					})
+				}
+			}
+		);
+	});
 </script>
 <?php $this->endSection(); ?>
