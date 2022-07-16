@@ -117,6 +117,9 @@ $routes->group('myaccount', ['filter' => 'siteauthentication2'], function($route
 
     $routes->match(['get','post'], 'payments','Site\Myaccount\PaymentInfo\Index::index');
     $routes->get('payments/view/(:num)', 'Site\Myaccount\PaymentInfo\Index::view/$1');
+
+    $routes->match(['get','post'], 'transactions','Site\Myaccount\TransactionInfo\Index::index');
+
 });
 
 $routes->match(['get', 'post'], '/administrator', 'Admin\Login\Index::index', ['filter' => 'adminauthentication1']);	
@@ -197,6 +200,13 @@ $routes->group('administrator', ['filter' => 'adminauthentication2'], function($
     $routes->match(['get','post'],'reservations', 'Admin\Reservations\Index::index');
     $routes->post('reservations/DTreservations', 'Admin\Reservations\Index::DTreservations');
     $routes->get('reservations/view/(:num)', 'Admin\Reservations\Index::view/$1');
+
+    //Comments
+    $routes->match(['get', 'post'], 'comments', 'Admin\Comments\Index::index');
+    $routes->get('comments/(:num)', 'Admin\Comments\Index::index/$1');
+    $routes->match(['get', 'post'], 'comments/action', 'Admin\Comments\Index::action');
+    $routes->get('comments/action/(:num)', 'Admin\Comments\Index::action/$1');
+    $routes->get('comments/view/(:num)', 'Admin\Comments\Index::view/$1');
 
     //Newsletter
     $routes->get('newsletter', 'Admin\Newsletter\Index::index');

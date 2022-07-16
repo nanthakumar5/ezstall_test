@@ -59,6 +59,7 @@
 	<script src="<?php echo base_url();?>/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 	<script src="<?php echo base_url();?>/assets/plugins/tinymce/tinymce.min.js"></script>
 	<script src="<?php echo base_url();?>/assets/js/adminlte.min.js"></script>
+	<script src="<?php echo base_url();?>/assets/plugins/rater/rater.min.js"></script>
 	<!-- bootstrap 5 cdn-->
 	<script src="<?php echo base_url();?>/assets/js/bootstrap.bundle.min.js"></script>
 	<script src="<?php echo base_url();?>/assets/js/custom.js"></script>

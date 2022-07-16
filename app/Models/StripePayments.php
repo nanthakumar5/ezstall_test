@@ -16,18 +16,19 @@ class StripePayments extends BaseModel
 		}
 
 		if(in_array('users', $querydata)){
-			$data		= 	['u.name username','u.stripe_account_id'];							
+			$data		= 	['u.name username','u.stripe_account_id','u1.type transferusertype',];							
 			$select[] 	= 	implode(',', $data);
 		}
 
 		$query = $this->db->table('stripe_payment s');
 
-  		if(in_array('users', $querydata))      $query->join('users u',  'u.id = s.user_id' , 'left');
+  		if(in_array('users', $querydata))      		$query->join('users u',  'u.id = s.user_id' , 'left')->join('users u1',  'u1.id = s.created_by' , 'left');
 
 		if(isset($extras['select'])) 					$query->select($extras['select']);
 		else											$query->select(implode(',', $select));
 		
 		if(isset($requestdata['id'])) 					$query->where('s.id', $requestdata['id']);
+		if(isset($requestdata['userid'])) 				$query->where('s.user_id', $requestdata['userid']);
 		if(isset($requestdata['status'])) 				$query->whereIn('s.status', $requestdata['status']);
 
 		if($type!=='count' && isset($requestdata['start']) && isset($requestdata['length'])){
@@ -54,7 +55,7 @@ class StripePayments extends BaseModel
 		}
 		
 		if(isset($extras['groupby'])) 	$query->groupBy($extras['groupby']);
-		if(isset($extras['orderby'])) 	$query->orderBy($extras['orderby'], $extras['sort']);
+		if(isset($extras['orderby'])) 	$query->orderBy($extras['orderby']);
 		
 		if($type=='count'){
 			$result = $query->countAllResults();

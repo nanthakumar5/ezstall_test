@@ -30,7 +30,7 @@
 </li>
 <li class="nav-item">
 	<a href="<?php echo getAdminUrl().'/stripepayments'; ?>" class="nav-link nav-hov">
-		<i class="nav-icon far fa-credit-card"></i>
+		<i class="nav-icon fab fa-cc-stripe"></i>
 		<p>Stripe Payments</p>
 	</a>
 </li>
@@ -85,6 +85,12 @@
 	<a href="<?php echo getAdminUrl().'/contactus'; ?>" class="nav-link nav-hov">
 		<i class="nav-icon far fa-address-book"></i>
 		<p>Contact Us</p>
+	</a>
+</li>
+<li class="nav-item">
+	<a href="<?php echo getAdminUrl().'/comments'; ?>" class="nav-link nav-hov">
+		<i class="nav-icon fa fa-comments"></i>
+		<p>Comments</p>
 	</a>
 </li>
 <li class="nav-item">

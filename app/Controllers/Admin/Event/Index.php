@@ -46,7 +46,9 @@ class Index extends BaseController
 			foreach($results as $key => $result){
 				$action = 	'<a href="'.getAdminUrl().'/event/action/'.$result['id'].'">Edit</a> / 
 							<a href="javascript:void(0);" data-id="'.$result['id'].'" class="delete">Delete</a> /
-							<a href="'.getAdminUrl().'/event/view/'.$result['id'].'" data-id="'.$result['id'].'" class="view">View</a>
+							<a href="'.getAdminUrl().'/event/view/'.$result['id'].'" data-id="'.$result['id'].'" class="view">View</a>/
+							<a href="'.getAdminUrl().'/comments/'.$result['id'].'" data-id="'.$result['id'].'" class="commentview">View Comments</a>
+
 							';
 				
 				$totalrecord[] = 	[

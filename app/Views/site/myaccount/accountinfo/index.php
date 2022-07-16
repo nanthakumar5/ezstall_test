@@ -3,16 +3,20 @@
   <h2 class="fw-bold mb-4">Account Information</h2>
   <form method="post" action="" id="accountinformtion" class="accountinformtion">
     <div class="mb-3">
-      <label for="username" class="form-label" id="username-lbl" >Name</label>
+      <label class="form-label" id="username-lbl" >Name</label>
       <input type="text" name="name"class="form-control"  id="username" value="<?php echo $userdetail['name']; ?>">
     </div>
     <div class="mb-3">
-      <label for="useremail" class="form-label" id="useremail_lbl" >Email address</label>
+      <label class="form-label" id="useremail_lbl" >Email address</label>
       <input type="email" name="email" class="form-control"  id="useremail" value="<?php echo $userdetail['email']; ?>">
     </div>
     <div class="mb-3">
-      <label for="userpassword" class="form-label" id="userpass_lbl" >Password</label>
+      <label class="form-label" id="userpass_lbl" >Password</label>
       <input type="password" name="password" class="form-control"  id="userpassword" value="">
+    </div>
+    <div class="mb-3">
+      <label class="form-label" id="accountid-lbl">Stripe Account ID</label>
+      <textarea name ="stripe_account_id"   class="form-control" id="stripe_account_id" rows="3"><?php echo $userdetail['stripe_account_id']; ?></textarea>
     </div>
     <input type="hidden" name="actionid" id="userid" value="<?php echo $userdetail['id']; ?>">
     <button type="submit" class="account-btn" id="updateinfo" >Update</button>
@@ -36,6 +40,9 @@ $(function(){
                       data  :   {id : "<?php echo $userdetail['id']; ?>"},
                       async :   false,
                     }
+      },
+       stripe_account_id      : {
+        required  :   true
       }, 
     },
     { 
@@ -46,6 +53,9 @@ $(function(){
         required    : "Please Enter Your Email.",
         email     	: "Enter valid email address.",
         remote    	: "Email Already Taken"
+      },
+       stripe_account_id      : {
+        required    : "Please Enter Your Stripe Accouny ID."
       },
     }
   );
