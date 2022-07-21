@@ -215,6 +215,10 @@ $routes->group('administrator', ['filter' => 'adminauthentication2'], function($
     // Report
     $routes->match(['get','post'],'eventreport', 'Admin\Report\Index::eventreport');
 
+    // Email Template
+    $routes->match(['get', 'post'], 'emailtemplate', 'Admin\EmailTemplate\Index::index');
+    $routes->match(['get', 'post'],'emailtemplate/action/(:num)', 'Admin\EmailTemplate\Index::action/$1');
+
 	// Settings
     $routes->match(['get', 'post'], 'settings', 'Admin\Settings\Index::index');
 });

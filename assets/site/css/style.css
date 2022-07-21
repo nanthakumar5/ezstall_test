@@ -4778,3 +4778,19 @@ div#replylist {
     border-radius: 5px;
     border-left: 4px solid #e00000;
 }
+
+
+
+/*21072022 styles start*/
+
+
+div#multi-nav-tab button.nav-link.m-0.show.active {
+    font-size: 15px !important;
+}
+
+div#multi-nav-tab button.nav-link.m-0 {
+    font-size: 15px !important;
+}
+
+
+/*21072022 styles end*/

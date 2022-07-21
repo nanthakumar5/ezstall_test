@@ -181,8 +181,9 @@ function createDirectory($path)
 	}
 }
 
-function send_mail($to,$subject,$message)
+function send_mail($to,$subject,$message,$attachment)
 {
+
 	$email = \Config\Services::email();
 
 	$config['protocol'] 	= 'smtp';
@@ -201,13 +202,17 @@ function send_mail($to,$subject,$message)
 	$email->setSubject($subject);
 	$email->setMessage($message);
 
+	if($attachment !=''){
+		$filename 	= 'Eventinvoice.pdf';
+		$email->attach($attachment, 'attachment', $filename, 'application/pdf');
+	}
+
     if($email->send()){
         return "sent";
     }else{
-        print_r($email->printDebugger());exit;
+       	print_r($email->printDebugger());exit;
         return "not sent";
     }
-
 } 
 
 function getUsersList($data=[])
@@ -412,6 +417,7 @@ function send_message_template($id, $extras=[]){
 	$emailtempate 	= new \App\Models\Emailtemplate;
 	$users 			= new \App\Models\Users;
 	$products 		= new \App\Models\Products;
+	$event 			= new App\Models\Event;
 
     $emailtemplate = $emailtempate->getEmailTemplate('row', ['emailtemplate'], ['id' => $id]);
     
@@ -432,6 +438,11 @@ function send_message_template($id, $extras=[]){
         $event 		= $event->getEvent('row', ['event'], ['id' => $extras['eventid']]);
         $eventname 	= $event['name'];
     }
+
+    $attachment = '';
+    if(isset($extras['attachment'])){ 
+        $attachment = $extras['attachment'];
+    }
 	
     $subject = str_replace(
 		[
@@ -448,15 +459,16 @@ function send_message_template($id, $extras=[]){
 			'#username',
             '#productname', 
 			'#eventname'
-
         ],
         [
             isset($username) ? $username : '',
             isset($productname) ? $productname : '',
-            isset($eventname) ? $eventname : '',
+            isset($eventname) ? $eventname : ''
         ],
+
         $emailtemplate['message'],
     );
 
-    send_mail($email, $subject, $message);
+
+    send_mail($email, $subject, $message,$attachment);
 }

@@ -32,4 +32,34 @@ class Emailtemplate extends BaseModel
 	
 		return $result;
     }
+
+	public function action($data)
+	{
+		$this->db->transStart();
+		
+		$actionid 			= (isset($data['actionid'])) ? $data['actionid'] : '';
+		
+		if(isset($data['name']) && $data['name']!='')      					$request['name'] 						= $data['name'];
+		if(isset($data['subject']) && $data['subject']!='') 	 			$request['subject'] 					= $data['subject'];
+		if(isset($data['message']) && $data['message']!='') 	 			$request['message'] 					= $data['message'];
+
+		if(isset($request)){
+
+			if($actionid==''){
+				$templates = $this->db->table('email_template')->insert($request);
+				$templateinsertid = $this->db->insertID();
+			}else{
+				$templates = $this->db->table('email_template')->update($request, ['id' => $actionid]);
+				$templateinsertid = $actionid;
+			}
+		}
+		
+		if(isset($templateinsertid) && $this->db->transStatus() === FALSE){
+			$this->db->transRollback();
+			return false;
+		}else{
+			$this->db->transCommit();
+			return $templateinsertid;
+		}
+	}
 }

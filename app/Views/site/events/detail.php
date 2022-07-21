@@ -128,657 +128,687 @@ $comments        	= (isset($comments)) ? $comments : [];
 						</div>
 					</div>
 					<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-3">
-						<h3 class="fw-bold mb-4">Book Your Stalls</h3>
-						<?php 
-						$tabbtn = '';
-						$tabcontent = '';
-						foreach ($detail['barn'] as $barnkey => $barndata) {
-							$barnid = $barndata['id'];
-							$barnname = $barndata['name'];
-							$barnactive = $barnkey=='0' ? ' show active' : '';
-							$tabbtn .= '<button class="nav-link m-0'.$barnactive.'" data-bs-toggle="tab" data-bs-target="#barn'.$barnid.'" type="button" role="tab" aria-controls="barn'.$barnid.'" aria-selected="true">'.$barnname.'</button>';
-
-							$tabcontent .= '<div class="tab-pane fade'.$barnactive.'" id="barn'.$barnid.'" role="tabpanel" aria-labelledby="nav-home-tab">
-							<ul class="list-group">';
-							foreach($barndata['stall'] as $stalldata){
-								if($stalldata['charging_id']=='1'){ 
-									$typeofprice = 'night_price';
-								}else if($stalldata['charging_id']=='2'){
-									$typeofprice = 'week_price';
-								}else if($stalldata['charging_id']=='3'){
-									$typeofprice = 'month_price';
-								}else if($stalldata['charging_id']=='4'){
-									$typeofprice = 'flat_price';
-								}else{
-									$typeofprice = '';
-								}
-
-								$boxcolor  = 'green-box';
-								$checkboxstatus = '';
-
-								if($cartevent=='1' || $checkevent['status']=='0'){
-									$checkboxstatus = 'disabled';
-								}
-
-								$tabcontent .= 	'<li class="list-group-item '.$typeofprice.'">
-								<input class="form-check-input eventbarnstall stallid me-1" data-price="'.$stalldata['price'].'" data-barnid="'.$stalldata['barn_id'].'" data-flag="1" value="'.$stalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
-								'.$stalldata['name'].'
-								<span class="'.$boxcolor.' stallavailability" data-stallid="'.$stalldata['id'].'" ></span>
-								</li>';
-							}
-							$tabcontent .= '</ul></div>';
-						}
-						?>
+						<h3 class="fw-bold mb-4">Stalls</h3>
 						<div class="barn-nav mt-4">
 							<nav>
-								<div class="nav nav-tabs" id="nav-tab" role="tablist">
-									<?php echo $tabbtn; ?>
+								<div class="nav nav-tabs" id="multi-nav-tab" role="tablist">
+									<button class="nav-link m-0 show active" data-bs-toggle="tab" data-bs-target="#barnstall" type="button" role="tab" aria-controls="barnstall" aria-selected="true">Book Your Stalls</button>
+									<?php if($detail['rv_flag'] =='1' && !empty($detail['rvbarn'])) { ?>
+										<button class="nav-link m-0" data-bs-toggle="tab" data-bs-target="#barnhook" type="button" role="tab" aria-controls="barnhook" aria-selected="false">Book Your Rvhookups</button>
+									<?php } ?>
+									<?php if($detail['feed_flag'] =='1' && !empty($detail['feed_flag'])) { ?>
+										<button class="nav-link m-0" data-bs-toggle="tab" data-bs-target="#barnfeed" type="button" role="tab" aria-controls="barnfeed" aria-selected="false">Book Your Feed</button>
+									<?php } ?>
+									<?php if($detail['shaving_flag'] =='1' && !empty($detail['shaving_flag'])) { ?>
+										<button class="nav-link m-0" data-bs-toggle="tab" data-bs-target="#barnshaving" type="button" role="tab" aria-controls="barnshaving" aria-selected="false">Book Your Shaving</button>	
+									<?php } ?>			
 								</div>
 							</nav>
 							<div class="tab-content" id="nav-tabContent">
-								<?php echo $tabcontent; ?>
-								<div class="row">
-									<div class="btm-color">
-										<p><span class="green-circle"></span>Available</p>
-										<p><span class="yellow-circle"></span>Reserved</p>
-										<p><span class="red-circle"></span>Occupied</p>
-									</div>
-								</div>
-							</div>    
-						</div>
-					</div>					
-					<?php if($detail['rv_flag'] =='1' && !empty($detail['rvbarn'])) { ?>
-						<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-3">
-							<h3 class="fw-bold mb-4">Book Your Rvhookups</h3>
-							<?php 
-							$tabbtn = '';
-							$tabcontent = ''; 
-							foreach ($detail['rvbarn'] as $rvkey => $rvdata) { 
-								$rvid = $rvdata['id'];
-								$rvname = $rvdata['name'];
-								$rvactive = $rvkey=='0' ? ' show active' : '';
-								$tabbtn .= '<button class="nav-link m-0'.$rvactive.'" data-bs-toggle="tab" data-bs-target="#barn'.$rvid.'" type="button" role="tab" aria-controls="barn'.$rvid.'" aria-selected="true">'.$rvname.'</button>';
+								<div class="tab-pane fade active show" id="barnstall" role="tabpanel" aria-labelledby="nav-home-tab">
+									<div class="border rounded pt-4 ps-3 pe-3 mb-3">
+										<h3 class="fw-bold mb-4">Book Your Stalls</h3>
+										<?php 
+										$tabbtn = '';
+										$tabcontent = '';
+										foreach ($detail['barn'] as $barnkey => $barndata) {
+											$barnid = $barndata['id'];
+											$barnname = $barndata['name'];
+											$barnactive = $barnkey=='0' ? ' show active' : '';
+											$tabbtn .= '<button class="nav-link m-0'.$barnactive.'" data-bs-toggle="tab" data-bs-target="#barn'.$barnid.'" type="button" role="tab" aria-controls="barn'.$barnid.'" aria-selected="true">'.$barnname.'</button>';
 
-								$tabcontent .= '<div class="tab-pane fade'.$rvactive.'" id="barn'.$rvid.'" role="tabpanel" aria-labelledby="nav-home-tab">
-								<ul class="list-group">';
-								foreach($rvdata['rvstall'] as $rvstalldata){ 
-									if($rvstalldata['charging_id']=='1'){
-										$typeofprice = 'night_price';
-									}else if($rvstalldata['charging_id']=='2'){
-										$typeofprice = 'week_price';
-									}else if($rvstalldata['charging_id']=='3'){
-										$typeofprice = 'month_price';
-									}else if($rvstalldata['charging_id']=='4'){
-										$typeofprice = 'flat_price';
-									}
+											$tabcontent .= '<div class="tab-pane fade'.$barnactive.'" id="barn'.$barnid.'" role="tabpanel" aria-labelledby="nav-home-tab">
+											<ul class="list-group">';
+											foreach($barndata['stall'] as $stalldata){
+												if($stalldata['charging_id']=='1'){ 
+													$typeofprice = 'night_price';
+												}else if($stalldata['charging_id']=='2'){
+													$typeofprice = 'week_price';
+												}else if($stalldata['charging_id']=='3'){
+													$typeofprice = 'month_price';
+												}else if($stalldata['charging_id']=='4'){
+													$typeofprice = 'flat_price';
+												}else{
+													$typeofprice = '';
+												}
 
-									$boxcolor  = 'green-box';
-									$checkboxstatus = '';
+												$boxcolor  = 'green-box';
+												$checkboxstatus = '';
 
-									if($cartevent=='1' || $checkevent['status']=='0'){
-										$checkboxstatus = 'disabled';
-									}
+												if($cartevent=='1' || $checkevent['status']=='0'){
+													$checkboxstatus = 'disabled';
+												}
 
-									$tabcontent .= 	'<li class="list-group-item rvhookups '.$typeofprice.'">
-									<input class="form-check-input rvbarnstall stallid me-1" data-price="'.$rvstalldata['price'].'" data-barnid="'.$rvstalldata['barn_id'].'" data-flag="2" value="'.$rvstalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
-									'.$rvstalldata['name'].'
-									<span class="'.$boxcolor.' stallavailability" data-stallid="'.$rvstalldata['id'].'" ></span>
-									</li>';
-								}
-								$tabcontent .= '</ul></div>';
-							}
-							?>
-							<div class="barn-nav mt-4">
-								<nav>
-									<div class="nav nav-tabs" id="nav-tab" role="tablist">
-										<?php echo $tabbtn; ?>
-									</div>
-								</nav>
-								<div class="tab-content" id="nav-tabContent">
-									<?php echo $tabcontent; ?>
-									<div class="row">
-										<div class="btm-color">
-											<p><span class="green-circle"></span>Available</p>
-											<p><span class="yellow-circle"></span>Reserved</p>
-											<p><span class="red-circle"></span>Occupied</p>
+												$tabcontent .= 	'<li class="list-group-item '.$typeofprice.'">
+												<input class="form-check-input eventbarnstall stallid me-1" data-price="'.$stalldata['price'].'" data-barnid="'.$stalldata['barn_id'].'" data-flag="1" value="'.$stalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
+												'.$stalldata['name'].'
+												<span class="'.$boxcolor.' stallavailability" data-stallid="'.$stalldata['id'].'" ></span>
+												</li>';
+											}
+											$tabcontent .= '</ul></div>';
+										}
+										?>
+										<div class="barn-nav mt-4">
+											<nav>
+												<div class="nav nav-tabs" id="nav-tab" role="tablist">
+													<?php echo $tabbtn; ?>
+												</div>
+											</nav>
+											<div class="tab-content" id="nav-tabContent">
+												<?php echo $tabcontent; ?>
+												<div class="row">
+													<div class="btm-color">
+														<p><span class="green-circle"></span>Available</p>
+														<p><span class="yellow-circle"></span>Reserved</p>
+														<p><span class="red-circle"></span>Occupied</p>
+													</div>
+												</div>
+											</div>    
 										</div>
 									</div>
-								</div>    
+								</div>
+								<?php if($detail['rv_flag'] =='1' && !empty($detail['rvbarn'])) { ?>
+									<div class="tab-pane fade" id="barnhook" role="tabpanel" aria-labelledby="nav-home-tab">
+
+										<div class="border rounded pt-4 ps-3 pe-3 mb-3">
+											<h3 class="fw-bold mb-4">Book Your Rvhookups</h3>
+											<?php 
+											$tabbtn = '';
+											$tabcontent = ''; 
+											foreach ($detail['rvbarn'] as $rvkey => $rvdata) { 
+												$rvid = $rvdata['id'];
+												$rvname = $rvdata['name'];
+												$rvactive = $rvkey=='0' ? ' show active' : '';
+												$tabbtn .= '<button class="nav-link m-0'.$rvactive.'" data-bs-toggle="tab" data-bs-target="#barn'.$rvid.'" type="button" role="tab" aria-controls="barn'.$rvid.'" aria-selected="true">'.$rvname.'</button>';
+
+												$tabcontent .= '<div class="tab-pane fade'.$rvactive.'" id="barn'.$rvid.'" role="tabpanel" aria-labelledby="nav-home-tab">
+												<ul class="list-group">';
+												foreach($rvdata['rvstall'] as $rvstalldata){ 
+													if($rvstalldata['charging_id']=='1'){
+														$typeofprice = 'night_price';
+													}else if($rvstalldata['charging_id']=='2'){
+														$typeofprice = 'week_price';
+													}else if($rvstalldata['charging_id']=='3'){
+														$typeofprice = 'month_price';
+													}else if($rvstalldata['charging_id']=='4'){
+														$typeofprice = 'flat_price';
+													}
+
+													$boxcolor  = 'green-box';
+													$checkboxstatus = '';
+
+													if($cartevent=='1' || $checkevent['status']=='0'){
+														$checkboxstatus = 'disabled';
+													}
+
+													$tabcontent .= 	'<li class="list-group-item rvhookups '.$typeofprice.'">
+													<input class="form-check-input rvbarnstall stallid me-1" data-price="'.$rvstalldata['price'].'" data-barnid="'.$rvstalldata['barn_id'].'" data-flag="2" value="'.$rvstalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
+													'.$rvstalldata['name'].'
+													<span class="'.$boxcolor.' stallavailability" data-stallid="'.$rvstalldata['id'].'" ></span>
+													</li>';
+												}
+												$tabcontent .= '</ul></div>';
+											}
+											?>
+											<div class="barn-nav mt-4">
+												<nav>
+													<div class="nav nav-tabs" id="nav-tab" role="tablist">
+														<?php echo $tabbtn; ?>
+													</div>
+												</nav>
+												<div class="tab-content" id="nav-tabContent">
+													<?php echo $tabcontent; ?>
+													<div class="row">
+														<div class="btm-color">
+															<p><span class="green-circle"></span>Available</p>
+															<p><span class="yellow-circle"></span>Reserved</p>
+															<p><span class="red-circle"></span>Occupied</p>
+														</div>
+													</div>
+												</div>    
+											</div>
+										</div>
+									</div>	
+								<?php } ?>
+								<?php if($detail['feed_flag'] =='1' && !empty($detail['feed_flag'])) { ?>
+
+									<div class="tab-pane fade" id="barnfeed" role="tabpanel" aria-labelledby="nav-home-tab">
+										<div class="border rounded py-4 ps-3 pe-3 mb-3">
+											<h3 class="fw-bold mb-4">Book Your Feed</h3>
+											<table class="table table-bordered table-hover mb-0">
+												<thead class="table-dark">
+													<tr>
+														<td class="text-light">Product Name</td>
+														<td class="text-light">Product Price</td>
+														<td class="text-light">Product Quantity</td>
+														<td class="text-light">Action</td>
+													</tr>
+												</thead>
+												<?php foreach ($detail['feed'] as $feed) { ?>
+													<tr>
+														<td style="border: 1px solid #e4e4e4;"><?php echo $feed['name'];?></td>
+														<td style="border: 1px solid #e4e4e4;"><?php echo $feed['price'];?></td>
+														<td style="border: 1px solid #e4e4e4;">
+															<input type="number" min="0" class="form-control quantity" data-productid="<?php echo $feed['id']?>" data-flag="3" <?php if($cartevent=='1' || $checkevent['status']=='0'){ echo 'disabled'; } ?>>
+														</td>
+														<td style="border: 1px solid #e4e4e4;">
+															<?php if($cartevent!='1' && $checkevent['status']!='0'){ ?>
+																<button class="btn btn-primary feedcart" data-productid="<?php echo $feed['id']?>" data-originalquantity="<?php echo $feed['quantity']?>" data-price="<?php echo $feed['price']?>">Add to Cart</button>
+																<button class="btn btn-danger feedcartremove cartremove displaynone" data-productid="<?php echo $feed['id']?>">Remove</button>
+															<?php } ?>
+														</td>
+													</tr>
+												<?php } ?>
+											</table>
+										</div>
+									</div>
+								<?php } ?>
+								<?php if($detail['shaving_flag'] =='1' && !empty($detail['shaving_flag'])) { ?>
+								<div class="tab-pane fade" id="barnshaving" role="tabpanel" aria-labelledby="nav-home-tab">
+										<div class="border rounded py-4 ps-3 pe-3 mb-3">
+											<h3 class="fw-bold mb-4">Book Your Shaving</h3>
+											<table class="table table-bordered table-hover mb-0">
+												<thead class="table-dark">
+													<tr>
+														<td class="text-light">Product Name</td>
+														<td class="text-light">Product Price</td>
+														<td class="text-light">Product Quantity</td>
+														<td class="text-light">Action</td>
+													</tr>
+												</thead>
+												<?php foreach ($detail['shaving'] as $shaving) { ?>
+													<tr>
+														<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['name'];?></td>
+														<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['price'];?></td>
+														<td style="border: 1px solid #e4e4e4;">
+															<?php if($shaving['quantity']==0){ $msg = '(sold out)'; $readonly = 'readonly';} else{ $msg = ''; $readonly = ''; } ?>
+															<input type="number" min="0" class="form-control quantity" <?php echo $readonly;?> data-productid="<?php echo $shaving['id']?>" data-flag="4" <?php if($cartevent=='1' || $checkevent['status']=='0'){ echo 'disabled'; } ?>>
+															<p style="color:red">
+																<?php echo $msg; ?></p></td>
+																<td style="border: 1px solid #e4e4e4;">
+																	<?php if($cartevent!='1' && $checkevent['status']!='0'){ ?>
+																		<button class="btn btn-primary shavingcart" data-productid="<?php echo $shaving['id']?>" data-originalquantity="<?php echo $shaving['quantity']?>" data-price="<?php echo $shaving['price']?>">Add to Cart</button>
+																		<button class="btn btn-danger shavingcartremove cartremove displaynone" data-productid="<?php echo $shaving['id']?>">Remove</button>
+																	<?php } ?>
+																</td>
+															</tr>
+														<?php } ?>
+													</table>
+												</div>
+											</div>
+										<?php } ?>
+									</div>    
+								</div>
 							</div>
-						</div>
-					<?php } ?>
-					<?php if($detail['feed_flag'] =='1' && !empty($detail['feed_flag'])) { ?>
-						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
-							<h3 class="fw-bold mb-4">Book Your Feed</h3>
-							<table class="table table-bordered table-hover mb-0">
-								<thead class="table-dark">
-									<tr>
-										<td class="text-light">Product Name</td>
-										<td class="text-light">Product Price</td>
-										<td class="text-light">Product Quantity</td>
-										<td class="text-light">Action</td>
-									</tr>
-								</thead>
-								<?php foreach ($detail['feed'] as $feed) { ?>
-									<tr>
-										<td style="border: 1px solid #e4e4e4;"><?php echo $feed['name'];?></td>
-										<td style="border: 1px solid #e4e4e4;"><?php echo $feed['price'];?></td>
-										<td style="border: 1px solid #e4e4e4;">
-											<input type="number" min="0" class="form-control quantity" data-productid="<?php echo $feed['id']?>" data-flag="3" <?php if($cartevent=='1' || $checkevent['status']=='0'){ echo 'disabled'; } ?>>
-										</td>
-										<td style="border: 1px solid #e4e4e4;">
-											<?php if($cartevent!='1' && $checkevent['status']!='0'){ ?>
-												<button class="btn btn-primary feedcart" data-productid="<?php echo $feed['id']?>" data-originalquantity="<?php echo $feed['quantity']?>" data-price="<?php echo $feed['price']?>">Add to Cart</button>
-												<button class="btn btn-danger feedcartremove cartremove displaynone" data-productid="<?php echo $feed['id']?>">Remove</button>
-											<?php } ?>
-										</td>
-									</tr>
-								<?php } ?>
-							</table>
-						</div>
-					<?php } ?>
-					<?php if($detail['shaving_flag'] =='1' && !empty($detail['shaving_flag'])) { ?>
-						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
-							<h3 class="fw-bold mb-4">Book Your Shaving</h3>
-							<table class="table table-bordered table-hover mb-0">
-								<thead class="table-dark">
-									<tr>
-										<td class="text-light">Product Name</td>
-										<td class="text-light">Product Price</td>
-										<td class="text-light">Product Quantity</td>
-										<td class="text-light">Action</td>
-									</tr>
-								</thead>
-								<?php foreach ($detail['shaving'] as $shaving) { ?>
-									<tr>
-										<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['name'];?></td>
-										<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['price'];?></td>
-										<td style="border: 1px solid #e4e4e4;">
-											<?php if($shaving['quantity']==0){ $msg = '(sold out)'; $readonly = 'readonly';} else{ $msg = ''; $readonly = ''; } ?>
-											<input type="number" min="0" class="form-control quantity" <?php echo $readonly;?> data-productid="<?php echo $shaving['id']?>" data-flag="4" <?php if($cartevent=='1' || $checkevent['status']=='0'){ echo 'disabled'; } ?>>
-											<p style="color:red">
-										<?php echo $msg; ?></p></td>
-										<td style="border: 1px solid #e4e4e4;">
-											<?php if($cartevent!='1' && $checkevent['status']!='0'){ ?>
-												<button class="btn btn-primary shavingcart" data-productid="<?php echo $shaving['id']?>" data-originalquantity="<?php echo $shaving['quantity']?>" data-price="<?php echo $shaving['price']?>">Add to Cart</button>
-												<button class="btn btn-danger shavingcartremove cartremove displaynone" data-productid="<?php echo $shaving['id']?>">Remove</button>
-											<?php } ?>
-										</td>
-									</tr>
-								<?php } ?>
-							</table>
-						</div>
-					<?php } ?>
-					<?php if(($usertype == '5') && ($bookedeventid == $detail['id']) && ($bookeduserid == $userid)){ ?>
-						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
-							<h3 class="fw-bold mb-4">Add Comment</h3>
-							<form method="post" action="" id="comment_form" autocomplete="off">
-								<div class="mb-3">
-									<label class="form-label">Comment:</label>
-									<textarea class="form-control" name="comment" placeholder="Add Your Comment" id="comment" rows="3"></textarea>
-								</div>
-								<div class="row mb-1">
-									<label class="fw-bold col-md-3">Communication</label>
-									<div class="communicationRating commentratings col-md-6" data-rate-value="0"></div>
-								</div>
-								<div class="row mb-1">
-									<label class="fw-bold col-md-3">Cleanliness</label>
-									<div class="cleanlinessRating commentratings col-md-6" data-rate-value="0"></div>
-								</div>
-								<div class="row mb-3">
-									<label class="fw-bold col-md-3">Friendliness</label>
-									<div class="friendlinessRating commentratings col-md-6" data-rate-value="0"></div>
-								</div>
-								<input type="hidden" name="eventid" value="<?php echo $detail["id"]; ?>">
-								<input type="hidden" name="userid" 	value="<?php echo $userid; ?>">
-								<input type="hidden" name="communication" id="communication">
-								<input type="hidden" name="cleanliness" id="cleanliness">
-								<input type="hidden" name="friendliness" id="friendliness">
-								<button type="submit" class="btn btn-primary add-comment-btn">Submit</button>
-							</form>
-						</div>
-					<?php } ?>
-					<?php if(!empty($comments)) { ?>
-						<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
-							<h3 class="fw-bold mb-4">Comment List</h3>
-							<h5 class="fw-bold">User Comments</h5>
-							<?php foreach ($comments as $commentdata ) { ?>
-								<div id="usercommentlist">
-									<div class="mb-1">
-										<p class="commented_username"><?php echo $commentdata['username'];?></p>
-									</div>
-									<div class="mb-3">
-										<p class="usercomment"><?php echo $commentdata['comment'];?></p>
-									</div>
-									<div class="row mb-1">
-										<label for="communication_lbl" class="fw-bold col-md-3">Communication</label>
-										<div class="communicationRating commentratings col-md-6" data-rate-value="<?php echo $commentdata['communication'];?>">
+							<?php if(($usertype == '5') && ($bookedeventid == $detail['id']) && ($bookeduserid == $userid)){ ?>
+								<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
+									<h3 class="fw-bold mb-4">Add Comment</h3>
+									<form method="post" action="" id="comment_form" autocomplete="off">
+										<div class="mb-3">
+											<label class="form-label">Comment:</label>
+											<textarea class="form-control" name="comment" placeholder="Add Your Comment" id="comment" rows="3"></textarea>
 										</div>
-									</div>
-									<div class="row mb-1">
-										<label for="cleanliness_lbl" class="fw-bold col-md-3">Cleanliness</label>
-										<div class="cleanlinessRating commentratings col-md-6"  data-rate-value="<?php echo $commentdata['cleanliness'];?>">
+										<div class="row mb-1">
+											<label class="fw-bold col-md-3">Communication</label>
+											<div class="communicationRating commentratings col-md-6" data-rate-value="0"></div>
 										</div>
-									</div>
-									<div class="row mb-1">
-										<label for="friendliness_lbl" class="fw-bold col-md-3">Friendliness</label>
-										<div class="friendlinessRating commentratings col-md-6" data-rate-value="<?php echo $commentdata['friendliness'];?>"></div>
-									</div>
+										<div class="row mb-1">
+											<label class="fw-bold col-md-3">Cleanliness</label>
+											<div class="cleanlinessRating commentratings col-md-6" data-rate-value="0"></div>
+										</div>
+										<div class="row mb-3">
+											<label class="fw-bold col-md-3">Friendliness</label>
+											<div class="friendlinessRating commentratings col-md-6" data-rate-value="0"></div>
+										</div>
+										<input type="hidden" name="eventid" value="<?php echo $detail["id"]; ?>">
+										<input type="hidden" name="userid" 	value="<?php echo $userid; ?>">
+										<input type="hidden" name="communication" id="communication">
+										<input type="hidden" name="cleanliness" id="cleanliness">
+										<input type="hidden" name="friendliness" id="friendliness">
+										<button type="submit" class="btn btn-primary add-comment-btn">Submit</button>
+									</form>
 								</div>
-								<?php if(($usertype != '5') && ($detail['user_id'] == $userid)){ ?>
-									<button class="btn btn-primary replycomment" data-commentid="<?php echo $commentdata['id'];?>">Reply</button>
-									<div id="replybox<?php echo $commentdata['id'];?>"></div>
-								<?php } ?>
-								<?php if(!empty($commentdata['replycomments'])){ ?>
-									<!-- <h5 class="fw-bold">Replies : </h5> -->
-									<?php foreach ($commentdata['replycomments'] as $replydata){ ?>
-										<div id="replylist">
-											<div class="mb-1">
-												<p class="commented_username"><?php echo $replydata['username'];?></p>
-											</div>
-											<div>
-												<p class="usercomment"><?php echo $replydata['reply'];?></p>
-											</div>
-										</div>
-									<?php } ?>
-								<?php } ?>
 							<?php } ?>
-						</div>
-					<?php } ?>
-				</div> 
-				<div class="sticky-top checkout col-md-3 mt-4 h-100"></div>
-			</div>
-		</div>
-	</section>
-</body>
-<?php $this->endSection() ?>
+							<?php if(!empty($comments)) { ?>
+								<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
+									<h3 class="fw-bold mb-4">Comment List</h3>
+									<h5 class="fw-bold">User Comments</h5>
+									<?php foreach ($comments as $commentdata ) { ?>
+										<div id="usercommentlist">
+											<div class="mb-1">
+												<p class="commented_username"><?php echo $commentdata['username'];?></p>
+											</div>
+											<div class="mb-3">
+												<p class="usercomment"><?php echo $commentdata['comment'];?></p>
+											</div>
+											<div class="row mb-1">
+												<label for="communication_lbl" class="fw-bold col-md-3">Communication</label>
+												<div class="communicationRating commentratings col-md-6" data-rate-value="<?php echo $commentdata['communication'];?>">
+												</div>
+											</div>
+											<div class="row mb-1">
+												<label for="cleanliness_lbl" class="fw-bold col-md-3">Cleanliness</label>
+												<div class="cleanlinessRating commentratings col-md-6"  data-rate-value="<?php echo $commentdata['cleanliness'];?>">
+												</div>
+											</div>
+											<div class="row mb-1">
+												<label for="friendliness_lbl" class="fw-bold col-md-3">Friendliness</label>
+												<div class="friendlinessRating commentratings col-md-6" data-rate-value="<?php echo $commentdata['friendliness'];?>"></div>
+											</div>
+										</div>
+										<?php if(($usertype != '5') && ($detail['user_id'] == $userid)){ ?>
+											<button class="btn btn-primary replycomment" data-commentid="<?php echo $commentdata['id'];?>">Reply</button>
+											<div id="replybox<?php echo $commentdata['id'];?>"></div>
+										<?php } ?>
+										<?php if(!empty($commentdata['replycomments'])){ ?>
+											<!-- <h5 class="fw-bold">Replies : </h5> -->
+											<?php foreach ($commentdata['replycomments'] as $replydata){ ?>
+												<div id="replylist">
+													<div class="mb-1">
+														<p class="commented_username"><?php echo $replydata['username'];?></p>
+													</div>
+													<div>
+														<p class="usercomment"><?php echo $replydata['reply'];?></p>
+													</div>
+												</div>
+											<?php } ?>
+										<?php } ?>
+									<?php } ?>
+								</div>
+							<?php } ?>
+						</div> 
+						<div class="sticky-top checkout col-md-3 mt-4 h-100"></div>
+					</div>
+				</div>
+			</section>
+		</body>
+		<?php $this->endSection() ?>
+		<?php $this->section('js') ?>
+		<script> 
+			var transactionfee		= '<?php echo $settings['transactionfee'];?>';  
+			var currencysymbol 		= '<?php echo $currencysymbol; ?>';
+			var eventid 			= '<?php echo $detail["id"]; ?>';
+			var cartevent 			= '<?php echo $cartevent; ?>';
+			var checkevent 			= '<?php echo $checkevent["status"]; ?>';
+			var eventstartdate  	= '<?php echo $detail["start_date"] > date("Y-m-d") ? formatdate($detail["start_date"], 1) : 0; ?>';
+			var eventenddate 		= '<?php echo formatdate($detail["end_date"], 1); ?>';
+			var eventenddateadd 	= '<?php echo formatdate(date("Y-m-d", strtotime($detail["end_date"]." +1 day")), 1); ?>';
 
-<?php $this->section('js') ?>
-<script> 
-	var transactionfee		= '<?php echo $settings['transactionfee'];?>';  
-	var currencysymbol 		= '<?php echo $currencysymbol; ?>';
-	var eventid 			= '<?php echo $detail["id"]; ?>';
-	var cartevent 			= '<?php echo $cartevent; ?>';
-	var checkevent 			= '<?php echo $checkevent["status"]; ?>';
-	var eventstartdate  	= '<?php echo $detail["start_date"] > date("Y-m-d") ? formatdate($detail["start_date"], 1) : 0; ?>';
-	var eventenddate 		= '<?php echo formatdate($detail["end_date"], 1); ?>';
-	var eventenddateadd 	= '<?php echo formatdate(date("Y-m-d", strtotime($detail["end_date"]." +1 day")), 1); ?>';
-
-	$(document).ready(function (){
-		if(cartevent == 0 ){
-			cart();
-		}else{
-			$("#startdate, #enddate").attr('disabled', 'disabled');
-		}
-
-		if(checkevent == 0){
-			$("#startdate, #enddate").attr('disabled', 'disabled');
-		}
-
-		uidatepicker(
-			'#startdate', 
-			{ 
-				'mindate' 	: eventstartdate,
-				'maxdate' 	: eventenddate,
-				'close' 	: function(selecteddate){
-					var date = new Date(selecteddate)
-					date.setDate(date.getDate() + 1);
-					$("#enddate").datepicker( "option", "minDate", date );
-				}
-			}
-		);
-
-		uidatepicker('#enddate', { 'mindate' : eventstartdate, 'maxdate' : eventenddateadd });
-	});
-
-	$("#enddate").click(function(){
-		var startdate 	= $("#startdate").val();
-		if(startdate==''){
-			$("#startdate").focus();
-		}
-	});
-
-	$("#startdate, #enddate").change(function(){
-		setTimeout(function(){
-			var startdate 	= $("#startdate").val(); 
-			var enddate   	= $("#enddate").val(); 
-			if(enddate!=""){
-				var startdates 		= new Date(startdate);
-				var enddates 		= new Date(enddate);
-				var stallinterval  	= enddates.getTime() - startdates.getTime(); 
-				var intervaldays 	= stallinterval / (1000 * 3600 * 24); 
-					$('.week_price').show();
-					$('.month_price').show();
-					$('.night_price').show();
-				if(intervaldays%7==0){
-				  	$('.night_price').hide();
-				  	$('.month_price').hide();
-				}else if(intervaldays%30==0){ 
-					$('.week_price').hide();
-					$('.night_price').hide();
+			$(document).ready(function (){
+				if(cartevent == 0 ){
+					cart();
 				}else{
-					$('.week_price').hide();
-					$('.month_price').hide();
+					$("#startdate, #enddate").attr('disabled', 'disabled');
 				}
-			}
 
-			if(startdate!='' && enddate!=''){
-				cart({type : '1', checked : 0}); 
-				$('.stallid').prop('checked', false).removeAttr('disabled');
-				$('.stallavailability').removeClass("yellow-box").removeClass("red-box").addClass("green-box");
-				
-				occupiedreserved(startdate, enddate);
-			}
-		}, 100);
-	})
-	
-	function occupiedreserved(startdate, enddate, stallid=''){
-		var result = 1;
-		ajax(
-			'<?php echo base_url()."/ajax/ajaxoccupied"; ?>',
-			{ eventid : eventid, checkin : startdate, checkout : enddate },
-			{
-				asynchronous : 1,
-				success : function(data){
-					$(data.success).each(function(i,v){ 
-						if(stallid==v){
-							result = 0;
-							toastr.warning('Stall is already booked.', {timeOut: 5000});
-							$('.stallid[value='+stallid+']').prop('checked', false);
+				if(checkevent == 0){
+					$("#startdate, #enddate").attr('disabled', 'disabled');
+				}
+
+				uidatepicker(
+					'#startdate', 
+					{ 
+						'mindate' 	: eventstartdate,
+						'maxdate' 	: eventenddate,
+						'close' 	: function(selecteddate){
+							var date = new Date(selecteddate)
+							date.setDate(date.getDate() + 1);
+							$("#enddate").datepicker( "option", "minDate", date );
 						}
-							
-						$('.stallid[value='+v+']').prop('checked', true).attr('disabled', 'disabled');
-						$('.stallavailability[data-stallid='+v+']').removeClass("green-box").addClass("red-box");
-					});
+					}
+					);
+
+				uidatepicker('#enddate', { 'mindate' : eventstartdate, 'maxdate' : eventenddateadd });
+			});
+
+			$("#enddate").click(function(){
+				var startdate 	= $("#startdate").val();
+				if(startdate==''){
+					$("#startdate").focus();
 				}
-			}
-		)
-		
-		ajax(
-			'<?php echo base_url()."/ajax/ajaxreserved"; ?>',
-			{ eventid : eventid, checkin : startdate, checkout : enddate },
-			{
-				asynchronous : 1,
-				success : function(data){
-					$.each(data.success, function (i, v) {
-						if(stallid==i){
-							result = 0;
-							toastr.warning('Stall is already booked.', {timeOut: 5000});
-							$('.stallid[value='+stallid+']').prop('checked', false);
+			});
+
+			$("#startdate, #enddate").change(function(){
+				setTimeout(function(){
+					var startdate 	= $("#startdate").val(); 
+					var enddate   	= $("#enddate").val(); 
+					if(enddate!=""){
+						var startdates 		= new Date(startdate);
+						var enddates 		= new Date(enddate);
+						var stallinterval  	= enddates.getTime() - startdates.getTime(); 
+						var intervaldays 	= stallinterval / (1000 * 3600 * 24); 
+						$('.week_price').show();
+						$('.month_price').show();
+						$('.night_price').show();
+						if(intervaldays%7==0){
+							$('.night_price').hide();
+							$('.month_price').hide();
+						}else if(intervaldays%30==0){ 
+							$('.week_price').hide();
+							$('.night_price').hide();
+						}else{
+							$('.week_price').hide();
+							$('.month_price').hide();
 						}
-						
-						$('.stallid[value='+i+']').prop('checked', true).attr('disabled', 'disabled');
-						$('.stallavailability[data-stallid='+i+']').removeClass("green-box").addClass("yellow-box");
-					});
+					}
+
+					if(startdate!='' && enddate!=''){
+						cart({type : '1', checked : 0}); 
+						$('.stallid').prop('checked', false).removeAttr('disabled');
+						$('.stallavailability').removeClass("yellow-box").removeClass("red-box").addClass("green-box");
+
+						occupiedreserved(startdate, enddate);
+					}
+				}, 100);
+			})
+
+			function occupiedreserved(startdate, enddate, stallid=''){
+				var result = 1;
+				ajax(
+					'<?php echo base_url()."/ajax/ajaxoccupied"; ?>',
+					{ eventid : eventid, checkin : startdate, checkout : enddate },
+					{
+						asynchronous : 1,
+						success : function(data){
+							$(data.success).each(function(i,v){ 
+								if(stallid==v){
+									result = 0;
+									toastr.warning('Stall is already booked.', {timeOut: 5000});
+									$('.stallid[value='+stallid+']').prop('checked', false);
+								}
+
+								$('.stallid[value='+v+']').prop('checked', true).attr('disabled', 'disabled');
+								$('.stallavailability[data-stallid='+v+']').removeClass("green-box").addClass("red-box");
+							});
+						}
+					}
+					)
+
+				ajax(
+					'<?php echo base_url()."/ajax/ajaxreserved"; ?>',
+					{ eventid : eventid, checkin : startdate, checkout : enddate },
+					{
+						asynchronous : 1,
+						success : function(data){
+							$.each(data.success, function (i, v) {
+								if(stallid==i){
+									result = 0;
+									toastr.warning('Stall is already booked.', {timeOut: 5000});
+									$('.stallid[value='+stallid+']').prop('checked', false);
+								}
+
+								$('.stallid[value='+i+']').prop('checked', true).attr('disabled', 'disabled');
+								$('.stallavailability[data-stallid='+i+']').removeClass("green-box").addClass("yellow-box");
+							});
+						}
+					}
+					)
+
+				return result;
+			}
+
+			function productquantity(productid){
+				var result = 0;
+				ajax(
+					'<?php echo base_url()."/ajax/ajaxproductquantity"; ?>',
+					{ eventid : eventid, productid : productid },
+					{
+						asynchronous : 1,
+						success : function(data){
+							result = data.success;
+						}
+					}
+					)
+
+				return result;
+			}
+
+			$(".eventbarnstall").on("click", function() {
+				cartaction($(this), 1);
+			});
+
+			$(".rvbarnstall").on("click", function() {
+				cartaction($(this), 2);
+			});
+
+			$(".feedcart, .feedcartremove").on("click", function() {
+				cartaction($(this), 3);
+			});
+
+			$(".shavingcart, .shavingcartremove").on("click", function() {
+				cartaction($(this), 4);
+			});
+
+			$(".quantity").keyup(function(){
+				checkdate($(this).attr('data-flag'));
+			})
+
+			function cartaction(_this, flag){
+				var datevalidation = checkdate(flag);
+				if(!datevalidation) return false;
+
+				var startdate 	= $("#startdate").val(); 
+				var enddate   	= $("#enddate").val(); 
+
+				if(flag==1 || flag==2){			
+					var barnid    	= _this.attr('data-barnid');
+					var stallid		= _this.val(); 
+					var price 		= _this.attr('data-price');
+
+					if($(_this).is(':checked')){  
+						var checkoccupiedreserved = occupiedreserved(startdate, enddate, stallid);
+						if(checkoccupiedreserved==1) cart({event_id : eventid, barn_id : barnid, stall_id : stallid, price : price, quantity : 1, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
+					}else{ 
+						$('.stallavailability[data-stallid='+stallid+']').removeClass("yellow-box").addClass("green-box");
+						cart({stall_id : stallid, type : '1', checked : 0}); 
+					}		
+				}else{
+					var productid      		= _this.attr('data-productid');
+					var quantitywrapper		= _this.parent().parent().find('.quantity');
+
+					if(!_this.hasClass('cartremove')){
+						var price         		= _this.attr('data-price'); 
+						var originalquantity	= _this.attr('data-originalquantity'); 
+						var cartquantity		= productquantity(productid);
+						var quantity 			= quantitywrapper.val();
+
+						if(quantity==""){ 
+							quantitywrapper.focus();
+							toastr.warning('Please Enter Quantity .', {timeOut: 5000});
+						}else if(parseInt(quantity) > (parseInt(originalquantity) - parseInt(cartquantity))){
+							quantitywrapper.focus();
+							toastr.warning('Please Select Quantity Less Than or equal to.'+(parseInt(originalquantity) - parseInt(cartquantity)), {timeOut: 5000});
+						}else{ 
+							cart({event_id : eventid, product_id : productid, price : price, quantity : quantity, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
+						}
+					}else{
+						quantitywrapper.val('');
+						$('.cartremove[data-productid='+productid+']').addClass('displaynone'); 
+						cart({product_id : productid, type : '1', checked : 0});
+					}
 				}
 			}
-		)
-		
-		return result;
-	}
-	
-	function productquantity(productid){
-		var result = 0;
-		ajax(
-			'<?php echo base_url()."/ajax/ajaxproductquantity"; ?>',
-			{ eventid : eventid, productid : productid },
-			{
-				asynchronous : 1,
-				success : function(data){
-					result = data.success;
+
+			function checkdate(flag){
+				var classarray = ['eventbarnstall', 'rvbarnstall', 'feedcart', 'shavingcart'];
+
+				if(flag==1 || flag==2){
+					if($("."+classarray[flag-1]+":checked").length > 0){			
+						var datevalidation = datetoastr()
+						if(!datevalidation){
+							$("."+classarray[flag-1]+":not(:disabled)").prop('checked', false);
+							return false;
+						}
+					}
+				}else{
+					var datevalidation = datetoastr()
+					if(!datevalidation){
+						$("."+classarray[flag-1]).each(function(){
+							$(this).parent().parent().find('.quantity').val('');
+						});
+
+						return false;
+					}
 				}
+
+				return true;
 			}
-		)
-		
-		return result;
-	}
 
-	$(".eventbarnstall").on("click", function() {
-        cartaction($(this), 1);
-    });
-	
-	$(".rvbarnstall").on("click", function() {
-	 	cartaction($(this), 2);
-	});
+			function datetoastr(){
+				var startdate 	= $("#startdate").val(); 
+				var enddate   	= $("#enddate").val(); 
 
-	$(".feedcart, .feedcartremove").on("click", function() {
-	 	cartaction($(this), 3);
-	});
-	
-	$(".shavingcart, .shavingcartremove").on("click", function() {
-	 	cartaction($(this), 4);
-	});
+				if(startdate=='' || enddate==''){
+					if(startdate==''){
+						$("#startdate").focus();
+						toastr.warning('Please select the Check-In Date.', {timeOut: 5000});
+					}else if(enddate==''){
+						$("#enddate").focus();
+						toastr.warning('Please select the Check-Out Date.', {timeOut: 5000});
+					}
 
-	$(".quantity").keyup(function(){
-		checkdate($(this).attr('data-flag'));
-	})
-	
-	function cartaction(_this, flag){
-		var datevalidation = checkdate(flag);
-		if(!datevalidation) return false;
-		
-		var startdate 	= $("#startdate").val(); 
-		var enddate   	= $("#enddate").val(); 
-				
-		if(flag==1 || flag==2){			
-			var barnid    	= _this.attr('data-barnid');
-			var stallid		= _this.val(); 
-			var price 		= _this.attr('data-price');
-
-			if($(_this).is(':checked')){  
-				var checkoccupiedreserved = occupiedreserved(startdate, enddate, stallid);
-				if(checkoccupiedreserved==1) cart({event_id : eventid, barn_id : barnid, stall_id : stallid, price : price, quantity : 1, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
-			}else{ 
-				$('.stallavailability[data-stallid='+stallid+']').removeClass("yellow-box").addClass("green-box");
-				cart({stall_id : stallid, type : '1', checked : 0}); 
-			}		
-		}else{
-			var productid      		= _this.attr('data-productid');
-			var quantitywrapper		= _this.parent().parent().find('.quantity');
-			
-			if(!_this.hasClass('cartremove')){
-				var price         		= _this.attr('data-price'); 
-				var originalquantity	= _this.attr('data-originalquantity'); 
-				var cartquantity		= productquantity(productid);
-				var quantity 			= quantitywrapper.val();
-				
-				if(quantity==""){ 
-					quantitywrapper.focus();
-					toastr.warning('Please Enter Quantity .', {timeOut: 5000});
-				}else if(parseInt(quantity) > (parseInt(originalquantity) - parseInt(cartquantity))){
-					quantitywrapper.focus();
-					toastr.warning('Please Select Quantity Less Than or equal to.'+(parseInt(originalquantity) - parseInt(cartquantity)), {timeOut: 5000});
-				}else{ 
-					cart({event_id : eventid, product_id : productid, price : price, quantity : quantity, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
-				}
-			}else{
-				quantitywrapper.val('');
-				$('.cartremove[data-productid='+productid+']').addClass('displaynone'); 
-				cart({product_id : productid, type : '1', checked : 0});
-			}
-		}
-	}
-
-	function checkdate(flag){
-		var classarray = ['eventbarnstall', 'rvbarnstall', 'feedcart', 'shavingcart'];
-		
-		if(flag==1 || flag==2){
-			if($("."+classarray[flag-1]+":checked").length > 0){			
-				var datevalidation = datetoastr()
-				if(!datevalidation){
-					$("."+classarray[flag-1]+":not(:disabled)").prop('checked', false);
 					return false;
 				}
-			}
-		}else{
-			var datevalidation = datetoastr()
-			if(!datevalidation){
-				$("."+classarray[flag-1]).each(function(){
-					$(this).parent().parent().find('.quantity').val('');
-				});
-				
-				return false;
-			}
-		}
-		
-		return true;
-	}
-	
-	function datetoastr(){
-		var startdate 	= $("#startdate").val(); 
-		var enddate   	= $("#enddate").val(); 
-		
-		if(startdate=='' || enddate==''){
-			if(startdate==''){
-				$("#startdate").focus();
-				toastr.warning('Please select the Check-In Date.', {timeOut: 5000});
-			}else if(enddate==''){
-				$("#enddate").focus();
-				toastr.warning('Please select the Check-Out Date.', {timeOut: 5000});
+
+				return true;
 			}
 
-			return false;
-		}
-		
-		return true;
-	}
-	
-	function cart(data={cart:1, type:1}){	
-		ajax(
-			'<?php echo base_url()."/cart"; ?>',
-			data,
-			{ 
-				asynchronous : 1,
-				success  : function(result){
-					if(Object.keys(result).length){  
-						$("#startdate").val(result.check_in); 
-						$("#enddate").val(result.check_out); 
-						
-						occupiedreserved($("#startdate").val(), $("#enddate").val());
-						
-						var barnstalldata = cartsummary(1, 'STALL', result.barnstall);
-						var rvbarnstalldata = cartsummary(1, 'RV HOOKUP', result.rvbarnstall);
-						var feeddata = cartsummary(2, 'FEED', result.feed);
-						var shavingdata = cartsummary(2, 'SHAVING', result.shaving);
-						var stallcleaning_fee = (result.cleaning_fee!='') ? result.cleaning_fee : '0';
+			function cart(data={cart:1, type:1}){	
+				ajax(
+					'<?php echo base_url()."/cart"; ?>',
+					data,
+					{ 
+						asynchronous : 1,
+						success  : function(result){
+							if(Object.keys(result).length){  
+								$("#startdate").val(result.check_in); 
+								$("#enddate").val(result.check_out); 
 
-						var total = (parseFloat(stallcleaning_fee)+parseFloat(result.price)+parseFloat((transactionfee/100) * result.price)).toFixed(2);
+								occupiedreserved($("#startdate").val(), $("#enddate").val());
 
-						var cleaning_fee = '';
-						if(result.cleaning_fee!=''){
-							var cleaning_fee = '<div class="col-8 event_c_text">Cleaning Fee</div>\
+								var barnstalldata = cartsummary(1, 'STALL', result.barnstall);
+								var rvbarnstalldata = cartsummary(1, 'RV HOOKUP', result.rvbarnstall);
+								var feeddata = cartsummary(2, 'FEED', result.feed);
+								var shavingdata = cartsummary(2, 'SHAVING', result.shaving);
+								var stallcleaning_fee = (result.cleaning_fee!='') ? result.cleaning_fee : '0';
+
+								var total = (parseFloat(stallcleaning_fee)+parseFloat(result.price)+parseFloat((transactionfee/100) * result.price)).toFixed(2);
+
+								var cleaning_fee = '';
+								if(result.cleaning_fee!=''){
+									var cleaning_fee = '<div class="col-8 event_c_text">Cleaning Fee</div>\
 									<div class="col-4 event_c_text text-end">'+currencysymbol+parseFloat(result.cleaning_fee).toFixed(2)+'\</div>';
-						}
+								}
 
-						if(result.interval%7==0){
-						 	$('.night_price').hide();
-			  				$('.month_price').hide();
-			  			}else if(result.interval%30==0){
-						 	$('.week_price').hide();
-							$('.night_price').hide();
-			  			}else{
-			  				$('.week_price').hide();
-							$('.month_price').hide();
-			  			}
+								if(result.interval%7==0){
+									$('.night_price').hide();
+									$('.month_price').hide();
+								}else if(result.interval%30==0){
+									$('.week_price').hide();
+									$('.night_price').hide();
+								}else{
+									$('.week_price').hide();
+									$('.month_price').hide();
+								}
 
-						var result ='\
-						<div class="w-100">\
-							<div class="border rounded pt-4 ps-3 pe-3 mb-5">\
+								var result ='\
+								<div class="w-100">\
+								<div class="border rounded pt-4 ps-3 pe-3 mb-5">\
 								<div class="row mb-2">\
-									<div class="col-md-12">\
-										<div class="row"> <span class="col-6 fw-bold">Total Day :</span><span class="col-6 fw-bold text-end">'+result.interval+'</span></div>\
-										'+barnstalldata+'\
-										'+rvbarnstalldata+'\
-										'+feeddata+'\
-										'+shavingdata+'\
-									</div>\
+								<div class="col-md-12">\
+								<div class="row"> <span class="col-6 fw-bold">Total Day :</span><span class="col-6 fw-bold text-end">'+result.interval+'</span></div>\
+								'+barnstalldata+'\
+								'+rvbarnstalldata+'\
+								'+feeddata+'\
+								'+shavingdata+'\
+								</div>\
 								</div>\
 								<div class="row mb-2 event_border_top pt-4">\
-									<div class="col-8 event_c_text">Total</div>\
-									<div class="col-4 event_c_text text-end">'+currencysymbol+result.price.toFixed(2)+'\</div>\
-									<div class="col-8 event_c_text">Transaction Fees</div>\
-									<div class="col-4 event_c_text text-end">'+currencysymbol+((transactionfee/100) * result.price).toFixed(2)+'\</div>\
-									'+cleaning_fee+'\
+								<div class="col-8 event_c_text">Total</div>\
+								<div class="col-4 event_c_text text-end">'+currencysymbol+result.price.toFixed(2)+'\</div>\
+								<div class="col-8 event_c_text">Transaction Fees</div>\
+								<div class="col-4 event_c_text text-end">'+currencysymbol+((transactionfee/100) * result.price).toFixed(2)+'\</div>\
+								'+cleaning_fee+'\
 								</div>\
 								<div class="row mb-2 border-top mt-3 mb-3 pt-3">\
-									<div class="col-8 fw-bold ">Total Due</div>\
-									<div class="col-4 fw-bold">'+currencysymbol+total+'</div>\
+								<div class="col-8 fw-bold ">Total Due</div>\
+								<div class="col-4 fw-bold">'+currencysymbol+total+'</div>\
 								</div>\
 								<div class="row mb-2 w-100">\
-									<a href="<?php echo base_url()?>/checkout" class="w-100 text-center mx-2 ucEventdetBtn ps-3 mb-3 ">Continue to Checkout</a>\
+								<a href="<?php echo base_url()?>/checkout" class="w-100 text-center mx-2 ucEventdetBtn ps-3 mb-3 ">Continue to Checkout</a>\
 								</div>\
-							</div>\
-						</div>\
-						';
+								</div>\
+								</div>\
+								';
 
-						$('.checkout').empty().append(result);
+								$('.checkout').empty().append(result);
+							}else{
+								$('.checkout').empty();
+							}
+						}
+					}
+					);
+			}
+
+			function cartsummary(type, title, result){
+				var data = '';
+				if(result.length){
+					if(type==1){
+						var name = '';
+						data += '<div class="event_cart_title"><span class="col-12 fw-bold">'+title+'</span></div>';
+						$(result).each(function(i,v){
+							if(name!=v.barn_name){
+								data += '<div><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
+							}
+
+							data += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+currencysymbol+v.price+'x'+v.interval+') '+currencysymbol+v.total+'</span></div>';
+							$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
+							name = v.barn_name;
+						});
 					}else{
-						$('.checkout').empty();
+						data += '<div class="event_cart_title"><span class="col-12 fw-bold">'+title+'</span></div>';
+						$(result).each(function(i,v){								
+							data += '<div class="row"><span class="col-7 event_c_text">'+v.product_name+'</span><span class="col-5 text-end event_c_text">('+currencysymbol+v.price+'x'+v.quantity+') '+currencysymbol+v.total+'</span></div>';
+							$('.quantity[data-productid='+v.product_id+']').val(v.quantity);
+							$('.cartremove[data-productid='+v.product_id+']').removeClass('displaynone');
+						});
 					}
 				}
+
+				return data;
 			}
-		);
-	}
-	
-	function cartsummary(type, title, result){
-		var data = '';
-		if(result.length){
-			if(type==1){
-				var name = '';
-				data += '<div class="event_cart_title"><span class="col-12 fw-bold">'+title+'</span></div>';
-				$(result).each(function(i,v){
-					if(name!=v.barn_name){
-						data += '<div><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
-					}
-					
-					data += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+currencysymbol+v.price+'x'+v.interval+') '+currencysymbol+v.total+'</span></div>';
-					$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
-					name = v.barn_name;
-				});
-			}else{
-				data += '<div class="event_cart_title"><span class="col-12 fw-bold">'+title+'</span></div>';
-				$(result).each(function(i,v){								
-					data += '<div class="row"><span class="col-7 event_c_text">'+v.product_name+'</span><span class="col-5 text-end event_c_text">('+currencysymbol+v.price+'x'+v.quantity+') '+currencysymbol+v.total+'</span></div>';
-					$('.quantity[data-productid='+v.product_id+']').val(v.quantity);
-					$('.cartremove[data-productid='+v.product_id+']').removeClass('displaynone');
-				});
+
+			$(".commentratings").rate({ initial_value: 0, max_value: 5 });
+
+			$(".communicationRating").on("change", function(ev, data){
+				$('#communication').val(data.to);
+			});
+
+			$(".cleanlinessRating").on("change", function(ev, data){
+				$('#cleanliness').val(data.to);
+			});
+
+			$(".friendlinessRating").on("change", function(ev, data){
+				$('#friendliness').val(data.to);
+			});
+
+			$(".replycomment").on("click", function(ev, data){
+				replyComment($(this).attr('data-commentid'));
+			});
+
+			function replyComment(commentId){
+				var commentform = 	'<form method="post" action="" id="reply_form" autocomplete="off">\
+				<div class="mb-3">\
+				<textarea class="form-control" placeholder="Add Your Comment"  name="comment" id="replycomment" rows="3"></textarea>\
+				</div>\
+				<input type="hidden" name="eventid" value="<?php echo $detail["id"]; ?>">\
+				<input type="hidden" name="userid" 	value="<?php echo $userid; ?>">\
+				<input type="hidden" name="comment_id" value="'+commentId+'">\
+				<button type="submit" class="btn btn-primary">Submit</button>\
+				</form>';
+
+				$('#replybox'+commentId).empty().append(commentform);
 			}
-		}
-		
-		return data;
-	}
 
-	$(".commentratings").rate({ initial_value: 0, max_value: 5 });
-	
-	$(".communicationRating").on("change", function(ev, data){
-	    $('#communication').val(data.to);
-	});
-
-	$(".cleanlinessRating").on("change", function(ev, data){
-	    $('#cleanliness').val(data.to);
-	});
-
-	$(".friendlinessRating").on("change", function(ev, data){
-	    $('#friendliness').val(data.to);
-	});
-
-	$(".replycomment").on("click", function(ev, data){
-	    replyComment($(this).attr('data-commentid'));
-	});
-
-	function replyComment(commentId){
-	  	var commentform = 	'<form method="post" action="" id="reply_form" autocomplete="off">\
-								<div class="mb-3">\
-									<textarea class="form-control" placeholder="Add Your Comment"  name="comment" id="replycomment" rows="3"></textarea>\
-								</div>\
-								<input type="hidden" name="eventid" value="<?php echo $detail["id"]; ?>">\
-								<input type="hidden" name="userid" 	value="<?php echo $userid; ?>">\
-								<input type="hidden" name="comment_id" value="'+commentId+'">\
-								<button type="submit" class="btn btn-primary">Submit</button>\
-							</form>';
-							
-	  	$('#replybox'+commentId).empty().append(commentform);
-	}
-
-</script>
-<?php echo $this->endSection() ?>
+		</script>
+		<?php echo $this->endSection() ?>

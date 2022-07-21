@@ -616,7 +616,7 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 							<div class="modal-body">\
 								<div class="col-md-12 my-2">\
 									<div class="form-group">\
-										<label>chargingflag</label>\
+										<label>Stall Rate</label>\
 										<select class="form-control stall_charging_id_'+barnstallname+'">\
 										'+charging_flagmodal+'\
 										</select>\
