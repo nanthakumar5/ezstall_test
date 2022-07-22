@@ -24,6 +24,7 @@ class Comments extends BaseModel
 			$data		= 	['e.name eventname'];							
 			$select[] 	= 	implode(',', $data);
 		}
+
 	
 		$query = $this->db->table('comments c');
 		if(in_array('users', $querydata)) $query->join('users u', 'u.id=c.user_id', 'left');
@@ -35,7 +36,7 @@ class Comments extends BaseModel
 		if(isset($requestdata['id'])) 					$query->where('c.id', $requestdata['id']);
 		if(isset($requestdata['eventid'])) 				$query->where('c.event_id', $requestdata['eventid']);
 		if(isset($requestdata['commentid'])) 			$query->where('c.comment_id ', $requestdata['commentid']);
-		if(isset($requestdata['status'])) 				$query->whereIn('c.status ', $requestdata['status']);
+		if(isset($requestdata['status'])) 				$query->where('c.status ', $requestdata['status']);
 
 		if($type!=='count' && isset($requestdata['start']) && isset($requestdata['length'])){
 			$query->limit($requestdata['length'], $requestdata['start']);
@@ -71,12 +72,12 @@ class Comments extends BaseModel
 			
 			if($type=='all'){
 				$result = $query->getResultArray();	
-				if(in_array('replycomments', $querydata)){		
-					if(count($result) > 0){
+				if(count($result) > 0){
+					if(in_array('replycomments', $querydata)){		
 						foreach ($result as $key => $comments) {							
 							$replycomment = $this->db->table('comments r')
 											->join('users u','u.id  = r.user_id', 'left')
-											->select('r.id replyid,r.comment reply, u.name username')
+											->select('r.id replyid,r.user_id replieduserid,r.comment_id commentid,r.comment reply, u.name username')
 											->where('r.comment_id', $comments['id'])
 											->get()
 											->getResultArray();
@@ -87,16 +88,14 @@ class Comments extends BaseModel
 				}
 			}elseif($type=='row'){
 				$result = $query->getRowArray();
-				
-				if(in_array('replycomments', $querydata)){		
-					if($result){
+				if($result){
+					if(in_array('replycomments', $querydata)){		
 						$replycomment = $this->db->table('comments r')
 										->join('users u','u.id  = r.user_id', 'left')
-										->select('r.id replyid,r.comment reply, u.name username')
+										->select('r.id replyid,r.user_id replieduserid,r.comment_id commentid,r.comment reply, u.name username')
 										->where('r.comment_id', $result['id'])
 										->get()
 										->getResultArray();
-										
 						$result['replycomments'] = $replycomment;
 					}
 				}

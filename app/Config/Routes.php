@@ -206,7 +206,6 @@ $routes->group('administrator', ['filter' => 'adminauthentication2'], function($
     $routes->get('comments/(:num)', 'Admin\Comments\Index::index/$1');
     $routes->match(['get', 'post'], 'comments/action', 'Admin\Comments\Index::action');
     $routes->get('comments/action/(:num)', 'Admin\Comments\Index::action/$1');
-    $routes->get('comments/view/(:num)', 'Admin\Comments\Index::view/$1');
 
     //Newsletter
     $routes->get('newsletter', 'Admin\Newsletter\Index::index');
