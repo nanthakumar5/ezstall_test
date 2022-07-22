@@ -337,7 +337,7 @@
 			var formdata = $('.checkoutform').serializeArray();
 			console.log(formdata);
 			$.each(formdata, function(i, field){
-				if(field.name=='barnstall') result.push('<textarea style="display:none;" name="'+field.name+'">'+field.value+'</textarea>')
+				if(field.name=='barnstall' || field.name=='rvbarnstall' || field.name=='feed' || field.name=='shaving' ) result.push('<textarea style="display:none;" name="'+field.name+'">'+field.value+'</textarea>')
 				else result.push('<input type="hidden" name="'+field.name+'" value="'+field.value+'">')
 			});
 			
