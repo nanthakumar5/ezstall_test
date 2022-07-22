@@ -14,15 +14,8 @@ class Index extends BaseController
 	
 	public function index($id='')
 	{	
-		$pager = service('pager'); 
-		$page = (int)(($this->request->getVar('page')!==null) ? $this->request->getVar('page') :1)-1;
-		$perpage =  5; 
-		$offset = $page * $perpage;
-
 		if($id!=''){
-			$commentcount 	= $this->comments->getComments('count', ['comments','users','event','replycomments'], ['commentid' => '0','eventid' => $id,'status' => ['1']]);
-			$comments 	= $this->comments->getComments('all', ['comments','users','event','replycomments'],['commentid' => '0', 'eventid' => $id,'status'=> ['1'],'start' => $offset, 'length' => $perpage]);
-			$data['pager'] 		= $pager->makeLinks($page, $perpage, $commentcount);
+			$comments 	= $this->comments->getComments('all', ['comments','users','event','replycomments'],['commentid' => '0', 'eventid' => $id,'status'=> ['1']]);
 		}
 
 		if ($this->request->getMethod()=='post')

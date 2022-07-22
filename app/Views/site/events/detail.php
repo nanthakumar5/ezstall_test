@@ -147,6 +147,7 @@ $comments        	= (isset($comments)) ? $comments : [];
 							<div class="tab-content" id="nav-tabContent">
 								<div class="tab-pane fade active show" id="barnstall" role="tabpanel" aria-labelledby="nav-home-tab">
 									<div class="border rounded pt-4 ps-3 pe-3 mb-3">
+										<h3 class="fw-bold mb-4">Book Your Stalls</h3>							
 										<?php 
 										$tabbtn = '';
 										$tabcontent = '';
@@ -208,8 +209,8 @@ $comments        	= (isset($comments)) ? $comments : [];
 								</div>
 								<?php if($detail['rv_flag'] =='1' && !empty($detail['rvbarn'])) { ?>
 									<div class="tab-pane fade" id="barnhook" role="tabpanel" aria-labelledby="nav-home-tab">
-
 										<div class="border rounded pt-4 ps-3 pe-3 mb-3">
+											<h3 class="fw-bold mb-4">Book Your Rvhookups</h3>							
 											<?php 
 											$tabbtn = '';
 											$tabcontent = ''; 
@@ -269,9 +270,9 @@ $comments        	= (isset($comments)) ? $comments : [];
 									</div>	
 								<?php } ?>
 								<?php if($detail['feed_flag'] =='1' && !empty($detail['feed_flag'])) { ?>
-
 									<div class="tab-pane fade" id="barnfeed" role="tabpanel" aria-labelledby="nav-home-tab">
 										<div class="border rounded py-4 ps-3 pe-3 mb-3">
+											<h3 class="fw-bold mb-4">Book Your Feed</h3>							
 											<table class="table table-bordered table-hover mb-0">
 												<thead class="table-dark">
 													<tr>
@@ -303,7 +304,7 @@ $comments        	= (isset($comments)) ? $comments : [];
 								<?php if($detail['shaving_flag'] =='1' && !empty($detail['shaving_flag'])) { ?>
 									<div class="tab-pane fade" id="barnshaving" role="tabpanel" aria-labelledby="nav-home-tab">
 										<div class="border rounded py-4 ps-3 pe-3 mb-3">
-											<!-- <h3 class="fw-bold mb-4">Book Your Shaving</h3> -->							
+											<h3 class="fw-bold mb-4">Book Your Shaving</h3>							
 											<table class="table table-bordered table-hover mb-0">
 												<thead class="table-dark">
 													<tr>
