@@ -200,7 +200,7 @@ function send_mail($to,$subject,$message,$attachment)
 	$email->setFrom('info@itfhrm.com', 'Ezstall');
 	$email->setTo($to);
 	$email->setSubject($subject);
-	$email->setMessage($message);
+	$email->setMessage(strip_tags($message));
 
 	if($attachment !=''){
 		$filename 	= 'Eventinvoice.pdf';

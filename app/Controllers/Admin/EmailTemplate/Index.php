@@ -15,16 +15,42 @@ class Index extends BaseController
 	
 	public function index() 
 	{
-		$pager 		= service('pager'); 
-		$page 		= (int)(($this->request->getVar('page')!==null) ? $this->request->getVar('page') :1)-1;
-		$perpage 	=  5; 
-		$offset 	= $page * $perpage;
+		return view('admin/emailtemplate/index');
+	}
 
-		$templatecount 		= $this->emailtemplate->getEmailTemplate('count', ['emailtemplate']);
-		$data['templates'] 	= $this->emailtemplate->getEmailTemplate('all', ['emailtemplate'], ['start' => $offset, 'length' => $perpage]);
-	   	$data['pager'] 		= $pager->makeLinks($page, $perpage, $templatecount);
+	public function DTtemplates()
+	{		
+		$post 			= $this->request->getPost(); 
+		$totalcount 	= $this->emailtemplate->getEmailTemplate('count', ['emailtemplate']+$post);
+		$results 		= $this->emailtemplate->getEmailTemplate('all', ['emailtemplate']+$post);
 
-		return view('admin/emailtemplate/index',$data);
+		$totalrecord 	= [];
+				
+		if(count($results) > 0){
+			$action = '';
+			foreach($results as $key => $result){
+				$action = 	'<a href="'.getAdminUrl().'/emailtemplate/action/'.$result['id'].'">Edit</a>'; 
+				$totalrecord[] = 	[
+										'name' 	    => 	$result['name'],
+										'subject'  	=>  $result['subject'],
+										'message'  	=>  $result['message'],
+										'action'	=> 	'
+															<div class="table-action">
+																'.$action.'
+															</div>
+														'
+									];
+			}
+		}
+		
+		$json = array(
+			"draw"            => intval($post['draw']),   
+			"recordsTotal"    => intval($totalcount),  
+			"recordsFiltered" => intval($totalcount),
+			"data"            => $totalrecord
+		);
+
+		echo json_encode($json);
 	}
 	
 	public function action($id='')

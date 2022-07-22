@@ -66,26 +66,25 @@ $profileimage 	= base_url().'/assets/uploads/profile/'.$detail['profile_image'];
 				</div>
 
 				<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-5">
-					<h3 class="fw-bold mb-4">Stalls</h3>
+					<h3 class="fw-bold mb-4">Book</h3>
 					<div class="barn-nav mt-4">
 						<nav>
 							<div class="nav nav-tabs" id="multi-nav-tab" role="tablist">
-								<button class="nav-link m-0 show active" data-bs-toggle="tab" data-bs-target="#barnstall" type="button" role="tab" aria-controls="barnstall" aria-selected="true">Book Your Stalls</button>
+								<button class="nav-link m-0 show active" data-bs-toggle="tab" data-bs-target="#barnstall" type="button" role="tab" aria-controls="barnstall" aria-selected="true">Stalls</button>
 								<?php if($detail['rv_flag'] =='1' && !empty($detail['rvbarn'])) { ?>
-									<button class="nav-link m-0" data-bs-toggle="tab" data-bs-target="#barnhook" type="button" role="tab" aria-controls="barnhook" aria-selected="false">Book Your Rvhookups</button>
+									<button class="nav-link m-0" data-bs-toggle="tab" data-bs-target="#barnhook" type="button" role="tab" aria-controls="barnhook" aria-selected="false">Rvhookups</button>
 								<?php } ?>
 								<?php if($detail['feed_flag'] =='1' && !empty($detail['feed_flag'])) { ?>
-									<button class="nav-link m-0" data-bs-toggle="tab" data-bs-target="#barnfeed" type="button" role="tab" aria-controls="barnfeed" aria-selected="false">Book Your Feed</button>
+									<button class="nav-link m-0" data-bs-toggle="tab" data-bs-target="#barnfeed" type="button" role="tab" aria-controls="barnfeed" aria-selected="false">Feed</button>
 								<?php } ?>
 								<?php if($detail['shaving_flag'] =='1' && !empty($detail['shaving_flag'])) { ?>
-									<button class="nav-link m-0" data-bs-toggle="tab" data-bs-target="#barnshaving" type="button" role="tab" aria-controls="barnshaving" aria-selected="false">Book Your Shaving</button>
+									<button class="nav-link m-0" data-bs-toggle="tab" data-bs-target="#barnshaving" type="button" role="tab" aria-controls="barnshaving" aria-selected="false">Shaving</button>
 								<?php } ?>				
 							</div>
 						</nav>
 						<div class="tab-content" id="nav-tabContent">
 							<div class="tab-pane fade active show" id="barnstall" role="tabpanel" aria-labelledby="nav-home-tab">
 								<div class="border rounded pt-4 ps-3 pe-3 mb-3">
-									<h3 class="fw-bold mb-4">Book Your Stalls</h3>
 									<?php 
 									$tabbtn = '';
 									$tabcontent = '';
@@ -150,7 +149,6 @@ $profileimage 	= base_url().'/assets/uploads/profile/'.$detail['profile_image'];
 							<?php if($detail['rv_flag'] =='1' && !empty($detail['rvbarn'])) { ?>
 								<div class="tab-pane fade" id="barnhook" role="tabpanel" aria-labelledby="nav-home-tab">
 									<div class="border rounded pt-4 ps-3 pe-3 mt-4 mb-3">
-										<h3 class="fw-bold mb-4">Book Your Rvhookups</h3>
 										<?php 
 										$tabbtn = '';
 										$tabcontent = ''; 
@@ -212,7 +210,6 @@ $profileimage 	= base_url().'/assets/uploads/profile/'.$detail['profile_image'];
 							<?php if($detail['feed_flag'] =='1' && !empty($detail['feed_flag'])) { ?>
 								<div class="tab-pane fade" id="barnfeed" role="tabpanel" aria-labelledby="nav-home-tab">
 									<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
-										<h3 class="fw-bold mb-4">Book Your Feed</h3>
 										<table class="table table-bordered table-hover mb-0">
 											<thead class="table-dark">
 												<tr>
@@ -244,7 +241,6 @@ $profileimage 	= base_url().'/assets/uploads/profile/'.$detail['profile_image'];
 							<?php if($detail['shaving_flag'] =='1' && !empty($detail['shaving_flag'])) { ?>
 								<div class="tab-pane fade" id="barnshaving" role="tabpanel" aria-labelledby="nav-home-tab">
 									<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
-										<h3 class="fw-bold mb-4">Book Your Shaving</h3>
 										<table class="table table-bordered table-hover mb-0">
 											<thead class="table-dark">
 												<tr>

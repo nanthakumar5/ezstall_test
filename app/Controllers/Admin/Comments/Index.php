@@ -22,29 +22,26 @@ class Index extends BaseController
 		if($id!=''){
 			$commentcount 	= $this->comments->getComments('count', ['comments','users','event','replycomments'], ['commentid' => '0','eventid' => $id,'status' => ['1']]);
 			$comments 	= $this->comments->getComments('all', ['comments','users','event','replycomments'],['commentid' => '0', 'eventid' => $id,'status'=> ['1'],'start' => $offset, 'length' => $perpage]);
-		}
-		else{
-			$commentcount 	= $this->comments->getComments('count', ['comments','users','event','replycomments'], ['commentid' => '0','status' => [ '1']]);
-			$comments 	= $this->comments->getComments('all', ['comments','users','event','replycomments'],['commentid' => '0', 'status'=> ['1'],'start' => $offset, 'length' => $perpage]);
+			$data['pager'] 		= $pager->makeLinks($page, $perpage, $commentcount);
 		}
 
 		if ($this->request->getMethod()=='post')
 		{	
 			$requestData 				= $this->request->getPost();
 			$requestData['userid'] 		= getSiteUserID();
+			$eventid 					= $id;
 
 			$result = $this->comments->delete($requestData);
 			
 			if($result){
 				$this->session->setFlashdata('success', 'Comment deleted successfully.');
-				return redirect()->to(getAdminUrl().'/comments'); 
+				return redirect()->to(getAdminUrl().'/comments/'.$eventid); 
 			}else{
 				$this->session->setFlashdata('danger', 'Try Later');
-				return redirect()->to(getAdminUrl().'/comments'); 
+				return redirect()->to(getAdminUrl().'/comments/'.$eventid); 
 			}
 		}
 
-		$data['pager'] 		= $pager->makeLinks($page, $perpage, $commentcount);
 		$data['eventid'] 	= $id;
 		$data['comments'] 	= $comments;
 		return view('admin/comments/index',$data);
@@ -58,21 +55,22 @@ class Index extends BaseController
 				$data['result'] = $result;
 			}else{
 				$this->session->setFlashdata('danger', 'No Record Found.');
-				return redirect()->to(getAdminUrl().'/comments'); 
+				return redirect()->to(getAdminUrl().'/comments/'.$id); 
 			}
 		}
 		
 		if ($this->request->getMethod()=='post')
 		{ 
 			$requestData = $this->request->getPost();
+
 			$result = $this->comments->action($requestData);
 			
 			if($result){
 				$this->session->setFlashdata('success', 'Comments saved successfully.');
-				return redirect()->to(getAdminUrl().'/comments'); 
+				return redirect()->to(getAdminUrl().'/comments/'.$requestData['eventid']); 
 			}else{
 				$this->session->setFlashdata('danger', 'Try Later.');
-				return redirect()->to(getAdminUrl().'/comments'); 
+				return redirect()->to(getAdminUrl().'/comments/'.$requestData['eventid']); 
 			}
 		}
 		

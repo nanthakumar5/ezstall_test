@@ -88,12 +88,6 @@
 	</a>
 </li>
 <li class="nav-item">
-	<a href="<?php echo getAdminUrl().'/comments'; ?>" class="nav-link nav-hov">
-		<i class="nav-icon fa fa-comments"></i>
-		<p>Comments</p>
-	</a>
-</li>
-<li class="nav-item">
 	<a href="<?php echo getAdminUrl().'/newsletter'; ?>" class="nav-link nav-hov">
 		<i class="nav-icon far fa-newspaper"></i>
 		<p>Newsletter</p>

@@ -21,6 +21,34 @@ class Emailtemplate extends BaseModel
 		else											$query->select(implode(',', $select));
 		
 		if(isset($requestdata['id'])) 					$query->where('et.id', $requestdata['id']);
+
+		if($type!=='count' && isset($requestdata['start']) && isset($requestdata['length'])){
+			$query->limit($requestdata['length'], $requestdata['start']);
+		}
+		if(isset($requestdata['order']['0']['column']) && isset($requestdata['order']['0']['dir'])){
+			if(isset($requestdata['page']) && $requestdata['page']=='emailtemplates'){
+				$column = ['et.name','et.subject', 'et.message'];
+				$query->orderBy($column[$requestdata['order']['0']['column']], $requestdata['order']['0']['dir']);
+			}
+		}
+		if(isset($requestdata['search']['value']) && $requestdata['search']['value']!=''){
+			$searchvalue = $requestdata['search']['value'];
+						
+			if(isset($requestdata['page'])){
+				$page = $requestdata['page'];
+				
+				$query->groupStart();
+					if($page=='emailtemplates'){				
+						$query->like('et.name', $searchvalue);
+						$query->orLike('et.subject', $searchvalue);
+						$query->orLike('et.message', $searchvalue);
+					}
+				$query->groupEnd();
+			}			
+		}
+		
+		if(isset($extras['groupby'])) 	$query->groupBy($extras['groupby']);
+		else $query->groupBy('et.id');
 		
 		if($type=='count'){
 			$result = $query->countAllResults();

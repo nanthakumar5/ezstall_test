@@ -202,8 +202,7 @@ $routes->group('administrator', ['filter' => 'adminauthentication2'], function($
     $routes->get('reservations/view/(:num)', 'Admin\Reservations\Index::view/$1');
 
     //Comments
-    $routes->match(['get', 'post'], 'comments', 'Admin\Comments\Index::index');
-    $routes->get('comments/(:num)', 'Admin\Comments\Index::index/$1');
+    $routes->match(['get', 'post'],'comments/(:num)', 'Admin\Comments\Index::index/$1');
     $routes->match(['get', 'post'], 'comments/action', 'Admin\Comments\Index::action');
     $routes->get('comments/action/(:num)', 'Admin\Comments\Index::action/$1');
 
@@ -217,6 +216,7 @@ $routes->group('administrator', ['filter' => 'adminauthentication2'], function($
     // Email Template
     $routes->match(['get', 'post'], 'emailtemplate', 'Admin\EmailTemplate\Index::index');
     $routes->match(['get', 'post'],'emailtemplate/action/(:num)', 'Admin\EmailTemplate\Index::action/$1');
+    $routes->post('emailtemplate/DTtemplates', 'Admin\EmailTemplate\Index::DTtemplates');
 
 	// Settings
     $routes->match(['get', 'post'], 'settings', 'Admin\Settings\Index::index');

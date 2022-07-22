@@ -22,7 +22,7 @@ $replycomments 			= isset($result['replycomments']) ? $result['replycomments'] :
 			<div class="col-sm-6">
 				<ol class="breadcrumb float-sm-right">
 					<li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-					<li class="breadcrumb-item"><a href="<?php echo getAdminUrl(); ?>/comments">Comments</a></li>
+					<li class="breadcrumb-item"><a href="<?php echo getAdminUrl().'/comments/'.$eventid;?>">Comments</a></li>
 					<li class="breadcrumb-item active">Update Comment</li>
 				</ol>
 			</div>
@@ -31,7 +31,7 @@ $replycomments 			= isset($result['replycomments']) ? $result['replycomments'] :
 </section>
 <section class="content">
 	<div class="page-action">
-		<a href="<?php echo getAdminUrl(); ?>/comments" class="btn btn-primary">Back</a>
+		<a href="<?php echo getAdminUrl().'/comments/'.$eventid;?>" class="btn btn-primary">Back</a>
 	</div>
 	<div class="card">
 		<div class="card-header">

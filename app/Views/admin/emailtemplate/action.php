@@ -68,6 +68,7 @@
 <?php $this->section('js') ?>
 	<script>		
 		$(function(){
+			editor('#message');
 			validation(
 				'#email_template_form',
 				{

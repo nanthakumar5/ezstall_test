@@ -92,7 +92,7 @@
 <script>
 	$(".commentratings").rate({ initial_value: 0, max_value: 5 });
 	$(document).on('click', '.delete', function(){
-		var action 	= 	'<?php echo getAdminUrl()."/comments"; ?>';
+		var action 	= 	'<?php echo getAdminUrl()."/comments/".$eventid; ?>';
 		var data	= 	'\
 		<input type="hidden" value="'+$(this).data('id')+'" name="id">\
 		<input type="hidden" value="0" name="status">\

@@ -21,33 +21,37 @@
 					<h3 class="card-title">Email Template</h3>
 				</div>
 				<div class="card-body">
-					<?php if(!empty($templates)){ ?>
-						<div id="emailtemplate">	
-							<?php foreach ($templates as $data) { ?>
-								<div class="mb-3">
-									<label class="form-label">Template Title : </label>
-									<p><?php echo $data['name'];?></p>
-								</div>
-								<div class="mb-3 form-check">
-									<label class="form-label">Subject : </label>
-									<p><?php echo $data['subject'];?></p>
-								</div>
-								<div class="mb-3 form-check">
-									<label class="form-label">Message : </label>
-									<p><?php echo $data['message'];?></p>
-								</div>
-								<div class="mb-3">
-									<a href="<?php echo getAdminUrl().'/emailtemplate/action/'.$data['id'];?>"><button class="btn btn-primary btn btn-danger">Edit Template</button></a>
-								</div>
-							<?php } ?>
-						</div>
-					<?php } else{ ?>
-						<p>No Records Found!</p>
-					<?php } ?>
+					<table class="table table-striped table-hover datatables">
+						<thead>
+							<th>Name</th>
+							<th>Subject</th>
+							<th>Message</th>
+							<th>Action</th>	
+						</thead>
+					</table>
 				</div>
 			</div>
 		</section>
-<?php echo $pager; ?>
 <?php $this->endSection(); ?>
-
+<?php $this->section('js') ?>
+	<script>
+		$(function(){
+			var options = {	
+				url 		: 	'<?php echo getAdminUrl()."/emailtemplate/DTtemplates"; ?>',	
+				data		:	{ 'page' : 'emailtemplates' },				
+				columns 	: 	[
+    				                { 'data' : 'name' },
+                    				{ 'data' : 'subject' },
+                    				{ 'data' : 'message' },
+                    				{ 'data' : 'action' }								
+				
+                				],
+				columndefs	:	[{"sortable": false, "targets": [3]}]											
+									
+			};				
+			
+			ajaxdatatables('.datatables', options);		
+		});
+	</script>
+<?php $this->endSection(); ?>
 
