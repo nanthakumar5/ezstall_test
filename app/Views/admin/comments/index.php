@@ -31,74 +31,79 @@
 				if(!empty($comments)){
 					$commentno = 1; 
 					foreach ($comments as $commentdata ) { ?>
-						<div id="usercommentlist">
-							<label>Eventname :</label>
-							<p><?php echo $commentdata['eventname'];?></p>
-							<div class="mb-3">
-								<label>Comment <?php echo $commentno++;?> :</label>
-								<p class="usercomment"><?php echo $commentdata['comment'];?></p>
-							</div>
-							<div class="mb-1">
-								<label>Commented By :</label>
-								<p class="commented_username"><?php echo $commentdata['username'];?></p>
-							</div>
-							<div class="row mb-1">
-								<label for="communication_lbl" class="fw-bold col-md-3">Communication</label>
-								<div class="communicationRating commentratings col-md-6" data-rate-value="<?php echo $commentdata['communication'];?>">
+						<div class="admin_comment">
+							<div id="usercommentlist">
+								<label class="admin_comment_title">Eventname</label>
+								<p class="admin_comment_content"><?php echo $commentdata['eventname'];?></p>
+								<div>
+									<label class="admin_comment_title">Comment <?php echo $commentno++;?></label>
+									<p class="admin_comment_content usercomment"><?php echo $commentdata['comment'];?></p>
 								</div>
-							</div>
-							<div class="row mb-1">
-								<label for="cleanliness_lbl" class="fw-bold col-md-3">Cleanliness</label>
-								<div class="cleanlinessRating commentratings col-md-6"  data-rate-value="<?php echo $commentdata['cleanliness'];?>">
+								<div class="mb-1">
+									<label class="admin_comment_title">Commented By</label>
+									<p class="admin_comment_content commented_username"><?php echo $commentdata['username'];?></p>
 								</div>
-							</div>
-							<div class="row mb-1">
-								<label for="friendliness_lbl" class="fw-bold col-md-3">Friendliness</label>
-								<div class="friendlinessRating commentratings col-md-6" data-rate-value="<?php echo $commentdata['friendliness'];?>"></div>
-							</div>
-							<div class="col">
-								<a href="<?php echo getAdminUrl().'/comments/action/'.$commentdata['id'];?>"><button class="btn btn-primary btn btn-danger">Edit Comment</button></a>
-								<a href="javascript:void(0);" data-id="<?php echo $commentdata['id'];?>" class="delete"><button class="btn btn-primary btn btn-danger">Delete Comment</button></a>
-							</div>
-						</div>
-						<?php if(!empty($commentdata['replycomments'])){ ?>
-							<?php $replyno = 1; 
-							foreach ($commentdata['replycomments'] as $replydata){ ?>
-								<div id="replylist">
-									<div>
-										<label>Reply <?php echo $replyno++;?>:</label>
-										<p class="usercomment"><?php echo $replydata['reply'];?></p>
-									</div>
-									<div class="mb-1">
-										<label>Replied By:</label>
-										<p class="commented_username"><?php echo $replydata['username'];?></p>
-									</div>
-									<div class="col">
-										<a href="<?php echo getAdminUrl().'/comments/action/'.$replydata['replyid'];?>"><button class="btn btn-primary btn btn-danger">Edit Reply</button></a>
+								<div class="row mb-1">
+									<label for="communication_lbl" class="admin_comment_title fw-bold col-md-3">Communication</label>
+									<div class="communicationRating commentratings col-md-6" data-rate-value="<?php echo $commentdata['communication'];?>">
 									</div>
 								</div>
+								<div class="row mb-1">
+									<label for="cleanliness_lbl" class="admin_comment_titlefw-bold col-md-3">Cleanliness</label>
+									<div class="cleanlinessRating commentratings col-md-6"  data-rate-value="<?php echo $commentdata['cleanliness'];?>">
+									</div>
+								</div>
+								<div class="row mb-1">
+									<label for="friendliness_lbl" class="admin_comment_title fw-bold col-md-3">Friendliness</label>
+									<div class="friendlinessRating commentratings col-md-6" data-rate-value="<?php echo $commentdata['friendliness'];?>"></div>
+								</div>
+								<div class="mt-4">
+									<a href="<?php echo getAdminUrl().'/comments/action/'.$commentdata['id'];?>">
+										<button class="btn edit-btn">Edit Comment</button></a>
+										<a href="javascript:void(0);" data-id="<?php echo $commentdata['id'];?>" class="delete">
+											<button class="btn del-btn">Delete Comment</button></a>
+										</div>
+									</div>
+									<?php if(!empty($commentdata['replycomments'])){ ?>
+										<?php $replyno = 1; 
+										foreach ($commentdata['replycomments'] as $replydata){ ?>
+											<div id="replylist">
+												<div>
+													<label class="admin_comment_title">Reply <?php echo $replyno++;?>:</label>
+													<p class="admin_comment_content usercomment"><?php echo $replydata['reply'];?></p>
+												</div>
+												<div class="mb-1">
+													<label class="admin_comment_title">Replied By:</label>
+													<p class="admin_comment_content commented_username"><?php echo $replydata['username'];?></p>
+												</div>
+												<div>
+													<a href="<?php echo getAdminUrl().'/comments/action/'.$replydata['replyid'];?>">
+														<button class="btn edit-btn">Edit Reply</button></a>
+												</div>
+											</div>
+										<?php } ?>
+									</div>
+								<?php } ?>
 							<?php } ?>
+						<?php } else { ?>
+							<p>No Record Found for this Event!</p>
 						<?php } ?>
-					<?php } ?>
-				<?php } else { ?>
-					<p>No Record Found for this Event!</p>
-				<?php } ?>
+					</div>
+				</div>
 			</div>
-		</div>
-	</div>
-</section>
-<?php $this->endSection(); ?>
-<?php $this->section('js') ?>
-<script>
-	$(".commentratings").rate({ initial_value: 0, max_value: 5 });
-	$(document).on('click', '.delete', function(){
-		var action 	= 	'<?php echo getAdminUrl()."/comments/".$eventid; ?>';
-		var data	= 	'\
-		<input type="hidden" value="'+$(this).data('id')+'" name="id">\
-		<input type="hidden" value="0" name="status">\
-		';
-		sweetalert2(action, data);
-	})
-</script>
-<?php $this->endSection(); ?>
+		</section>
+		<?php $this->endSection(); ?>
+		<?php $this->section('js') ?>
+		<script>
+			$(".commentratings").rate({ initial_value: 0, max_value: 5 });
+			$(document).on('click', '.delete', function(){
+				var action 	= 	'<?php echo getAdminUrl()."/comments/".$eventid; ?>';
+				var data	= 	'\
+				<input type="hidden" value="'+$(this).data('id')+'" name="id">\
+				<input type="hidden" value="0" name="status">\
+				';
+				sweetalert2(action, data);
+			})
+		</script>
+		<?php $this->endSection(); ?>
 

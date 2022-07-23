@@ -327,3 +327,105 @@ a.nav-link.nav-hov:not(.active):hover {
     margin-right: 1rem;
     margin-bottom: 1rem;
 }
+
+/*22072022 styles start*/
+
+.edit-btn {
+    background-color: #171717;
+    font-weight: 500;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.edit-btn:hover {
+    background-color: #e00000;
+    color: #fff;
+}
+
+
+.del-btn {
+    background-color: #e00000;
+    font-weight: 500;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.del-btn:hover {
+    background-color: #171717;
+    color: #fff;
+}
+
+.admin_comment {
+    border-left: 1px dashed #c9c9c9;
+    padding-left: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+div#replylist {
+    padding: 2rem 2.2rem;
+    background-color: #fff;
+    margin: 1rem 4rem;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    box-shadow: 2px 2px 6px 2px #e74c3c57;
+}
+
+div#replylist::before {
+    content: "";
+    background-color: #ff4545;
+    height: 100px;
+    width: 5px;
+    display: block;
+    position: absolute;
+    margin-left: -2.2rem;
+    margin-top: 1rem;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.admin_comment_title {
+    margin-bottom: 0;
+    letter-spacing: 0.2px;
+    color: #171717;
+    font-size: 15px;
+}
+
+
+.admin_comment_content {
+    font-size: 14px;
+    font-weight: 600;
+    color: #7e7e7e;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+
+div#usercommentlist {
+    padding: 1.5rem 2.2rem;
+    background-color: #fff;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    box-shadow: 2px 2px 6px 2px #00000033;
+}
+
+
+div#usercommentlist::before {
+    content: "";
+    background-color: #171717;
+    height: 100px;
+    width: 5px;
+    display: block;
+    position: absolute;
+    right: 2rem;
+    margin-top: 6rem;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+/*22072022 styles end*/

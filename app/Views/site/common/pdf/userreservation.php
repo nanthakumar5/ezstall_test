@@ -19,12 +19,6 @@
 			display: none;
 		}
 		
-		
-		.event__ticket {
-			box-shadow: 0px 3px 7px 2px #1717170d;
-			border-radius: 5px;
-		}
-
 		.ticket_title_tag {
 			font-size: 11px;
 			margin-bottom: 0;
