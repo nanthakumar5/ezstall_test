@@ -47,7 +47,13 @@ class Stripe extends BaseModel
 		$stripecustomerid 		= $userdetails['stripe_customer_id'];
 		$price 					= $requestData['price'] * 100;
         $currency 				= "inr";
-
+		
+		$retrievecustomer = $this->retrieveCustomer($stripecustomerid);
+		if(!$retrievecustomer || $stripecustomerid==''){
+			$customer 			= $this->createCustomer($userid, $name, $email);
+			$stripecustomerid 	= $customer->id;
+		}
+		
 		$paymentintents = $this->createPaymentIntents($stripecustomerid, $price, $currency);				
 		if($paymentintents){
 			$paymentData = array(
@@ -84,7 +90,13 @@ class Stripe extends BaseModel
 		$planname 				= $requestData['plan_name'];
 		$planprice 				= $requestData['plan_price'];
 		$planinterval 			= $requestData['plan_interval'];
-				
+		
+		$retrievecustomer = $this->retrieveCustomer($stripecustomerid);
+		if(!$retrievecustomer || $stripecustomerid==''){
+			$customer 			= $this->createCustomer($userid, $name, $email);
+			$stripecustomerid 	= $customer->id;
+		}
+		
 		$product = $this->createProduct($planname);
 		if($product){
 			$price = $this->createPrice($product->id, $planprice, $planinterval);
@@ -126,53 +138,6 @@ class Stripe extends BaseModel
 		}
 	}
 
-	function striperefunds($data){
-		$this->db->table('booking')->update(['status' => '2'], ['id' => $data['id']]);
-		return true;
-	}
-	
-	function createPaymentMethods($cardno, $cardexpmonth, $cardexpyear, $cardcvc)
-    {
-		try{
-			$settings = getSettings();
-			$stripe = new \Stripe\StripeClient($settings['stripeprivatekey']);
-			
-			$data = $stripe->paymentMethods->create([
-				'type' => 'card',
-				'card' => [
-					'number' 	=> $cardno,
-					'exp_month' => $cardexpmonth,
-					'exp_year' 	=> $cardexpyear,
-					'cvc' 		=> $cardcvc
-				]
-			]);
-
-            return $data;
-        }catch(Exception $e){
-            print_r($e->getMessage());die;
-			return false;
-        }
-    }
-	
-    function createCustomer($name, $email, $paymentmethodid)
-    {
-		try{
-			$settings = getSettings();
-			$stripe = new \Stripe\StripeClient($settings['stripeprivatekey']);
-			
-			$data = $stripe->customers->create([
-				'name' 				=> $name,
-				'email' 			=> $email,
-				'payment_method'	=> $paymentmethodid
-			]);
-			
-			return $data;
-		}catch(Exception $e){
-            print_r($e->getMessage());die;
-			return false;
-        }
-    }
-	
 	function createPaymentIntents($customerid, $price, $currency)
     {
 		try{
@@ -188,8 +153,7 @@ class Stripe extends BaseModel
 
             return $data;
         }catch(Exception $e){
-            print_r($e->getMessage());die;
-			return false;
+            return false;
         }
     }
 	
@@ -206,31 +170,9 @@ class Stripe extends BaseModel
 			
 			return $data;
         }catch(Exception $e){
-            print_r($e->getMessage());
-            die;
+            return false;
         }
     } 
-	
-	function confirmPaymentIntents($paymentintentsID, $paymentmethod)
-    {
-		try{
-			$settings = getSettings();
-			$stripe = new \Stripe\StripeClient($settings['stripeprivatekey']);
-			
-			$data = $stripe->paymentIntents->confirm(
-				$paymentintentsID,
-				[
-					'payment_method' => $paymentmethod,
-					'return_url' => base_url().'/stripe3d'
-				]
-			);
-
-            return $data;
-        }catch(Exception $e){
-            print_r($e->getMessage());die;
-			return false;
-        }
-    }
 	
     function createProduct($planname)
     {
@@ -244,8 +186,7 @@ class Stripe extends BaseModel
 			
 			return $data;
 		}catch(Exception $e){
-            print_r($e->getMessage());die;
-			return false;
+            return false;
         }
     }
 
@@ -267,8 +208,7 @@ class Stripe extends BaseModel
 			
 			return $data;
 		}catch(Exception $e){
-            print_r($e->getMessage());die;
-			return false;
+            return false;
         }
     }
 
@@ -289,8 +229,7 @@ class Stripe extends BaseModel
 			
 			return $data;
         }catch(Exception $e){
-            print_r($e->getMessage());
-            die;
+            return false;
         }
     } 
 	
@@ -307,11 +246,53 @@ class Stripe extends BaseModel
 			
 			return $data;
         }catch(Exception $e){
-            print_r($e->getMessage());
-            die;
+            return false;
         }
     } 
-    
+	
+    function createCustomer($id, $name, $email)
+    {
+		try{
+			$settings = getSettings();
+			$stripe = new \Stripe\StripeClient($settings['stripeprivatekey']);
+			
+			$data = $stripe->customers->create([
+				'name' 				=> $name,
+				'email' 			=> $email
+			]);
+			
+			$this->db->table('users')->update(['stripe_customer_id' => $data->id], ['id' => $id]);			
+			return $data;
+		}catch(Exception $e){
+			return false;
+        }
+    }
+	
+    function retrieveCustomer($customerid)
+    {
+        try{
+			$settings = getSettings();
+			$stripe = new \Stripe\StripeClient($settings['stripeprivatekey']);
+			
+			$data = $stripe->customers->retrieve(
+				$customerid,
+				[]
+			);
+			
+			return $data;
+        }catch(\Stripe\Exception\InvalidRequestException $e){
+            return false;
+        }catch(Exception $e){
+            return false;
+        }
+    } 
+	
+	function striperefunds($data)
+	{
+		$this->db->table('booking')->update(['status' => '2'], ['id' => $data['id']]);
+		return true;
+	}
+	
     function createRefunds($paymentintentid, $amount)
     {
         try{
@@ -325,8 +306,7 @@ class Stripe extends BaseModel
 
 			return $data;
         }catch(Exception $e){
-            print_r($e->getMessage());
-            die;
+            return false;
         }
     }
 
@@ -346,8 +326,7 @@ class Stripe extends BaseModel
 			return $data;
 
         }catch(Exception $e){
-            print_r($e->getMessage());
-            die;
+            return false;
         }
     }    
 }

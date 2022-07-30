@@ -32,7 +32,6 @@ class Index extends BaseController
 				
 		if(count($results) > 0){
 			foreach($results as $key => $result){
-				
 				$totalrecord[] = 	[
 										'username' 			=> 	$result['username'],
 										'amount' 			=> 	$currencysymbol.$result['amount'],
@@ -56,20 +55,19 @@ class Index extends BaseController
 		if ($this->request->getMethod()=='post')
         {
 			$requestdata = $this->request->getPost();
-			$requestdata['userid'] = getAdminUserID();
-			$requestdata['status'] = '1';
+			$userid = $requestdata['user_id'];
 			$amount = $requestdata['amount'];
+			$userdetail = getUserDetails($userid);
+			$stripeaccountId = $userdetail['stripe_account_id'];
+			
+            $transfer = $this->stripe->createTransfer($stripeaccountId, $amount);
 
-            $result = $this->stripepayments->action($requestdata);
-
-			if($result){
-
-				$users = $this->users->getUsers('row', ['users'], ['id' => $requestdata['user_id'], 'status' => ['1']]);
-				$stripeaccountId = $users['stripe_account_id'];
-
-            	//$transfer = $this->stripe->createTransfer($stripeaccountId,$amount);
-      			
-	            $result = $this->stripepayments->action($requestdata);
+			if($transfer){
+				$requestdata['userid'] = getAdminUserID();
+				$requestdata['status'] = '1';
+				
+				$this->stripepayments->action($requestdata);
+				
 				$this->session->setFlashdata('success', 'Paid successfully.');
 				return redirect()->to(getAdminUrl().'/stripepayments'); 
 			}else{
