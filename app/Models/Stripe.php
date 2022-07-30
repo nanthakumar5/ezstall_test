@@ -109,7 +109,6 @@ class Stripe extends BaseModel
 								'email' 					=> $email,
 								'amount' 					=> $subscription->plan->amount/100,
 								'currency' 					=> $subscription->plan->currency,
-								'stripe_customer_id' 		=> $subscription->customer,
 								'stripe_paymentintent_id' 	=> $paymentintentsid,
 								'stripe_subscription_id' 	=> $subscription->id,
 								'stripe_plan_id' 			=> $subscription->plan->id,
