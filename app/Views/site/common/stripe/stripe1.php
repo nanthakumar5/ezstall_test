@@ -68,32 +68,44 @@
 	
 	$(document).on('click', '#submit', function(e){
 		e.preventDefault();
-		ajax('<?php echo base_url()."/ajax/ajaxstripepayment"; ?>', {type: '1', price: $('.stripepaybutton input[name="price"]').val()}, {
-			beforesend: function() {
-				$('.modal-content').append('<div class="loader_wrapper"><img src="<?php echo base_url()."/assets/site/img/loading.svg"; ?>"></div>');
-			},
-			success: function(data){
-				var clientsecret = data.success.paymentintents.client_secret;
-				var paymentid = data.success.id;
+		var displayError = document.getElementById('card-errors');
+		
+		stripe.createToken(card).then(function(result) {
+			if (result.error) {
+				displayError.textContent = result.error.message;
+			} else {
+				var basedata = {};
+				$('.stripeextra input').each(function(){
+					basedata[$(this).attr('name')] = $(this).val();
+				})
 				
-				stripe.confirmCardPayment(clientsecret, {
-					payment_method: {
-						card: card
+				ajax('<?php echo base_url()."/ajax/ajaxstripepayment"; ?>', basedata, {
+					beforesend: function() {
+						$('.modal-content').append('<div class="loader_wrapper"><img src="<?php echo base_url()."/assets/site/img/loading.svg"; ?>"></div>');
+					},
+					success: function(data){
+						var clientsecret = data.success.paymentintents.client_secret;
+						var paymentid = data.success.id;
+						
+						stripe.confirmCardPayment(clientsecret, {
+							payment_method: {
+								card: card
+							}
+						}).then(function(res) {
+							if (res.error) {
+								displayError.textContent = res.error.message;
+								$('.loader_wrapper').remove();
+							} else {
+								if (res.paymentIntent.status === 'succeeded') {
+									$('.stripepayid').val(paymentid);
+									$(".stripeconfirm").submit();
+								}else{
+									$('.loader_wrapper').remove();
+								}
+							}
+						});
 					}
-				}).then(function(result) {
-					if (result.error) {
-						var displayError = document.getElementById('card-errors');
-						displayError.textContent = result.error.message;
-						$('.loader_wrapper').remove();
-					} else {
-						if (result.paymentIntent.status === 'succeeded') {
-							$('.stripepayid').val(paymentid);
-							$(".stripeconfirm").submit();
-						}else{
-							$('.loader_wrapper').remove();
-						}
-					}
-				});
+				})
 			}
 		})
 	})

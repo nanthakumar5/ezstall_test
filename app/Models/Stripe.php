@@ -74,73 +74,56 @@ class Stripe extends BaseModel
 	
 	function striperecurringpayment($requestData)
 	{
-		$userid 		= $requestData['userid'];
-		$name 			= $requestData['name'];
-		$email 			= $requestData['email'];
-		$cardno 		= $requestData['card_number'];
-		$cardexpmonth 	= $requestData['card_exp_month'];
-		$cardexpyear 	= $requestData['card_exp_year'];
-		$cardcvc 		= $requestData['card_cvc'];
-		$planid 		= $requestData['plan_id'];
-		$planname 		= $requestData['plan_name'];
-		$planprice 		= $requestData['plan_price'];
-		$planinterval 	= $requestData['plan_interval'];
+		$userdetails			= getSiteUserDetails();
 		
-		$paymentmethods = $this->createPaymentMethods($cardno, $cardexpmonth, $cardexpyear, $cardcvc);			
-		if($paymentmethods)
-		{	
-			$customer = $this->createCustomer($name, $email, $paymentmethods->id);
-			if($customer)
-			{
-				$product = $this->createProduct($planname);
-				if($product)
-				{
-					$price = $this->createPrice($product->id, $planprice, $planinterval);
-					if ($price)
-					{
-						$subscription = $this->createSubscription($customer->id, $price->id);
-						if($subscription){
-							$paymentintentsid = $subscription->latest_invoice->payment_intent->id;
-							$confirm = $this->confirmPaymentIntents($paymentintentsid, $paymentmethods);
-							
-							$paymentData = array(
-								'user_id' 					=> $userid,
-								'name' 						=> $name,
-								'email' 					=> $email,
-								'amount' 					=> $subscription->plan->amount/100,
-								'currency' 					=> $subscription->plan->currency,
-								'stripe_paymentintent_id' 	=> $paymentintentsid,
-								'stripe_subscription_id' 	=> $subscription->id,
-								'stripe_plan_id' 			=> $subscription->plan->id,
-								'plan_id'					=> $planid,
-								'plan_interval' 			=> $subscription->plan->interval,
-								'plan_period_start' 		=> date("Y-m-d H:i:s", $subscription->current_period_start),
-								'plan_period_end' 			=> date("Y-m-d H:i:s", $subscription->current_period_end),
-								'type' 						=> '2',
-								'status' 					=> '0',
-								'created' 					=> date("Y-m-d H:i:s")
-							);
+		$userid 				= $userdetails['id'];
+		$name 					= $userdetails['name'];
+		$email 					= $userdetails['email'];
+		$stripecustomerid 		= $userdetails['stripe_customer_id'];
+		$planid 				= $requestData['plan_id'];
+		$planname 				= $requestData['plan_name'];
+		$planprice 				= $requestData['plan_price'];
+		$planinterval 			= $requestData['plan_interval'];
+				
+		$product = $this->createProduct($planname);
+		if($product){
+			$price = $this->createPrice($product->id, $planprice, $planinterval);
+			if ($price){
+				$subscription = $this->createSubscription($stripecustomerid, $price->id);
+				if($subscription){
+					$paymentintents = $subscription->latest_invoice->payment_intent;
+					
+					$paymentData = array(
+						'user_id' 					=> $userid,
+						'name' 						=> $name,
+						'email' 					=> $email,
+						'amount' 					=> $subscription->plan->amount/100,
+						'currency' 					=> $subscription->plan->currency,
+						'stripe_paymentintent_id' 	=> $paymentintents->id,
+						'stripe_subscription_id' 	=> $subscription->id,
+						'stripe_plan_id' 			=> $subscription->plan->id,
+						'plan_id'					=> $planid,
+						'plan_interval' 			=> $subscription->plan->interval,
+						'plan_period_start' 		=> date("Y-m-d H:i:s", $subscription->current_period_start),
+						'plan_period_end' 			=> date("Y-m-d H:i:s", $subscription->current_period_end),
+						'type' 						=> '2',
+						'status' 					=> '0',
+						'created' 					=> date("Y-m-d H:i:s")
+					);
 
-							$this->db->table('payment')->insert($paymentData);
-							$paymentinsertid = $this->db->insertID();
-					   
-							$paymentstatus = $confirm->status;
-							if($paymentstatus=='requires_action' && $confirm->next_action->type == 'redirect_to_url' && $confirm->next_action->redirect_to_url->url){
-								return ['status' => '1', 'url' => $confirm->next_action->redirect_to_url->url, 'id' => $paymentinsertid];
-							}else if ($confirm->status == 'succeeded') {
-								return ['status' => '1', 'url' => '', 'id' => $paymentinsertid];
-							}else{
-								return ['status' => '0', 'url' => '', 'id' => $paymentinsertid];
-							}
-						}
-					}
+					$this->db->table('payment')->insert($paymentData);
+					$paymentinsertid = $this->db->insertID();
+					
+					return ['paymentintents' => $paymentintents, 'id' => $paymentinsertid];
+				}else{
+					return false;
 				}
-			}
-			else{
+			}else{
 				return false;
 			}
+		}else{
+			return false;
 		}
-		
 	}
 
 	function striperefunds($data){

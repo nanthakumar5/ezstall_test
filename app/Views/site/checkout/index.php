@@ -40,15 +40,15 @@
 						<p>Changes to this information will be reflected on all of your existing reservations.</p>
 						<div class="row">
 							<div class="col-lg-6 mb-4">
-								<input placeholder="First Name" name="firstname" autocomplete='off' value="<?php echo $firstname; ?>">
+								<input placeholder="First Name" name="firstname" autocomplete='off' value="">
 							</div>
 							<div class="col-lg-6 mb-4">
-								<input type="text" placeholder="Last Name" name="lastname" autocomplete='off' value="<?php echo $lastname; ?>">
+								<input type="text" placeholder="Last Name" name="lastname" autocomplete='off' value="">
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-lg-6  mb-4">
-								<input placeholder="Mobile Number" name="mobile" autocomplete='off'  value="<?php echo $mobile; ?>">
+								<input placeholder="Mobile Number" name="mobile" autocomplete='off'  value="">
 							</div>
 							<div class="col-lg-6 mb-4">
 								<span class="info-box d-flex justify-content-between"><img class="dash-info-i" src="<?php echo base_url()?>/assets/site/img/chekout-info.png"><p>You may receive a text message with your stall assignment before your arrival.</p></span>
@@ -324,7 +324,7 @@
 		$('#stripeFormModal').on('shown.bs.modal', function () { 
 			var result = [];
 			var formdata = $('.checkoutform').serializeArray();
-			console.log(formdata);
+			
 			$.each(formdata, function(i, field){
 				if(field.name=='barnstall' || field.name=='rvbarnstall' || field.name=='feed' || field.name=='shaving' ) result.push('<textarea style="display:none;" name="'+field.name+'">'+field.value+'</textarea>')
 				else result.push('<input type="hidden" name="'+field.name+'" value="'+field.value+'">')
