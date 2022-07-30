@@ -181,7 +181,7 @@ function createDirectory($path)
 	}
 }
 
-function send_mail($to,$subject,$message,$attachment)
+function send_mail($to,$subject,$message,$attachment='')
 {
 
 	$email = \Config\Services::email();

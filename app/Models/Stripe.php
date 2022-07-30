@@ -12,7 +12,6 @@ class Stripe extends BaseModel
 		
 		$payment = $this->db->table('payment')->where('id', $id)->get()->getRowArray();
 
-
 		if($payment['type']=='1'){
 			$data = $this->retrievePaymentIntents($payment['stripe_paymentintent_id']);
 
@@ -40,55 +39,35 @@ class Stripe extends BaseModel
 
 	function stripepayment($requestData)
 	{
-		$userid 		= $requestData['userid'];
-		$name 			= $requestData['name'];
-		$email 			= $requestData['email'];
-		$cardno 		= $requestData['card_number'];
-		$cardexpmonth 	= $requestData['card_exp_month'];
-		$cardexpyear 	= $requestData['card_exp_year'];
-		$cardcvc 		= $requestData['card_cvc'];
-		$price 			= $requestData['price'] * 100;
-        $currency 		= "inr";
+		$userdetails			= getSiteUserDetails();
 		
-		$paymentmethods = $this->createPaymentMethods($cardno, $cardexpmonth, $cardexpyear, $cardcvc);
-		if($paymentmethods)
-		{
-			$customer = $this->createCustomer($name, $email, $paymentmethods->id);
-			if($customer)
-			{
-				$paymentintents = $this->createPaymentIntents($customer->id, $price, $currency);				
-				if($paymentintents)
-				{
-					$confirm = $this->confirmPaymentIntents($paymentintents->id, $paymentmethods);
-					
-					$paymentData = array(
-						'user_id' 					=> $userid,
-						'name' 						=> $name,
-						'email' 					=> $email,
-						'amount' 					=> $price/100,
-						'currency' 					=> $currency,
-						'stripe_customer_id' 		=> $confirm->customer,
-						'stripe_paymentintent_id' 	=> $confirm->id,
-						'type' 						=> '1',
-						'status' 					=> '0',
-						'created' 					=> date("Y-m-d H:i:s")
-					);
-					
-					$this->db->table('payment')->insert($paymentData);
-					$paymentinsertid = $this->db->insertID();
-					
-					$paymentstatus = $confirm->status;
-					if($paymentstatus=='requires_action' && $confirm->next_action->type == 'redirect_to_url' && $confirm->next_action->redirect_to_url->url){
-						return ['status' => '1', 'url' => $confirm->next_action->redirect_to_url->url, 'id' => $paymentinsertid];
-					}else if ($confirm->status == 'succeeded') {
-						return ['status' => '1', 'url' => '', 'id' => $paymentinsertid];
-					}else{
-						return ['status' => '0', 'url' => '', 'id' => $paymentinsertid];
-					}
-				}
-			}else{
-				return false;
-			}
+		$userid 				= $userdetails['id'];
+		$name 					= $userdetails['name'];
+		$email 					= $userdetails['email'];
+		$stripecustomerid 		= $userdetails['stripe_customer_id'];
+		$price 					= $requestData['price'] * 100;
+        $currency 				= "inr";
+
+		$paymentintents = $this->createPaymentIntents($stripecustomerid, $price, $currency);				
+		if($paymentintents){
+			$paymentData = array(
+				'user_id' 					=> $userid,
+				'name' 						=> $name,
+				'email' 					=> $email,
+				'amount' 					=> $price/100,
+				'currency' 					=> $currency,
+				'stripe_paymentintent_id' 	=> $paymentintents->id,
+				'type' 						=> '1',
+				'status' 					=> '0',
+				'created' 					=> date("Y-m-d H:i:s")
+			);
+			
+			$this->db->table('payment')->insert($paymentData);
+			$paymentinsertid = $this->db->insertID();
+			
+			return ['paymentintents' => $paymentintents, 'id' => $paymentinsertid];
+		}else{
+			return false;
 		}
 	}
 	

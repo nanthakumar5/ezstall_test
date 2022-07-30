@@ -101,6 +101,9 @@ class Users extends BaseModel
 				$request['created_at'] 		= 	$datetime;
 				$request['created_by'] 		= 	$userid;
 				
+				$customer = $this->createCustomer($request['name'], $request['email']);
+				if($customer) $request['stripe_customer_id'] = $customer->id;
+				
 				$users = $this->db->table('users')->insert($request);
 				$usersinsertid = $this->db->insertID();
 			}else{
@@ -136,4 +139,21 @@ class Users extends BaseModel
 			return true;
 		}
 	}
+	
+	public function createCustomer($name, $email)
+    {
+		try{
+			$settings = getSettings();
+			$stripe = new \Stripe\StripeClient($settings['stripeprivatekey']);
+			
+			$data = $stripe->customers->create([
+				'name' 	=> $name,
+				'email' => $email
+			]);
+			
+			return $data;
+		}catch(Exception $e){
+			return false;
+        }
+    }
 }

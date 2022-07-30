@@ -52,7 +52,6 @@ class Settings extends BaseModel
 		if(isset($data['twitter']) && $data['twitter']!='') 	  					$request['twitter'] 					= $data['twitter'];
 		if(isset($data['instagram']) && $data['instagram']!='') 	  				$request['instagram']               	= $data['instagram'];
 
-		if(isset($data['stripemode']) && $data['stripemode']!='') 					$request['stripemode'] 					= $data['stripemode'];
 		if(isset($data['stripepublickey']) && $data['stripepublickey']!='') 		$request['stripepublickey'] 			= $data['stripepublickey'];
 		if(isset($data['stripeprivatekey']) && $data['stripeprivatekey']!='') 		$request['stripeprivatekey'] 			= $data['stripeprivatekey'];
 

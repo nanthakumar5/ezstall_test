@@ -7,17 +7,6 @@
 	$shaving             	= $cartdetail['shaving'];
 	$transactionfee 		= (($settings['transactionfee'] / 100) * $cartdetail['price']);
 	$cleaning_fee 			= $cartdetail['cleaning_fee'] ? $cartdetail['cleaning_fee'] : 0;
-	$stripemode 			= $settings['stripemode'];
-	$stripepublickey 		= $settings['stripepublickey'];
-	$firstname 				= $stripemode=='2' ? 'First Name Test' : '';
-	$lastname 				= $stripemode=='2' ? 'Last Name Test' : '';
-	$mobile 				= $stripemode=='2' ? '987654321' : '';
-	$name 					= $stripemode=='2' ? 'test' : '';
-	$cardno 				= $stripemode=='2' ? '4242424242424242' : '';
-	$cvc 					= $stripemode=='2' ? '123' : '';
-	$expirymonth 			= $stripemode=='2' ? '12' : '';
-	$expiryyear 			= $stripemode=='2' ? '2027' : '';
-
 ?>
 <section class="maxWidth">
 	<div class="pageInfo">

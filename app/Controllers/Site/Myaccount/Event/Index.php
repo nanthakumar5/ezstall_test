@@ -30,7 +30,7 @@ class Index extends BaseController
 		if ($this->request->getMethod()=='post')
         {
 			$requestData = $this->request->getPost();
-
+			
 			if(isset($requestData['stripepay'])){
 				$payment = $this->stripe->action(['id' => $requestData['stripepayid']]);
 				if($payment){

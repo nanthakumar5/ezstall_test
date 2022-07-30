@@ -38,8 +38,6 @@ class Index extends BaseController
 			}
         }
 		
-        $data['stripemodelist'] = $this->config->stripemode;
-        
 		return view('admin/settings/index', $data);
 	}	
 }

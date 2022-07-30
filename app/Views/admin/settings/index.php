@@ -14,7 +14,6 @@
 		$instagram 		    = isset($result['instagram']) ? $result['instagram'] : '';
 		$logo 		    	= isset($result['logo']) ? $result['logo'] : '';
 		$logo 				= filedata($logo, base_url().'/assets/uploads/settings/');
-		$stripemode 		= isset($result['stripemode']) ? $result['stripemode'] : '';
 		$stripepublickey 	= isset($result['stripepublickey']) ? $result['stripepublickey'] : '';
 		$stripeprivatekey 	= isset($result['stripeprivatekey']) ? $result['stripeprivatekey'] : '';
 		$transactionfee 	= isset($result['transactionfee']) ? $result['transactionfee'] : '';
@@ -134,12 +133,6 @@
 				<form method="post" id="form2" action="<?php echo getAdminUrl(); ?>/settings" autocomplete="off">
 					<div class="col-md-12">
 						<div class="row">
-							<div class="col-md-12">
-								<div class="form-group">
-									<label>Stripe Mode</label>								
-									<?php echo form_dropdown('stripemode', ['' => 'Select Mode']+$stripemodelist, $stripemode, ['id' => 'stripemode', 'class' => 'form-control']); ?>
-								</div>
-							</div>
 							<div class="col-md-12">
 								<div class="form-group">
 									<label>Stripe Public Key</label>								
