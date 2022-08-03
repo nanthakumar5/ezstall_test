@@ -6,36 +6,46 @@
 <section class="container-lg">
 	<div class="row">
 		<div class="col-12">
-			<div class="border rounded pt-5 ps-3 pe-3">
+			<div class="border rounded pt-3 ps-3 pe-3">
 				<div class="row">
-					<h1>Current Inventories</h1>
+					<h2 class="fw-bold">Current Inventories</h2>
 					<?php if(isset($product)){
 					 foreach ($product as $product) { 
 						if($product['type']=='1'){?>
-							<table>
-								<h3>Feed</h3>
-								<tr>
-									<td>Product Name: </td> <td><?php echo $product['name']?></td>
-								</tr>
-								<tr>
-									<td>Product Quantity: </td> <td><?php echo $product['quantity']?></td>
-								</tr>
-								<tr>
-									<td>Product Price: </td> <td><?php echo $product['price']?></td>
-								</tr>
+							<table class="table-hover table-striped table-light table">
+								<h5 class="fw-bold text-muted">Feed</h5>
+								<thead>
+									<tr>
+										<th>Product Name</th>
+										<th>Product Quantity</th>
+										<th>Product Price</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><?php echo $product['name']?></td>
+										<td><?php echo $product['quantity']?></td>
+										<td><?php echo $product['price']?></td>
+									</tr>
+								</tbody>
 							</table>
 						<?php } else if($product['type']=='2') { ?>
-							<table>
-								<h3>Shavings</h3>
-								<tr>
-									<td>Product Name: </td> <td><?php echo $product['name']?></td>
-								</tr>
-								<tr>
-									<td>Product Quantity: </td> <td><?php echo $product['quantity']?></td>
-								</tr>
-								<tr>
-									<td>Product Price: </td> <td><?php echo $product['price']?></td>
-								</tr>
+							<table class="table-hover table-striped table-light table">
+								<h5 class="fw-bold text-muted mt-4">Shavings</h5>
+								<thead>
+									<tr>
+										<th>Product Name</th>
+										<th>Product Quantity</th>
+										<th>Product Price</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><?php echo $product['name']?></td>
+										<td><?php echo $product['quantity']?></td>
+										<td><?php echo $product['price']?></td>
+									</tr>
+								</tbody>
 							</table>
 
 						<?php } else{ ?>
