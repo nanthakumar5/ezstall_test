@@ -25,13 +25,15 @@
 				<p>Account Information</p>
 			</a>
 		</li>
+		<?php if($role!='5'){ ?>
 			<li>
 				<a class="side-nav-a" href="<?php echo base_url();?>/myaccount/events">
 					<i class="side-nav-i bi bi-calendar2-event"></i>
 					<p>Event</p>
 				</a>
 			</li>
-		<?php if($role=='2' || ($role=='4' && $parenttype == '2')){ ?>
+		<?php } ?>
+		<?php if($role=='2' || ($role=='4' || $role=='6'  && $parenttype == '2')){ ?>
 			<li>
 				<a class="side-nav-a" href="<?php echo base_url();?>/myaccount/facility">
 					<i class="side-nav-i bi bi-calendar2-event"></i>
@@ -85,7 +87,7 @@
 			<li>
 				<a class="side-nav-a" href="<?php echo base_url();?>/myaccount/subscription">
 					<i class="side-nav-i bi bi-box"></i>
-					<p>Packages</p>
+					<p>Subscriptions</p>
 				</a>
 			</li>
 		<?php } ?>

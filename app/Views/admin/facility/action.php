@@ -173,8 +173,8 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 							</div>
 							<div class="col-md-10 t-right p-0">
 								<input type="hidden" value="" name="barnvalidation" id="barnvalidation">
-								<a href="javascript:void(0);" class="btn btn-info addbulkbarnbtn">Add Bulk Barn</a>
-								<input type="file" class="bulkbarnfile" style="display:none;">
+								<a href="javascript:void(0);" class="btn btn-info bulkbtn_barn">Add Bulk Barn</a>
+								<input type="file" class="bulkfile_barn" style="display:none;">
 								<button class="btn-stall barnbtn">Add Barn</button>
 							</div>
 						</div>
@@ -464,6 +464,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 				}
 			})
 		}, 100);
-	}	
+	}
+	
 </script>
 <?php $this->endSection(); ?>

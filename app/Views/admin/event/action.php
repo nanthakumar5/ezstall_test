@@ -557,28 +557,5 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 			}
 		})
 	}
-
-	$(document).on('click','.addbulkbarnbtn', function () {
-		$('.bulkbarnfile').click();
-	});
-
-	$(document).on('change','.bulkbarnfile', function () {
-  		var formdata = new FormData();
-		formdata.append('file', $(this)[0].files[0]); 
-		
-		ajax(
-			'<?php echo base_url(); ?>/events/importbarnstall', 
-			formdata, 
-			{
-				contenttype : 1,
-				processdata : 1,
-				success: function(result) {
-					$(result).each(function(i, v){
-						barndata(v)
-					})
-				}
-			}
-		);
-	});
 </script>
 <?php $this->endSection(); ?>

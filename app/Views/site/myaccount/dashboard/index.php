@@ -5,7 +5,7 @@
 	
 	<p class="c-5">
 		<?php echo "Thank you for being an EZ stall"." ".$usertype[$userdetail['type']]?>
-	</p>
+	</p> 
 	<?php if($userdetail['type']=='2' || $userdetail['type']=='3' || $userdetail['type']=='4' ) { ?>
 		<div class="col-md-12 mt-4 p-4 bg-white rounded-sm">
 			<h5 class="font-w-600">Current Reservation</h5>
@@ -273,62 +273,66 @@
 	</div>
 	<?php 
 		if($userdetail['type']=='6'){ 
-			foreach($checkinstall as $availablestall){ 
-				$eventname =  $availablestall['eventname'];
-				foreach($availablestall['barnstall'] as $stall){
+			if(isset($checkinstall)){
+				foreach($checkinstall as $availablestall){ 
+					$eventname =  $availablestall['eventname'];
+					foreach($availablestall['barnstall'] as $stall){
 
-					$btnlockunlock ='<button class="btn_dash_lock lockunlock"  data-stallid="'.$stall['stall_id'].'">Lock</button>';
-					$btndirtyclean ='<button class="btn_dash_dirty dirtyclean" data-stallid="'.$stall['stall_id'].'">Dirty</button>';
+						$btnlockunlock ='<button class="btn_dash_lock lockunlock"  data-stallid="'.$stall['stall_id'].'">Lock</button>';
+						$btndirtyclean ='<button class="btn_dash_dirty dirtyclean" data-stallid="'.$stall['stall_id'].'">Dirty</button>';
 
-					if($stall['lockunlock']=='1'){
-						$btnlockunlock = '<button class="btn_dash_lock">Unlock</button>';
+						if($stall['lockunlock']=='1'){
+							$btnlockunlock = '<button class="btn_dash_lock">Unlock</button>';
+						}
+						if($stall['dirtyclean']=='1'){
+							$btndirtyclean = '<button class="btn_dash_dirty">Clean</button>'; 
+						}
+							echo '
+								<div class="d-flex col-md-6 justify-content-between my-2 dash_border_ ">
+									<div>
+										<p class="mb-0 fw-bold">'.$eventname.'</p>
+										<p class="mb-0">'.$stall['stallname'].'</p>
+									</div>
+									<div>'.$btnlockunlock.'
+										'.$btndirtyclean.'
+									</div>	
+								</div>';
+						
 					}
-					if($stall['dirtyclean']=='1'){
-						$btndirtyclean = '<button class="btn_dash_dirty">Clean</button>'; 
-					}
-						echo '
-							<div class="d-flex col-md-6 justify-content-between my-2 dash_border_ ">
-								<div>
-									<p class="mb-0 fw-bold">'.$eventname.'</p>
-									<p class="mb-0">'.$stall['stallname'].'</p>
-								</div>
-								<div>'.$btnlockunlock.'
-									'.$btndirtyclean.'
-								</div>	
-							</div>';
-					
 				}
 			}
 		} 
 		?>
 
 	<?php 
-		if($userdetail['type']=='4'){ 
-			foreach($stalldetail as $stalldetail){ 
-				$eventname = $stalldetail['eventname'];
-				foreach($stalldetail['barnstall'] as $stall){
-					$btnlockunlock ='<button class="btn_dash_lock"  data-stallid="'.$stall['stall_id'].'">Lock</button>';
-					$btndirtyclean ='<button class="btn_dash_dirty" data-stallid="'.$stall['stall_id'].'">Dirty</button>';
-
-					if($stall['lockunlock']=='1'){
-						$btnlockunlock = '<button class="btn_dash_lock">Unlock</button>';
-					}
-					if($stall['dirtyclean']=='1'){
-						$btndirtyclean = '<button class="btn_dash_dirty">Clean</button>'; 
-					}
-						echo '
-							<div class="d-flex col-md-6 justify-content-between my-2 dash_border_ ">
-								<div>
-									<p class="mb-0 fw-bold">'.$eventname.'</p>
-									<p class="mb-0">'.$stall['stallname'].'</p>
-								</div>
-								<div>'.$btnlockunlock.'
-									'.$btndirtyclean.'
-								</div>	
-							</div>';
-						
-				}
-			}
+		if($userdetail['type']=='4'){
+		    if(isset($checkinstall)){
+    			foreach($checkinstall as $stalldetail){ 
+    				$eventname = $stalldetail['eventname'];
+    				foreach($stalldetail['barnstall'] as $stall){
+    					$btnlockunlock ='<button class="btn_dash_lock"  data-stallid="'.$stall['stall_id'].'">Lock</button>';
+    					$btndirtyclean ='<button class="btn_dash_dirty" data-stallid="'.$stall['stall_id'].'">Dirty</button>';
+    
+    					if($stall['lockunlock']=='1'){
+    						$btnlockunlock = '<button class="btn_dash_lock">Unlock</button>';
+    					}
+    					if($stall['dirtyclean']=='1'){
+    						$btndirtyclean = '<button class="btn_dash_dirty">Clean</button>'; 
+    					}
+    						echo '
+    							<div class="d-flex col-md-6 justify-content-between my-2 dash_border_ ">
+    								<div>
+    									<p class="mb-0 fw-bold">'.$eventname.'</p>
+    									<p class="mb-0">'.$stall['stallname'].'</p>
+    								</div>
+    								<div>'.$btnlockunlock.'
+    									'.$btndirtyclean.'
+    								</div>	
+    							</div>';
+    						
+    				}
+    			}
+		    }
 		}
 	?>
 	

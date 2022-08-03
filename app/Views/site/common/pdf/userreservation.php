@@ -80,6 +80,7 @@
 	$paymentmethod      = isset($reservationpdf['paymentmethod_name']) ? $reservationpdf['paymentmethod_name'] : '';
 	?>
 	<div class="container event__ticket mx-auto p-3 my-5">
+		<img src="<?php echo base_url().'/assets/uploads/settings/'.$settings['logo'] ?>" class="logo" alt="Logo">
 		<p class="text-center h5 my-4 fw-bold">View Reservation</p>
 		<div class="row mx-5 px-4">
 			<div class="row base_stripe">
@@ -93,7 +94,7 @@
 					<tbody>
 						<tr style="background-color: #F9F9F9;">
 							<th class="ticket_values" style="padding-bottom: 10px; padding-left: 40px;"><?php echo $bookingid;?></th>
-							<th class="ticket_values" style="padding-bottom: 10px; "><?php echo $firstname.$lastname;?></th>
+							<th class="ticket_values" style="padding-bottom: 10px; "><?php echo $firstname; ?> <?php echo $lastname;?></th>
 						</tr>
 						<tr><td style="padding-bottom: 20px;"></td></tr>
 					</tbody>

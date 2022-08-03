@@ -64,7 +64,7 @@
                 			</span>
                 			<div class="wi-50-2 justify-content-between">
                 				<span class="m-left upevent">
-                					<p><img class="eventFirstIcon" src="<?php echo base_url();?>/assets/site/img/horseShoe.svg">Stallsabout-banner text-center my-5</p>
+                					<p><img class="eventFirstIcon" src="<?php echo base_url();?>/assets/site/img/horseShoe.svg">Stalls</p>
                 					<h6>from $<?php echo $row['stalls_price'];?> / night</h6>
                 				</span>
                 				<!--<span class="m-left">

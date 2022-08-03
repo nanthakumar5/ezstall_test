@@ -97,4 +97,15 @@ class Index extends BaseController
         readfile ($filepath);
         exit();
 	}
+
+	public function latlong()
+	{
+		$data 	= $this->request->getPost(); 
+		$lat 	= $data['latitude'];
+		$long 	= $data['longitude'];
+		$radius = 50; 
+		$latlongs 	= $this->event->getEvent('all', ['event', 'latlong'], ['radius' => $radius, 'latitude' => $lat, 'longitude' => $long, 'status'=> ['1'], 'type' => '1'], ['orderby' =>'e.id desc', 'groupby' => 'e.id']);
+		
+		echo json_encode($latlongs);
+	}
 }

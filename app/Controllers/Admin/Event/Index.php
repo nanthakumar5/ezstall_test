@@ -125,30 +125,5 @@ class Index extends BaseController
 		$data['stallstatus'] = $this->config->status1;
 		return view('admin/event/view', $data);
 	}
-	public function importbarnstall()
-    {	
-		$phpspreadsheet = new Spreadsheet();
-
-      	$reader 		= new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-      	$spreadsheet 	= $reader->load($_FILES['file']['tmp_name']);
-		$sheetdata 		= $spreadsheet->getActiveSheet()->toArray();
-		$array 			= [];
-		
-		foreach($sheetdata as $key1 => $data1){
-			if($key1=='0') continue;
-			
-			foreach($data1 as $key2 => $data2){
-				if($key1=='1' && ($key2%3)=='0'){
-					$array[$key2]['name'] = $data2;
-				}
-				
-				if($key1 > '1'  && ($key2%3)=='0'){
-					$array[$key2]['stall'][] = ['name' => $data2, 'price' => (isset($data1[$key2+1]) ? $data1[$key2+1] : ''), 'charging_id' => (isset($data1[$key2+2]) ? $data1[$key2+2] : '')];
-				}
-			}
-		}
-		
-		$array = array_values($array);
-		echo json_encode($array);
-    }
+	
 }
