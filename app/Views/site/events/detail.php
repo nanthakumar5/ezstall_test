@@ -563,6 +563,20 @@ $comments        	= (isset($comments)) ? $comments : [];
 						}
 					}
 					)
+				
+				ajax(
+					'<?php echo base_url()."/ajax/ajaxblockunblock"; ?>',
+					{ eventid : eventid},
+					{
+						asynchronous : 1,
+						success : function(data){
+							$(data.success).each(function(i,v){
+								$('.stallid[value='+v+']').attr('disabled', 'disabled');
+								$('.stallavailability[data-stallid='+v+']').removeClass("green-box").addClass("yellow-box");
+							});
+						}
+					}
+				)
 
 				return result;
 			}
