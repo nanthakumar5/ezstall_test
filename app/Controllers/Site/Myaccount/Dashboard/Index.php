@@ -35,7 +35,7 @@ class Index extends BaseController
 		$parentdetails 		= getSiteUserDetails($parentid);
 		$parenttype   		= $parentdetails ? $parentdetails['type'] : '';
     	$data['usertype'] 	= $this->config->usertype;
-    	$userid 			= ($usertype=='4' || $usertype=='6') ? $parentdetails['id'] : $userdetail['id'];
+    	$userid 			= ($usertype=='4') ? $parentdetails['id'] : $userdetail['id'];
 		$allids 			= getStallManagerIDS($userid); 
 		array_push($allids, $userid);
 
@@ -55,7 +55,7 @@ class Index extends BaseController
 
 				$bookedevents = $this->booking->getBooking('all', ['booking','event','barnstall'],['eventid'=> $event['id'], 'status' => '1']);
 				if(count($bookedevents) > 0){
-					$data['stalldetail'] = $bookedevents;
+					$data['checkinstall'] = $bookedevents;
 					foreach($bookedevents as $bookedevent){
 						$barnstall = $bookedevent['barnstall'];
 
@@ -76,11 +76,11 @@ class Index extends BaseController
 		
 
 		$data['monthlyincome'] = $this->booking->getBooking('all', ['booking', 'event', 'payment'],['userid'=> $allids, 'status' => '1'], ['groupby' => 'DATE_FORMAT(b.created_at, "%M %Y")', 'select' => 'SUM(p.amount) as paymentamount, DATE_FORMAT(b.created_at, "%M %Y") AS month']);
-
-
+		
 		if($usertype=='2' || ($usertype=='4' && $parenttype == '2')){
 			$data['upcomingevents'] = $this->event->getEvent('all', ['event'],['userids' => $allids, 'fenddate'=> $date, 'status' => ['1'], 'type' => '2']);
 		}
+		
 		if($usertype=='3' || ($usertype=='4' && $parenttype == '3')){
 			$data['upcomingevents'] = $this->event->getEvent('all', ['event'],['userids' => $allids, 'start_date' => $date, 'status' => ['1'], 'type' => '1']);
 		}
@@ -111,7 +111,6 @@ class Index extends BaseController
 
 		if($usertype=='6'){
     		$checkinstall = $this->booking->getBooking('all', ['booking','event','barnstall'],['userid'=> $allids, 'stallcheck_in'=>[$yesterday, $tday]]);
-
       		$data['checkinstall'] 			= $checkinstall;
       	}
 

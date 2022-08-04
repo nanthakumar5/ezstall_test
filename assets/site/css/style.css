@@ -4793,4 +4793,23 @@ div#multi-nav-tab button.nav-link.m-0 {
 }
 
 
+@media(max-width: 769px){}
+
+.e_detail_popup .modal-content {
+    height: 100%;
+}
+
+.e_detail_popup .modal-dialog {
+    height: 100%;
+}
+
+.e_detail_popup .modal-content .modal-body img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+}
+
+
 /*21072022 styles end*/

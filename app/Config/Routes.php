@@ -42,6 +42,7 @@ $routes->post('ajax/ajaxreserved', 'Common\Ajax::ajaxreserved');
 $routes->post('ajax/ajaxstripepayment', 'Common\Ajax::ajaxstripepayment');
 $routes->post('ajax/ajaxproductquantity', 'Common\Ajax::ajaxproductquantity');
 $routes->post('ajax/ajaxblockunblock', 'Common\Ajax::ajaxblockunblock');
+$routes->post('ajax/importbarnstall', 'Common\Ajax::importbarnstall');
 $routes->get('stripe3d', 'Site\Stripe\Index::index');
 
 $routes->post('ajaxsearchevents', 'Common\Ajax::ajaxsearchevents');
@@ -85,7 +86,8 @@ $routes->group('myaccount', ['filter' => 'siteauthentication2'], function($route
     $routes->match(['get','post'], 'events', 'Site\Myaccount\Event\Index::index');
     $routes->match(['get','post'], 'events/add', 'Site\Myaccount\Event\Index::action'); 
     $routes->match(['get','post'], 'events/edit/(:num)', 'Site\Myaccount\Event\Index::action/$1');
-    $routes->get('events/view/(:num)', 'Site\Myaccount\Event\Index::view/$1');
+    $routes->get('events/view/(:num)', 'Site\Myaccount\Event\Index::view/$1'); 
+    $routes->get('events/inventories/(:num)', 'Site\Myaccount\Event\Index::inventories/$1'); 
     $routes->get('events/export/(:num)', 'Site\Myaccount\Event\Index::export/$1');
     $routes->get('events/eventreport/(:num)', 'Site\Myaccount\Event\Index::eventreport/$1');
     $routes->post('events/importbarnstall', 'Site\Myaccount\Event\Index::importbarnstall');
@@ -94,6 +96,7 @@ $routes->group('myaccount', ['filter' => 'siteauthentication2'], function($route
     $routes->match(['get','post'], 'facility/add', 'Site\Myaccount\Facility\Index::action'); 
     $routes->match(['get','post'], 'facility/edit/(:num)', 'Site\Myaccount\Facility\Index::action/$1');
     $routes->get('facility/view/(:num)', 'Site\Myaccount\Facility\Index::view/$1');
+    $routes->get('facility/inventories/(:num)', 'Site\Myaccount\Facility\Index::inventories/$1');
     $routes->get('facility/export/(:num)', 'Site\Myaccount\Facility\Index::export/$1');
     $routes->post('facility/importbarnstall', 'Site\Myaccount\Facility\Index::importbarnstall');
 

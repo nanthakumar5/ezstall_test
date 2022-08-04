@@ -7,13 +7,18 @@ use App\Models\BaseModel;
 class Event extends BaseModel
 {	
 	public function getEvent($type, $querydata=[], $requestdata=[], $extras=[])
-    {		
+    {	
     	$select 			= [];
 		
 		if(in_array('event', $querydata)){
 			$data		= 	['e.*'];							
 			$select[] 	= 	implode(',', $data);
-		}
+		} 
+
+		if(in_array('latlong', $querydata)){
+			$distance  = ['(((acos(sin(('.$requestdata['latitude'].'*pi()/180)) * sin((`e`.`latitude`*pi()/180))+cos(("'.$requestdata['latitude'].'"*pi()/180)) * cos((`e`.`latitude`*pi()/180)) * cos((("'.$requestdata['longitude'].'"-`e`.`longitude`)*pi()/180))))*180/pi())*60*1.1515*1.609344) as distance'];
+			$select[] 	= 	implode(',', $distance);
+		} 
 
 		if(in_array('stallavailable', $querydata)){
 			$condition = '';
@@ -33,6 +38,7 @@ class Event extends BaseModel
 		if(isset($extras['select'])) 					$query->select($extras['select']);
 		else											$query->select(implode(',', $select));
 		
+		if(isset($requestdata['radius'])) 				$query->having('distance <=', $requestdata['radius']);		
 		if(isset($requestdata['id'])) 					$query->where('e.id', $requestdata['id']);
 		if(isset($requestdata['location'])) 			$query->where('e.location', $requestdata['location']);
 		if(isset($requestdata['status'])) 				$query->whereIn('e.status', $requestdata['status']);
@@ -41,6 +47,8 @@ class Event extends BaseModel
 		if(isset($requestdata['llocation'])) 			$query->like('e.location', $requestdata['llocation']);
 		if(isset($requestdata['lname'])) 				$query->like('e.name', $requestdata['lname']);
 		if(isset($requestdata['type'])) 				$query->where('e.type', $requestdata['type']);
+		if(isset($requestdata['latitude'])) 			$query->where('e.latitude <=', $requestdata['latitude']);
+		if(isset($requestdata['longitude'])) 			$query->where('e.longitude >=', $requestdata['longitude']);
 
 		if(isset($requestdata['start_date'])) 			$query->where('e.start_date >=', date('Y-m-d', strtotime($requestdata['start_date'])));
 		if(isset($requestdata['end_date'])) 			$query->where('e.end_date <', date('Y-m-d', strtotime($requestdata['end_date'])));

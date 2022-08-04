@@ -80,7 +80,9 @@ $comments        	= (isset($comments)) ? $comments : [];
 					<div class="col-12 mb-5 mt-2">
 						<p>Contact the stall manager at <?php echo $detail['mobile'] ?> for more information and stall maps.</p>
 						<?php if($detail['eventflyer']!=""){ ?>
-							<button class="ucEventdetBtn"><a href="<?php echo base_url();?>/event/pdf/<?php echo $detail['eventflyer'] ?>" class="text-decoration-none text-white"><img src="<?php echo base_url() ?>/assets/site/img/flyer.png"> Download Event Flyer</a></button>
+							<button type="button" class="btn btn-outline-success btn-lg float-right ucEventdetBtn" data-toggle="modal" data-target="#exampleModal">
+    						 <img src="<?php echo base_url() ?>/assets/site/img/flyer.png">Download Event Flyer
+  							</button>
 						<?php } ?>
 					</div>
 				</div>
@@ -419,6 +421,26 @@ $comments        	= (isset($comments)) ? $comments : [];
 					</div>
 				</div>
 			</section>
+<div class="container mt-5">
+  <!-- Modal -->
+  <div class="modal fade e_detail_popup" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"  align="right">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+           <img src="<?php echo base_url();?>/event/pdf/<?php echo $detail['eventflyer'] ?>" width="100" height="100">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary"><a href="<?php echo base_url();?>/event/pdf/<?php echo $detail['eventflyer'] ?>" class="text-decoration-none text-white">Download</a></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 		</body>
 		<?php $this->endSection() ?>
 		<?php $this->section('js') ?>
@@ -541,6 +563,20 @@ $comments        	= (isset($comments)) ? $comments : [];
 						}
 					}
 					)
+				
+				ajax(
+					'<?php echo base_url()."/ajax/ajaxblockunblock"; ?>',
+					{ eventid : eventid},
+					{
+						asynchronous : 1,
+						success : function(data){
+							$(data.success).each(function(i,v){
+								$('.stallid[value='+v+']').attr('disabled', 'disabled');
+								$('.stallavailability[data-stallid='+v+']').removeClass("green-box").addClass("yellow-box");
+							});
+						}
+					}
+				)
 
 				return result;
 			}

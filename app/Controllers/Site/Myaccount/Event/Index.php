@@ -6,6 +6,7 @@ use App\Models\Users;
 use App\Models\Event;
 use App\Models\Booking;
 use App\Models\Stripe;
+use App\Models\Products;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -15,8 +16,9 @@ class Index extends BaseController
 	{	
 		$this->users 	= new Users();
 		$this->event 	= new Event();
-		$this->booking 	= new Booking();
+		$this->booking 	= new Booking(); 
 		$this->stripe 	= new Stripe();
+		$this->product 	= new Products();
 	}
     
     public function index()
@@ -146,6 +148,12 @@ class Index extends BaseController
     {  
 		$data['detail']  	= $this->event->getEvent('row', ['event', 'barn', 'stall', 'bookedstall'], ['id' => $id, 'type' => '1']);
 		return view('site/myaccount/event/view',$data);
+    }
+
+    public function inventories($id)
+    {  
+		$data['product']  	= $this->product->getProduct('all', ['product'], ['event_id' => $id]);
+		return view('site/myaccount/event/inventories',$data);
     }
 	
     public function export($id)

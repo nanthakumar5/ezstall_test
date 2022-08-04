@@ -21,6 +21,7 @@ class Products extends BaseModel
 		else											$query->select(implode(',', $select));
 		
 		if(isset($requestdata['id'])) 					$query->where('p.id', $requestdata['id']);
+		if(isset($requestdata['event_id'])) 			$query->where('event_id', $requestdata['event_id']);
 		
 		if($type=='count'){
 			$result = $query->countAllResults();

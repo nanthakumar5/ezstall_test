@@ -437,11 +437,10 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 	        })
 
 			var blockunblock = '';
-			if(usertype!=3){
-				var blockunblock = '<div class="col-md-6 mb-3">\
+			
+			var blockunblock = '<div class="col-md-6 mb-3">\
 					<input type="checkbox" id="stall_'+barnstallname+'_'+stallIndex+'_block_unblock" '+checked+' name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][block_unblock]" value="1">block/unblock\
 				</div>';
-			}
 		
 		var availability = '<a href="javascript:void(0);" class="dash-stall-remove fs-7 stallremovebtn_'+barnstallname+'" data-barnIndex="'+barnIndex+'"><i class="fas fa-times text-white"></i></a>';
 		if($.inArray(stallId, occupied) !== -1)	availability = '<span class="red-box"></span>';
