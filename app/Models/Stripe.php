@@ -48,10 +48,16 @@ class Stripe extends BaseModel
 		$price 					= $requestData['price'] * 100;
         $currency 				= "inr";
 		
-		$retrievecustomer = $this->retrieveCustomer($stripecustomerid);
-		if(!$retrievecustomer || $stripecustomerid==''){
+		if($stripecustomerid==''){
 			$customer 			= $this->createCustomer($userid, $name, $email);
 			$stripecustomerid 	= $customer->id;
+		}else{
+			$retrievecustomer = $this->retrieveCustomer($stripecustomerid);
+			
+			if(!$retrievecustomer){
+				$customer 			= $this->createCustomer($userid, $name, $email);
+				$stripecustomerid 	= $customer->id;
+			}
 		}
 		
 		$paymentintents = $this->createPaymentIntents($stripecustomerid, $price, $currency);				
@@ -91,10 +97,16 @@ class Stripe extends BaseModel
 		$planprice 				= $requestData['plan_price'];
 		$planinterval 			= $requestData['plan_interval'];
 		
-		$retrievecustomer = $this->retrieveCustomer($stripecustomerid);
-		if(!$retrievecustomer || $stripecustomerid==''){
+		if($stripecustomerid==''){
 			$customer 			= $this->createCustomer($userid, $name, $email);
 			$stripecustomerid 	= $customer->id;
+		}else{
+			$retrievecustomer = $this->retrieveCustomer($stripecustomerid);
+			
+			if(!$retrievecustomer){
+				$customer 			= $this->createCustomer($userid, $name, $email);
+				$stripecustomerid 	= $customer->id;
+			}
 		}
 		
 		$product = $this->createProduct($planname);
