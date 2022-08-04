@@ -315,7 +315,7 @@ class Stripe extends BaseModel
         try{
 			$settings = getSettings();
 			$stripe = new \Stripe\StripeClient($settings['stripeprivatekey']);
-			$currency = "usd";
+			$currency = "inr";
 
             $data = $stripe->transfers->create([
   				'amount' 			=> $amount,
