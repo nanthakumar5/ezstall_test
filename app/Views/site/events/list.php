@@ -26,7 +26,8 @@
 				<?php foreach ($list as $data) {  
 					$startdate 		= formatdate($data['start_date'], 1);
 					$enddate 		= formatdate($data['end_date'], 1);
-					$booknowBtn 	= checkEvent($data);
+					$booknowBtn 	= checkEvent($data); 
+					$recbooknowBtn 	= $booknowBtn['btn'];
 				?>
 				<div class="ucEventInfo">
 					<div class="EventFlex">
@@ -66,12 +67,13 @@
 				No Record Found
 			<?php } ?>
 		</section>
+		<div class="recommendedevent"><h3><b>Recommended Event</b></h3></div>
 	</section>
 <?php $this->endSection(); ?>
 <?php $this->section('js') ?>
 <script>
-var baseurl = "<?php echo base_url(); ?>";
-
+var baseurl 	= "<?php echo base_url(); ?>";
+var booknowBtn	= "<?php echo $recbooknowBtn; ?>";
 $(function() {
     $("#searchevent").autocomplete({
         source: function(request, response) {
@@ -96,6 +98,67 @@ $(function() {
 	._renderItem = function( ul, item ) {
 		return $( "<li><div><img src='"+baseurl+'/assets/uploads/event/'+item.image+"' width='50' height='50'><span>"+item.name+"</span></div></li>" ).appendTo( ul );
 	};
+});
+
+$(document).ready(function(){ 
+	function getLocation() { 
+		if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(showPosition);
+		} else { 
+		x.innerHTML = "Geolocation is not supported by this browser.";
+		}
+	}
+	getLocation();
+	function showPosition(position) {
+		var latitude = position.coords.latitude; 
+		var longitude = position.coords.longitude;
+
+		getLatlong(latitude, longitude, baseurl)	
+	}
+
+	function getLatlong(lat, long, baseurl){ 
+		ajax(
+			'<?php echo base_url()."/events/latlong"; ?>',
+			{ latitude : lat, longitude : long },
+			{
+				asynchronous : 1,
+				success : function(data){
+					$(data).each(function(i,v){ 
+						var result = '\
+					                  	<div class="ucEventInfo">\
+					                     	<div class="EventFlex">\
+						                        <span class="wi-50 m-0">\
+						                           <div class="EventFlex leftdata">\
+						                              <span class="wi-30">\
+						                                 <span class="ucimg">\
+						                                    <img src="'+ baseurl +'/assets/uploads/event/'+v['image']+'">\
+						                                 </span>\
+						                              </span>\
+						                              <span class="wi-70">\
+						                                 <p class="topdate">'+v['start_date']+' - '+v['end_date']+' - '+v['location']+'</p>\
+						                                 <a class="text-decoration-none" href="'+baseurl+'/events/detail/'+v['id']+'"><h5>'+v['name']+'<h5></a></h5>\
+						                              </span>\
+						                           </div>\
+						                        </span>\
+						                        <div class="wi-50-2 justify-content-between">\
+						                           <span class="m-left upevent">\
+						                              <p><img class="eventFirstIcon" src="'+baseurl+'/assets/site/img/horseShoe.svg">Stalls</p>\
+						                              <h6 class="ucprice"> from $'+v['stalls_price']+'/ night</h6>\
+						                           </span>\
+								                    <a class="text-decoration-none text-white" id="booknow_link" href="'+baseurl+'/events/detail/'+v['id']+'"><button class="ucEventBtn">\
+														'+booknowBtn+'\
+														</button></a>\
+						                        </div>\
+					                        </div>\
+					                   </div>\
+	               					';
+	               					$('.recommendedevent').append(result);
+
+					});				
+				}
+			}
+		)
+	}
 });
 
 </script>
