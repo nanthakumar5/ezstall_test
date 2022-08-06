@@ -56,7 +56,7 @@ class Stripe extends BaseModel
 			
 			if(!$retrievecustomer){
 				$customer 			= $this->createCustomer($userid, $name, $email);
-				$stripecustomerid 	= $customer->id;
+				$stripecustomerid 	= $customer->id; 
 			}
 		}
 		
