@@ -136,7 +136,7 @@ $comments        	= (isset($comments)) ? $comments : [];
 								<div class="nav nav-tabs" id="multi-nav-tab" role="tablist">
 									<button class="nav-link m-0 show active" data-bs-toggle="tab" data-bs-target="#barnstall" type="button" role="tab" aria-controls="barnstall" aria-selected="true">Stalls</button>
 									<?php if($detail['rv_flag'] =='1' && !empty($detail['rvbarn'])) { ?>
-										<button class="nav-link m-0" data-bs-toggle="tab" data-bs-target="#barnhook" type="button" role="tab" aria-controls="barnhook" aria-selected="false">Rvhookups</button>
+										<button class="nav-link m-0" data-bs-toggle="tab" data-bs-target="#barnhook" type="button" role="tab" aria-controls="barnhook" aria-selected="false">RV Hookups</button>
 									<?php } ?>
 									<?php if($detail['feed_flag'] =='1' && !empty($detail['feed_flag'])) { ?>
 										<button class="nav-link m-0" data-bs-toggle="tab" data-bs-target="#barnfeed" type="button" role="tab" aria-controls="barnfeed" aria-selected="false">Feed</button>

@@ -264,9 +264,9 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 								</div>
 								<div class="col-md-9 t-right p-0 respsm">
 									<input type="hidden" value="" name="rvhookupsvalidation" id="rvhookupsvalidation">
-									<a href="javascript:void(0);" class="btn btn-info bulkbtn_rvhookups">Add Bulk Rv Hookups</a>
+									<a href="javascript:void(0);" class="btn btn-info bulkbtn_rvhookups">Add Bulk RV Hookups</a>
 									<input type="file" class="bulkfile_rvhookups" style="display:none;">
-									<button class="btn-stall rvhookupsbtn">Add Rv Hookups</button>
+									<button class="btn-stall rvhookupsbtn">Add RV Hookups</button>
 								</div>
 							</div>
 							<div class="row">

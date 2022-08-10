@@ -11,119 +11,172 @@
 		</div>
 	<?php } ?>
 </div>
-
 <section class="maxWidth eventPagePanel">
+	<div class="d-none button" onmousedown="party.confetti(this)">Click me!</div>
 	<?php if(!empty($bookings)) {  ?>
-		<?php foreach ($bookings as $data) { ?>
-			<div class="dashboard-box">
-				<div class="EventFlex leftdata">
-					<div class="wi-30 row w-100 align-items-center">
-						<div class="row row m-0 p-0 dash-booking">
-							<div class="col-md-3 col-lg-3 mb-2">
-								<div>
-									<p class="mb-0 text-sm fs-7 fw-600 width100">Payment Method</p>
-									<p class="mb-0 fs-7 width100"><?php echo $data['paymentmethod_name'];?></p>
-								</div>
-							</div>
-							<div class="col-md-3 col-lg-2 mb-2">
-								<div>
-									<p class="mb-0 text-sm fs-7 fw-600 width100">Booking ID</p>
-									<p class="mb-0 fs-7 width100"><?php echo $data['id'];?></p>
-								</div>
-							</div>
-							<div class="col-md-3 col-lg-3 mb-2">
-								<div>
-									<p class="mb-0 fs-7 fw-600 width100">Booked By</p>
-									<p class="mb-0 fs-7 width100"><?php echo $usertype[$data['usertype']]; ?></p>
-								</div>
-							</div>
-							<div class="col-md-3 col-lg-3 mb-2">
-								<div>
-									<p class="mb-0 fs-7 fw-600 width100">Date of booking</p>
-									<p class="mb-0 fs-7 width100"><?php echo date("m-d-Y h:i A", strtotime($data['created_at']));?></p>
-								</div>
+	<?php foreach ($bookings as $data) { ?>
+		<div class="event__ticket m-5 p-3">
+			<div class="row position-relative">
+				<?php if($data['status']=='1'){ ?>
+					<?php $amount = $data['amount']-($data['amount'] * 10/100); ?>
+					<a href="javascript:void(0);" style='align: right;' data-id='<?php echo $data['id']; ?>' data-paymentid='<?php echo $data['paymentid']; ?>' data-paymentintentid='<?php echo $data['stripe_paymentintent_id']; ?>' data-amount='<?php echo $amount; ?>' class="sstriperefunds">
+						<i class="ticket_close_tag fas fa-exchange-alt striperefunds"></i>
+					</a>
+				<?php } ?>
+				<div class="row col-md-12 ticket_row mt-3">
+					<div class="ticket_content res_mx_3 col-md-2 mx-3">
+						<p class="ticket_title_tag">Name</p>
+						<p class="ticket_values"><?php echo $data['firstname'].$data['lastname'];?></p>
+					</div>
+					<div class="ticket_content res_mx_3 col-md-2 mx-3">
+						<p class="ticket_title_tag">Mobile</p>
+						<p class="ticket_values">7092012880</p>
+					</div>
+					<div class="ticket_content col-md-2 mx-2">
+						<p class="ticket_title_tag">Payment Method</p>
+						<p class="ticket_values"><?php echo $data['paymentmethod_name'];?></p>
+					</div>
+					<div class="ticket_content col-md-2 mx-2">
+						<p class="ticket_title_tag">Booked By</p>
+						<p class="ticket_values"><?php echo $usertype[$data['usertype']]; ?></p>
+					</div>
+					<div class="ticket_content col-md-2 mx-2">
+						<p class="ticket_title_tag">Date of booking</p>
+						<p class="ticket_values"><?php echo date("m-d-Y h:i A", strtotime($data['created_at']));?></p>
+					</div>
+					<div class="ticket_content res_mx_3 col-md-2 mx-3">
+						<p class="ticket_title_tag">Booking ID</p>
+						<p class="ticket_values ticket_checkinout"><?php echo $data['id'];?></p>
+					</div>
+					<div class="ticket_content res_mx_3 col-md-2 mx-3">
+						<p class="ticket_title_tag">Check In</p>
+						<p class="ticket_values ticket_checkinout"><?php echo formatdate($data['check_in'], 1);?></p>
+					</div>
+					<div class="ticket_content col-md-2 mx-2">
+						<p class="ticket_title_tag">Check Out</p>
+						<p class="ticket_values ticket_checkinout"><?php echo formatdate($data['check_out'], 1);?></p>
+					</div>
+					<div class="ticket_content col-md-2 mx-2">
+						<p class="ticket_title_tag">Cost</p>
+						<p class="ticket_values ticket_checkinout"><?php echo $currencysymbol.$data['amount'];?></p>
+					</div>
+					<div class="ticket_content col-md-2 mx-2 d-flex align-items-end">
+						<?php $statuscolor = ($data['status']=='2') ? "cancelcolor" : "activecolor"; ?>
+							<p class="my-2 ticket_values ticket_status <?php echo  $statuscolor;?>" ><?php echo $bookingstatus[$data['status']];?></p>
+					</div>
+				</div>
+				<div class="top_event_border">
+					<div class="ticket__event row mt-2">
+						<div class="ticket_content col-md-2 mx-3">
+							<p class="ticket_e_tag">Booked Event</p>
+						</div>
+						<div class="ticket_content col-md-9 mx-3">
+							<p class="ticket_values mr-3">Event ( <?php echo $data['eventname'];?> )</p>
+						</div>
+						<div class="flex-wrap d-flex align-items-center">
+						<div class="col-md-2 px-3">
+							<p class="ticket_event_tag">STALL</p>
+						</div>
+						<?php foreach ($data['barnstall'] as $stalls) {
+							if($userdetail['type'] =='6'){ 
+								$btnlockunlock = '<i class="fas fa-lock event_lock"></i>';
+								$btndirtyclean = '<i class="fas fa-virus event_virus"></i>';
 
-							</div>					
-							<div class="col-md-3 col-lg-3">
-								<div>
-									<p class="mb-0 text-sm fs-7 fw-600 width100">Name</p>
-									<p class="mb-0 fs-7 width100"><?php echo $data['firstname'].$data['lastname'];?></p>
-								</div>
-							</div>
-							<div class="col-md-3 col-lg-2">
-									<div>
-										<p class="mb-0 fs-7 fw-600 width100">Booked Event</p>
-										<p class="mb-0 fs-7 width100"><?php echo $data['eventname'];?> (
-											<?php 
-											$stallname = '';
-											foreach ($data['barnstall'] as $stalls) { 
-												if($userdetail['type'] =='6'){ 
-													$btnlockunlock ='<button data-stallid="'.$stalls['stall_id'].'" class="btn btn-primary lockunlock">Lock</button>';
-													$btndirtyclean ='<button data-stallid="'.$stalls['stall_id'].' " class="btn btn-primary dirtyclean">Dirty</button>';
-
-													if($stalls['lockunlock']=='1'){
-														$btnlockunlock = '<button class="btn btn-primary">Unlock</button>'; 
-													}
-													if($stalls['dirtyclean']=='1'){
-														$btndirtyclean = '<button class="btn btn-primary">Clean</button>'; 
-													}
-												
-													$stallname .= $stalls['stallname'].$btnlockunlock.$btndirtyclean.'<br>';
-												}else{
-													$stallname .= $stalls['stallname'];
-												}
-											}
-											echo $stallname;
-										?>)
-									</p>
-								</div>
-							</div>
-							<div class="col-md-3 col-lg-3">
-								<div>
-									<p class="mb-0 fs-7 fw-600 width100">CheckIn - CheckOut</p>
-									<p class="mb-0 fs-7 width100"><?php echo formatdate($data['check_in'], 1);?> - <?php echo formatdate($data['check_out'], 1);?></p>
-								</div>
-							</div>
-							<div class="col-md-3 col-lg-2">
-								<div>
-									<p class="mb-0 fs-7 fw-600 width100">Cost</p>
-									<p class="mb-0 fs-7 width100"><?php echo $currencysymbol.$data['amount'];?></p>
-								</div>
-							</div>
-							<div class="row col-md-10 base-style">
-								<div class="col fw-600">
-								  <p class="my-2">Status</p>
-								</div>
-								<div class="col" align="left">
-									<?php $statuscolor = ($data['status']=='2') ? "cancelcolor" : "activecolor"; ?>
-										<p class="my-2 <?php echo  $statuscolor;?>" ><?php echo $bookingstatus[$data['status']];?></p>
-								</div>
-							</div>
-							<div class="col-md-3 col-lg-2">
-								<div class="d-flex justify-content-end align-items-center viewstart">
-									<a href="<?php echo base_url().'/myaccount/bookings/view/'.$data['id']; ?>" class="mt-0 mx-3 view-res">View</a>
-									<?php if($data['status']=='1'){ ?>
-										<?php $amount = $data['amount']-($data['amount'] * 10/100); ?>
-										<a href="javascript:void(0);" style='align: right;' data-id='<?php echo $data['id']; ?>' data-paymentid='<?php echo $data['paymentid']; ?>' data-paymentintentid='<?php echo $data['stripe_paymentintent_id']; ?>' data-amount='<?php echo $amount; ?>' class="striperefunds">
-											<i class="fas fa-times-circle" style="font-size: 30px;"></i> 
-										</a>
+								if($stalls['lockunlock']=='1'){
+									$btnlockunlock = '<i class="fas fa-unlock event_unlock">'; 
+								}
+							if($stalls['dirtyclean']=='1'){
+								$btndirtyclean = '<i class="fas fa-broom event_broom"></i>'; 
+							}
+						} ?>
+						<div class="d-flex col-md-10 flex-wrap">
+							<div class="mx-3">
+								<p class="ticket_values"><?php echo $stalls['barnname'];?></p>
+								<span class="d-flex flex-wrap">
+									<p class="ticket_sub_values"><?php echo $stalls['stallname'];?></p>
+									<?php if($userdetail['type'] =='6'){ ?>
+										<a href="#" class="ms-2"><?php echo $btnlockunlock;?></i></a>
+										<a href="#" class="mx-2"><?php echo $btndirtyclean;?></a>
 									<?php } ?>
+								</span>
+							</div>
+						</div>
+						<?php } ?>
+						</div>
+						<div class="flex-wrap d-flex align-items-center">
+							<div class="col-md-2 px-3">
+								<p class="ticket_event_tag">RV HOOKUP</p>
+							</div>
+							<?php foreach ($data['rvbarnstall'] as $rvstall) {
+								if($userdetail['type'] =='6'){ 
+									$btnlockunlock = '<i class="fas fa-lock event_lock"></i>';
+									$btndirtyclean = '<i class="fas fa-virus event_virus"></i>';
+
+									if($rvstall['lockunlock']=='1'){
+										$btnlockunlock = '<i class="fas fa-unlock event_unlock">'; 
+									}
+									if($rvstall['dirtyclean']=='1'){
+										$btndirtyclean = '<i class="fas fa-broom event_broom"></i>'; 
+									}
+								} ?>
+								<div class="d-flex col-md-10 flex-wrap">
+									<div class="mx-3">
+										<p class="ticket_values"><?php echo $rvstall['barnname'];?></p>
+										<span class="d-flex flex-wrap">
+											<p class="ticket_sub_values"><?php echo $rvstall['stallname'];?></p>
+											<?php if($userdetail['type'] =='6'){ ?>
+												<a href="#" class="ms-2"><?php echo $btnlockunlock;?></i></a>
+												<a href="#" class="mx-2"><?php echo $btndirtyclean;?></a>
+											<?php } ?>
+										</span>
+									</div>
+								</div>
+							<?php } ?>
+						</div>
+						<div class="flex-wrap d-flex align-items-center">
+							<div class="col-md-2 px-3">
+								<p class="ticket_event_tag">FEED</p>
+							</div>
+							<?php foreach ($data['feed'] as $feed) { ?>
+							<div class="d-flex align-items-center mx-3">
+								<span class="d-flex flex-wrap">
+									<p class="ticket_sub_values e_mr_1"><?php echo $feed['productname'];?></p>
+								</span>
+							</div>
+							<?php } ?>
+						</div>
+						<div class="flex-wrap d-flex align-items-center">
+							<div class="col-md-2 px-3">
+								<p class="ticket_event_tag">SHAVINGS</p>
+							</div>
+							<?php foreach ($data['shaving'] as $shaving) { ?>
+							<div class="d-flex col-md-10 flex-wrap">
+								<div class="d-flex align-items-center mx-3">
+									<p class="ticket_sub_values e_mr_1"><?php echo $shaving['productname'];?></p>
 								</div>
 							</div>
+							<?php } ?>
 						</div>
 					</div>
 				</div>
+				<div class="text-center event_border">
+					<a href="<?php echo base_url().'/myaccount/bookings/view/'.$data['id']; ?>" class="ticket_values ticket_view_link">View Details</a>
+					<i id="ticket_toggle_up" class="fas fa-angle-up ticket__up"></i>
+					<i id="ticket_toggle_down" class="fas fa-angle-down ticket__down"></i>
+				</div>
 			</div>
-		<?php } ?>
-	<?php }else{ ?>
-		<p>No Reservation Found.</p>
+		</div>
 	<?php } ?>
+<?php }else{ ?>
+		<p>No Reservation Found.</p>
+<?php } ?>
+
 </section>
-<?php echo $pager; ?>
 <?php $this->endSection(); ?>
 
 <?php $this->section('js') ?>
-<script>
+
+<script type="text/javascript">
 	var baseurl = "<?php echo base_url(); ?>";
 
 	$(document).ready(function() {
@@ -182,6 +235,22 @@
 		';
 		sweetalert2(action,data);
 	});	
-	
+
+	$(document).ready(function(){
+		$("#ticket_toggle_up").click(function(){
+			$(".top_event_border").slideUp();
+			$("#ticket_toggle_up").css("display", "none");
+			$("#ticket_toggle_down").css("display", "block");
+		});
+		$("#ticket_toggle_down").click(function(){
+			$(".top_event_border").slideDown();
+			$("#ticket_toggle_up").css("display", "block");
+			$("#ticket_toggle_down").css("display", "none");
+		});
+	});
+
+	party.confetti(runButton, {
+		count: party.variation.range(20, 40)
+	});
 </script>
 <?php $this->endSection(); ?>

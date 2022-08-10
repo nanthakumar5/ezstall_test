@@ -359,11 +359,19 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 	
 	function barndata(result=[], type=''){ 
 		var barnId   	= result['id'] ? result['id'] : '';
-		var barnName 	= result['name'] ? result['name'] : 'Barn';
 		var stall		= result['stall'] ? result['stall'] : (result['rvstall'] ? result['rvstall'] : []);
 		
 		var activeclass = $.trim($(barn_append).html())=='' ? 'active' : '';
-		
+		var menubtn = (barnstallname=='rvhookups') ? 'Lots' : 'Stall';
+		if(barnstallname=='rvhookups'){
+			var barnName 	= result['name'] ? result['name'] : 'Campsites';
+			var stallcamp 	= 'Lots';
+			var BarnLots    = 'Campsites';
+		}else if(barnstallname=='barn'){
+			var barnName 	= result['name'] ? result['name'] : 'Barn';
+			var stallcamp 	= 'Stall';
+			var BarnLots    = 'Barn';
+		}
 		var barntab='\
 			<li class="nav-item text-center mb-3">\
 				<a class="nav-link tab-link '+activeclass+'" data-bs-toggle="pill" data-bs-target="#tabtarget_'+barnstallname+'_'+barnIndex+'">\
@@ -378,9 +386,9 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 			<div id="tabtarget_'+barnstallname+'_'+barnIndex+'" class="container tab-pane p-0 mb-3 '+activeclass+'">\
 				<div class="col-md-11 p-0 my-3 stallbtns">\
 					<input type="hidden" name="stallvalidation_'+barnstallname+'_'+barnIndex+'" id="stallvalidation_'+barnstallname+'_'+barnIndex+'">\
-					<button class="btn-stall stallbtn_'+barnstallname+'" data-barnIndex="'+barnIndex+'" >Add Stall</button>\
-					<button class="btn-stall bulkstallmodal_'+barnstallname+'" data-barnIndex="'+barnIndex+'" data-bs-toggle="modal" data-bs-target="#bulkstallmodal_'+barnstallname+'">Add Bulk Stall</button>\
-					<button class="btn-stall barnremovebtn_'+barnstallname+'">Remove Barn and Stall</button>\
+					<button class="btn-stall stallbtn_'+barnstallname+'" data-barnIndex="'+barnIndex+'" >Add '+stallcamp+'</button>\
+					<button class="btn-stall bulkstallmodal_'+barnstallname+'" data-barnIndex="'+barnIndex+'" data-bs-toggle="modal" data-bs-target="#bulkstallmodal_'+barnstallname+'">Add Bulk '+stallcamp+'</button>\
+					<button class="btn-stall barnremovebtn_'+barnstallname+'">Remove '+BarnLots+' and '+stallcamp+'</button>\
 				</div>\
 			</div>\
 		';

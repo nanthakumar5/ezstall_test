@@ -223,9 +223,9 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 								</div>
 								<div class="col-md-9 t-right p-0 respsm">
 									<input type="hidden" value="" name="rvhookupsvalidation" id="rvhookupsvalidation">
-									<a href="javascript:void(0);" class="btn btn-info bulkbtn_rvhookups">Add Bulk Rv Hookups</a>
+									<a href="javascript:void(0);" class="btn btn-info bulkbtn_rvhookups">Add Bulk RV Hookups</a>
 									<input type="file" class="bulkfile_rvhookups" style="display:none;">
-									<button class="btn-stall rvhookupsbtn">Add Rv Hookups</button>
+									<button class="btn-stall rvhookupsbtn">Add RV Hookups</button>
 								</div>
 							</div>
 							<div class="row">
@@ -373,6 +373,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 		questionpopup1(1, 'cleaning', cleaning_flag)
 		questionpopup1(2, 'charging', charging_flag)
 		questionpopup1(2, 'notification', notification_flag)
+		
 		barnstall('barn', [['.barnbtn'], ['.barntab', '.stalltab'], [0, 0], ['#barnvalidation'],[chargingflag, 2]], [barn, occupied, reserved])
 		barnstall('rvhookups', [['.rvhookupsbtn'], ['.rvhookupsbarntab', '.rvhookupsstalltab'], [0, 0], ['#rvhookupsvalidation'], [chargingflag, 2]], [rvbarn, occupied, reserved])
 		products('feed', [['.feedbtn'], ['.feedlist'], [0]], [feed])
