@@ -20,6 +20,9 @@
 		$producereventfee 	= isset($result['producereventfee']) ? $result['producereventfee'] : '';
 		$facilitystallfee 	= isset($result['facilitystallfee']) ? $result['facilitystallfee'] : '';
 		$googleanalytics 	= isset($result['googleanalytics']) ? $result['googleanalytics'] : '';
+		$sid 				= isset($result['sid']) ? $result['sid'] : '';
+		$token 				= isset($result['token']) ? $result['token'] : '';
+		$fromnumber			= isset($result['fromnumber']) ? $result['fromnumber'] : '';
 	?>
 	<section class="content-header">
 		<div class="container-fluid">
@@ -209,6 +212,44 @@
 									<textarea class="form-control" id="googleanalytics" name="googleanalytics" placeholder="Enter Google Analytics" rows="3"><?php echo $googleanalytics?></textarea>
 								</div>
 							</div>
+							<div class="col-md-12">
+								<input type="hidden" name="actionid" value="1">
+								<input type="submit" class="btn btn-primary" value="Submit">
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+
+	<section class="content">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">SMS Template</h3>
+			</div>
+			<div class="card-body">
+				<form method="post" id="form4" action="<?php echo getAdminUrl(); ?>/settings" autocomplete="off">
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Sid</label>
+									<input type="text" class="form-control" name="sid" placeholder="Sid" value="<?php echo $sid; ?>">
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Token</label>								
+									<input type="text" class="form-control" name="token" placeholder="Enter Token" value="<?php echo $token; ?>">
+								</div>
+							</div>	
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>From</label>								
+									<input type="text" class="form-control" name="fromnumber" placeholder="Enter Form Mobile Number" value="<?php echo $fromnumber; ?>">
+								</div>
+							</div>			
 							<div class="col-md-12">
 								<input type="hidden" name="actionid" value="1">
 								<input type="submit" class="btn btn-primary" value="Submit">

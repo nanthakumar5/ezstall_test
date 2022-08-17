@@ -472,3 +472,36 @@ function send_message_template($id, $extras=[]){
 
     send_mail($email, $subject, $message,$attachment);
 }
+
+function smsTemplate($data){
+
+	$sms = new App\Models\Emailtemplate;
+	$sms 	 = $sms->getEmailTemplate('row', ['emailtemplate'],['id' => '3']);
+
+	$sid 		= $sms['sid'];
+	$token 		= $sms['token'];
+  	$client 	= new Twilio\Rest\Client($sid, $token);
+
+  	$msg = str_replace(
+		        [
+					'#username',
+					'#eventname'
+		        ],
+		        [
+		            $data['username'],
+		            $data['eventname']
+		        ],
+
+		      $sms['message'],  
+			);
+
+  	$message = $client->messages->create(
+
+		'91'.$data['mobile'],
+
+		[
+			'from' => $sms['from_number'],
+			'body' => $msg,
+		]
+	);
+}

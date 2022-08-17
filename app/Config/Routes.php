@@ -62,6 +62,7 @@ $routes->match(['get','post'], 'login', 'Site\Login\Index::index', ['filter' => 
 $routes->match(['get','post'], 'register', 'Site\Register\Index::index', ['filter' => 'siteauthentication1']);
 $routes->get('verification/(:any)', 'Site\Register\Index::verification/$1');
 $routes->match(['get','post'], 'events', 'Site\Event\Index::lists');
+$routes->match(['get','post'], 'events/latlong', 'Site\Event\Index::latlong'); 
 $routes->match(['get','post'], 'events/detail/(:num)', 'Site\Event\Index::detail/$1');
 $routes->match(['get','post'], 'facility', 'Site\Facility\Index::lists');
 $routes->match(['get','post'], 'facility/detail/(:num)', 'Site\Facility\Index::detail/$1');
@@ -90,7 +91,6 @@ $routes->group('myaccount', ['filter' => 'siteauthentication2'], function($route
     $routes->get('events/inventories/(:num)', 'Site\Myaccount\Event\Index::inventories/$1'); 
     $routes->get('events/export/(:num)', 'Site\Myaccount\Event\Index::export/$1');
     $routes->get('events/eventreport/(:num)', 'Site\Myaccount\Event\Index::eventreport/$1');
-    $routes->post('events/importbarnstall', 'Site\Myaccount\Event\Index::importbarnstall');
 
     $routes->match(['get','post'], 'facility', 'Site\Myaccount\Facility\Index::index');
     $routes->match(['get','post'], 'facility/add', 'Site\Myaccount\Facility\Index::action'); 
@@ -98,7 +98,6 @@ $routes->group('myaccount', ['filter' => 'siteauthentication2'], function($route
     $routes->get('facility/view/(:num)', 'Site\Myaccount\Facility\Index::view/$1');
     $routes->get('facility/inventories/(:num)', 'Site\Myaccount\Facility\Index::inventories/$1');
     $routes->get('facility/export/(:num)', 'Site\Myaccount\Facility\Index::export/$1');
-    $routes->post('facility/importbarnstall', 'Site\Myaccount\Facility\Index::importbarnstall');
 
     $routes->match(['get','post'], 'stallmanager', 'Site\Myaccount\Stallmanager\Index::index');
     $routes->match(['get','post'], 'stallmanager/add', 'Site\Myaccount\Stallmanager\Index::action'); 
@@ -142,7 +141,6 @@ $routes->group('administrator', ['filter' => 'adminauthentication2'], function($
     $routes->get('event/action/(:num)', 'Admin\Event\Index::action/$1');
     $routes->post('event/DTevent', 'Admin\Event\Index::DTevent');
     $routes->get('event/view/(:num)', 'Admin\Event\Index::view/$1');
-    $routes->post('events/importbarnstall', 'Admin\Event\Index::importbarnstall');
 
     // Facility
     $routes->match(['get', 'post'], 'facility', 'Admin\Facility\Index::index');
@@ -150,7 +148,6 @@ $routes->group('administrator', ['filter' => 'adminauthentication2'], function($
     $routes->match(['get', 'post'],'facility/action/(:num)', 'Admin\Facility\Index::action/$1');
     $routes->post('facility/DTfacility', 'Admin\Facility\Index::DTfacility');
     $routes->get('facility/view/(:num)', 'Admin\Facility\Index::view/$1');
-    $routes->post('facility/importbarnstall', 'Admin\Facility\Index::importbarnstall');
 
     // Settings
     $routes->match(['get', 'post'], 'settings', 'Admin\Settings\Index::index');
