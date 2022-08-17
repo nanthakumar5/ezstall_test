@@ -79,8 +79,8 @@
 						</div>
 						<?php foreach ($data['barnstall'] as $stalls) {
 							if($userdetail['type'] =='6'){ 
-								$btnlockunlock = '<i class="fas fa-lock event_lock"></i>';
-								$btndirtyclean = '<i class="fas fa-virus event_virus"></i>';
+								$btnlockunlock = '<i data-stallid="'.$stalls['stall_id'].'"  class="fas fa-lock event_lock lockunlock"></i>';
+								$btndirtyclean = '<i data-stallid="'.$stalls['stall_id'].' " class="fas fa-virus event_virus dirtyclean"></i>';
 
 								if($stalls['lockunlock']=='1'){
 									$btnlockunlock = '<i class="fas fa-unlock event_unlock">'; 
@@ -109,8 +109,8 @@
 							</div>
 							<?php foreach ($data['rvbarnstall'] as $rvstall) {
 								if($userdetail['type'] =='6'){ 
-									$btnlockunlock = '<i class="fas fa-lock event_lock"></i>';
-									$btndirtyclean = '<i class="fas fa-virus event_virus"></i>';
+									$btnlockunlock = '<i data-stallid="'.$rvstall['stall_id'].'" class="fas fa-lock event_lock lockunlock"></i>';
+									$btndirtyclean = '<i data-stallid="'.$rvstall['stall_id'].' " class="fas fa-virus event_virus dirtyclean"></i>';
 
 									if($rvstall['lockunlock']=='1'){
 										$btnlockunlock = '<i class="fas fa-unlock event_unlock">'; 
@@ -160,7 +160,7 @@
 					</div>
 				</div>
 				<div class="text-center event_border">
-					<a href="<?php echo base_url().'/myaccount/bookings/view/'.$data['id']; ?>" class="ticket_values ticket_view_link">View Details</a>
+					<a href="<?php echo base_url().'/myaccount/bookings/view/'.$data['id']; ?>" class="mt-0 mx-3 view-res">View</a>
 					<i id="ticket_toggle_up" class="fas fa-angle-up ticket__up"></i>
 					<i id="ticket_toggle_down" class="fas fa-angle-down ticket__down"></i>
 				</div>

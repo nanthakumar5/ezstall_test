@@ -119,7 +119,7 @@
 <li class="nav-item">
 	<a href="<?php echo getAdminUrl().'/emailtemplate'; ?>" class="nav-link nav-hov">
 		<i class="nav-icon fa fa-envelope"></i>
-		<p>Email Template</p>
+		<p>SMS & Email Template</p>
 	</a>
 </li>
 <li class="nav-item">

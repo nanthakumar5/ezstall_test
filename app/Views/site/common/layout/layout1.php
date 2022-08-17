@@ -19,6 +19,8 @@
 		<link href="<?php echo base_url() ?>/assets/site/css/style.css" rel="stylesheet">
 		<link href="<?php echo base_url() ?>/assets/plugins/fontawesome-free/css/all.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" type="text/css" />
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	</head>
 	<body>
 		<section <?php if($segment1==''){ echo 'class="home-banner"'; } ?> >
@@ -206,6 +208,7 @@
     	<script src="<?php echo base_url();?>/assets/plugins/tinymce/tinymce.min.js"></script>
 		<script src="<?php echo base_url();?>/assets/plugins/inputmask/inputmask.js"></script>
 		<script src="<?php echo base_url();?>/assets/plugins/rater/rater.min.js"></script>
+		<script src="<?php echo base_url();?>/assets/plugins/party/party.min.js"></script>
 		<script src="<?php echo base_url();?>/assets/js/custom.js"></script>
 		<?php $this->renderSection('js') ?>
 		<script>
