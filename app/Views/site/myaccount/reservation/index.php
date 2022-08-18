@@ -68,6 +68,7 @@
 							<p class="ticket_values mr-3">Event ( <?php echo $data['eventname'];?> )</p>
 						</div>
 						<div class="flex-wrap d-flex align-items-center">
+						<?php if(!empty($data['barnstall'])){?>
 						<div class="col-md-2 px-3">
 							<p class="ticket_event_tag">STALL</p>
 						</div>
@@ -83,6 +84,7 @@
 								$btndirtyclean = '<i class="fas fa-broom event_broom"></i>'; 
 							}
 						} ?>
+					<?php } ?>
 						<div class="d-flex col-md-10 flex-wrap">
 							<div class="mx-3">
 								<p class="ticket_values"><?php echo $stalls['barnname'];?></p>
@@ -98,6 +100,7 @@
 						<?php } ?>
 						</div>
 						<div class="flex-wrap d-flex align-items-center">
+							<?php if(!empty($data['rvbarnstall'])){?>
 							<div class="col-md-2 px-3">
 								<p class="ticket_event_tag">RV HOOKUP</p>
 							</div>
@@ -125,9 +128,11 @@
 										</span>
 									</div>
 								</div>
-							<?php } ?>
+							<?php } } ?>
 						</div>
+
 						<div class="flex-wrap d-flex align-items-center">
+							<?php if(!empty($data['feed'])){?>
 							<div class="col-md-2 px-3">
 								<p class="ticket_event_tag">FEED</p>
 							</div>
@@ -137,9 +142,10 @@
 									<p class="ticket_sub_values e_mr_1"><?php echo $feed['productname'];?></p>
 								</span>
 							</div>
-							<?php } ?>
+							<?php } } ?>
 						</div>
 						<div class="flex-wrap d-flex align-items-center">
+							<?php if(!empty($data['shaving'])){?>
 							<div class="col-md-2 px-3">
 								<p class="ticket_event_tag">SHAVINGS</p>
 							</div>
@@ -149,7 +155,7 @@
 									<p class="ticket_sub_values e_mr_1"><?php echo $shaving['productname'];?></p>
 								</div>
 							</div>
-							<?php } ?>
+							<?php } } ?>
 						</div>
 					</div>
 				</div>
