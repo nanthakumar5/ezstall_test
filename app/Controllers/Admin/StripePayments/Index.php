@@ -35,7 +35,6 @@ class Index extends BaseController
 				$totalrecord[] = 	[
 										'username' 			=> 	$result['username'],
 										'amount' 			=> 	$currencysymbol.$result['amount'],
-
 									];
 			}
 		}
@@ -54,14 +53,14 @@ class Index extends BaseController
 	{	
 		if ($this->request->getMethod()=='post')
         {
-			$requestdata = $this->request->getPost();
-			$userid = $requestdata['user_id'];
-			$amount = $requestdata['amount'];
-			$userdetail = getUserDetails($userid);
-			$stripeaccountId = $userdetail['stripe_account_id'];
+			$requestdata 		= $this->request->getPost();
+			$userid 			= $requestdata['user_id'];
+			$amount 			= $requestdata['amount'];
+			$userdetail 		= getUserDetails($userid);
+			$stripeaccountId 	= $userdetail['stripe_account_id'];
 			
             $transfer = $this->stripe->createTransfer($stripeaccountId, $amount);
-
+            
 			if($transfer){
 				$requestdata['userid'] = getAdminUserID();
 				$requestdata['status'] = '1';

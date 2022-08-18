@@ -5,12 +5,15 @@ namespace App\Controllers\Admin\Users;
 use App\Controllers\BaseController;
 
 use App\Models\Users;
+use App\Models\Stripe;
 
 class Index extends BaseController
 {
 	public function __construct()
 	{  
 		$this->users  = new Users();
+		$this->stripe  = new Stripe();
+
     }
 	
 	public function index()
@@ -86,10 +89,18 @@ class Index extends BaseController
 		if ($this->request->getMethod()=='post')
         {
 			$requestdata = $this->request->getPost();
+			$stripeemailId	= (isset($requestdata['stripe_email'])) ? $requestdata['stripe_email'] : '';
+
+			$accountid = '';
+          	if($stripeemailId!=''){
+				 $connectedaccount = $this->stripe->createConnectedAccounts($stripeemailId);
+				 $accountid = $connectedaccount['id'];			
+			}
+		
+			$requestdata['stripe_account_id'] = $accountid;
 			$requestdata['userid'] = getAdminUserID();
-			
             $result = $this->users->action($requestdata);
-			
+  
 			if($result){
 				$this->session->setFlashdata('success', 'Users saved successfully.');
 				return redirect()->to(getAdminUrl().'/users'); 

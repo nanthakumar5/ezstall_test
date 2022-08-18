@@ -15,8 +15,8 @@
       <input type="password" name="password" class="form-control"  id="userpassword" value="">
     </div>
     <div class="mb-3">
-      <label class="form-label" id="accountid-lbl">Stripe Account ID</label>
-      <textarea name ="stripe_account_id"   class="form-control" id="stripe_account_id" rows="3"><?php echo $userdetail['stripe_account_id']; ?></textarea>
+      <label class="form-label" id="accountid-lbl">Stripe Email ID</label>
+      <input type="email" name="stripe_email" class="form-control"  id="stripeemail" value="<?php echo $userdetail['stripe_email']; ?>">
     </div>
     <input type="hidden" name="actionid" id="userid" value="<?php echo $userdetail['id']; ?>">
     <button type="submit" class="account-btn" id="updateinfo" >Update</button>
@@ -41,9 +41,10 @@ $(function(){
                       async :   false,
                     }
       },
-       stripe_account_id      : {
-        required  :   true
-      }, 
+      stripe_email    : { 
+          required  : true,
+          email     : true   
+      },
     },
     { 
      name      : {
@@ -53,9 +54,6 @@ $(function(){
         required    : "Please Enter Your Email.",
         email     	: "Enter valid email address.",
         remote    	: "Email Already Taken"
-      },
-       stripe_account_id      : {
-        required    : "Please Enter Your Stripe Accouny ID."
       },
     }
   );

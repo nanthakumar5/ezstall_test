@@ -322,23 +322,61 @@ class Stripe extends BaseModel
         }
     }
 
+	function createConnectedAccounts($stripeEmail)
+	{
+		try{
+
+			$settings = getSettings();
+			$stripe = new \Stripe\StripeClient($settings['stripeprivatekey']);
+			$data = $stripe->accounts->create([
+				'type' => 'standard',
+				'country' => 'US',
+				'email' => $stripeEmail,
+				
+			]);
+			return $data;	
+		}catch(Exception $e){
+			return false;
+		}
+
+	}
+
     function createTransfer($accountId, $amount)
     {
         try{
+
 			$settings = getSettings();
 			$stripe = new \Stripe\StripeClient($settings['stripeprivatekey']);
-			$currency = "inr";
-
-            $data = $stripe->transfers->create([
-  				'amount' 			=> $amount,
-  				'currency' 			=> $currency,
-  				'destination' 		=> $accountId
-			]);
+				$currency = "usd";
+	            $data = $stripe->transfers->create([
+	  				'amount' 			=> $amount,
+	  				'currency' 			=> $currency,
+	  				'destination' 		=> $accountId
+				]);
 
 			return $data;
 
         }catch(Exception $e){
             return false;
         }
-    }    
+    }
+
+    function retriveaccount()
+    {
+		try{
+			
+			$settings = getSettings();
+			$stripe = new \Stripe\StripeClient($settings['stripeprivatekey']);
+
+			$data = $stripe->accounts->retrieve('acct_1LXjJpPKY4UMqOdV',[]);
+
+			return $data;
+
+		}catch(Exception $e){
+			return false;
+		}
+
+    }
+
 }
+

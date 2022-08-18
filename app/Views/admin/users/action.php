@@ -8,7 +8,7 @@
 		$email 					= isset($result['email']) ? $result['email'] : '';
 		$type 					= isset($result['type']) ? $result['type'] : '';
 		$parentid 				= isset($result['parent_id']) ? $result['parent_id'] : '';
-		$stripe_account_id 		= isset($result['stripe_account_id']) ? $result['stripe_account_id'] : '';
+		$stripe_email 			= isset($result['stripe_email']) ? $result['stripe_email'] : '';
 		$status 				= isset($result['status']) ? $result['status'] : '';
 		$pageaction 			= $id=='' ? 'Add' : 'Update';
 	?>
@@ -71,8 +71,8 @@
 							</div>
 							<div class="col-md-12 stripaccountid">
 								<div class="form-group">
-									<label>Strip Account ID</label>
-									 <textarea name="stripe_account_id" id="stripe_account_id" class="form-control" rows="3"><?php echo $stripe_account_id; ?></textarea>
+									<label>Stripe Email ID</label>
+									 <input type ="email" name="stripe_email" id="stripe_email" class="form-control" value="<?php echo $stripe_email;?>"><?php echo $stripe_email; ?>
 								</div>
 							</div>
 							<div class="col-md-12 parentid">
@@ -89,8 +89,8 @@
 							</div>
 							<div class="col-md-12">
 								<input type="hidden" name="actionid" value="<?php echo $id; ?>">
-								<input type="submit" class="btn btn-primary" value="Submit">
-								<a href="<?php echo getAdminUrl(); ?>/users" class="btn btn-primary">Back</a>
+								<input type="submit" class="btn btn-danger" value="Submit">
+								<a href="<?php echo getAdminUrl(); ?>/users" class="btn btn-dark">Back</a>
 							</div>
 						</div>
 					</div>
@@ -133,6 +133,10 @@
 					},
 					type    : {
 						required	: 	true
+					},
+					stripe_email  	: {	
+						required	: true,
+						email     	: true   
 					},
 					status  : {  
 					    required	: 	true
