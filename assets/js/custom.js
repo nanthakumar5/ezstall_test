@@ -220,7 +220,7 @@ function multiplefileappend(name, value, src){
 }
 
 
-function fileupload(data1=[], data2=[], path){ 
+function fileupload(data1=[], data2=[], data3=[]){ 
 	var url 			= baseurl()+'ajax/fileupload';
 	var path			= baseurl()+'assets/uploads/temp/';
 	var relativepath	= './assets/uploads/temp/';
@@ -239,6 +239,7 @@ function fileupload(data1=[], data2=[], path){
             formdata.append("path", relativepath);
             formdata.append("type", extension.join('|'));
             formdata.append("name", name);
+            formdata.append("resize", data3);
 			
 			ajax(url, formdata, { contenttype : 1, processdata : 1, method : fileappend});
 		}else{
@@ -356,7 +357,11 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 		e.preventDefault();
 		barndata([], 1);
 	});
-	
+
+	/*place holder name*/
+    	var placeholder = (barnstallname=='rvhookups') ? 'Lots' : 'Stalls';
+	/*place holder name*/
+
 	function barndata(result=[], type=''){ 
 		var barnId   	= result['id'] ? result['id'] : '';
 		var stall		= result['stall'] ? result['stall'] : (result['rvstall'] ? result['rvstall'] : []);
@@ -462,7 +467,7 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 			    </select>\
 			</div>\
 			<div class="col-md-6 mb-3">\
-				<input type="text" id="stall_'+barnstallname+'_'+stallIndex+'_name" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][name]" class="form-control  fs-7" placeholder="Stall Name" value="'+stallName+'">\
+				<input type="text" id="stall_'+barnstallname+'_'+stallIndex+'_name" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][name]" class="form-control  fs-7" placeholder="'+placeholder+' Name" value="'+stallName+'">\
 			</div>\
 			<div class="col-md-6 mb-3">\
 				<input type="text" id="stall_'+barnstallname+'_'+stallIndex+'_price" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][price]" class="form-control fs-7" placeholder="Price" value="'+stallPrice+'">\
@@ -589,7 +594,7 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 		formdata.append('file', $(this)[0].files[0]); 
 		
 		ajax(
-			baseurl()+'myaccount/events/importbarnstall', 
+			baseurl()+'ajax/importbarnstall', 
 			formdata, 
 			{
 				contenttype : 1,
@@ -609,9 +614,9 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 	/* START STALL BULK UPLOAD */
 	var charging_flagmodal ='';
 		$.each(charging_flagdata, function(i,v){ 
-        	//var selected = i==1 ? 'selected' : '';
             charging_flagmodal += '<option value='+i+'>'+v+'</option>';
         })
+
 
 	var modal = '<div class="modal fade" id="bulkstallmodal_'+barnstallname+'" role="dialog">\
 					<div class="modal-dialog">\
@@ -632,7 +637,7 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 								<div class="col-md-12 my-2">\
 									<div class="form-group">\
 										<label>Stall Name</label>\
-										<input type="text" class="form-control stall_name_'+barnstallname+'" placeholder="Enter Your Stall Name">\
+										<input type="text" class="form-control stall_name_'+barnstallname+'" placeholder="Enter Your '+placeholder+' Name">\
 									</div>\
 								</div>\
 								<div class="col-md-12 my-2">\
@@ -656,13 +661,13 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 								<div class="col-md-12 my-2">\
 									<div class="form-group">\
 										<label>Total Number of Stalls</label>\
-										<input type="number" class="form-control stall_total_'+barnstallname+'" placeholder="Enter Total Number of Stalls" min="1" required>\
+										<input type="number" class="form-control stall_total_'+barnstallname+'" placeholder="Enter Total Number of '+placeholder+'" min="1" required>\
 									</div>\
 								</div>\
 								<div class="col-md-12 my-2">\
 									<div class="form-group">\
 										<label>First Stall Number</label>\
-										<input type="text" class="form-control stall_number_'+barnstallname+'" placeholder="Enter First Stall Number" min="1" required>\
+										<input type="text" class="form-control stall_number_'+barnstallname+'" placeholder="Enter First '+placeholder+' Number" min="1" required>\
 									</div>\
 								</div>\
 							</div>\

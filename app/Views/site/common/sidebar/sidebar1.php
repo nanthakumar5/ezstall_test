@@ -25,7 +25,7 @@
 				<p>Account Information</p>
 			</a>
 		</li>
-		<?php if($role!='5'){ ?>
+		<?php if($role!='6'){ ?>
 			<li>
 				<a class="side-nav-a" href="<?php echo base_url();?>/myaccount/events">
 					<i class="side-nav-i bi bi-calendar2-event"></i>
@@ -33,7 +33,7 @@
 				</a>
 			</li>
 		<?php } ?>
-		<?php if($role=='2' || ($role=='4' || $role=='6'  && $parenttype == '2')){ ?>
+		<?php if($role=='2' || ($role=='4' && ($parenttype == '2'))){ ?>
 			<li>
 				<a class="side-nav-a" href="<?php echo base_url();?>/myaccount/facility">
 					<i class="side-nav-i bi bi-calendar2-event"></i>
