@@ -17,6 +17,7 @@
     <div class="mb-3">
       <label class="form-label" id="accountid-lbl">Stripe Email ID</label>
       <input type="email" name="stripe_email" class="form-control"  id="stripeemail" value="<?php echo $userdetail['stripe_email']; ?>">
+      <input type ="hidden" name="stripe_account_id" id="stripe_account_id" class="form-control" value="<?php echo $userdetail['stripe_account_id'];?>">
     </div>
     <input type="hidden" name="actionid" id="userid" value="<?php echo $userdetail['id']; ?>">
     <button type="submit" class="account-btn" id="updateinfo" >Update</button>

@@ -91,13 +91,11 @@ class Index extends BaseController
 			$requestdata = $this->request->getPost();
 			$stripeemailId	= (isset($requestdata['stripe_email'])) ? $requestdata['stripe_email'] : '';
 
-			$accountid = '';
-          	if($stripeemailId!=''){
-				 $connectedaccount = $this->stripe->createConnectedAccounts($stripeemailId);
-				 $accountid = $connectedaccount['id'];			
+			if($stripeemailId!=''){
+				$stripeconnect = $this->stripe->stripeconnect($requestdata);
 			}
 		
-			$requestdata['stripe_account_id'] = $accountid;
+			$requestdata['stripe_account_id'] = $stripeconnect;
 			$requestdata['userid'] = getAdminUserID();
             $result = $this->users->action($requestdata);
   

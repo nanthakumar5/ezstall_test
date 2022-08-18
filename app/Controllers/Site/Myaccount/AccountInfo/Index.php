@@ -19,15 +19,14 @@ class Index extends BaseController
     	if ($this->request->getMethod()=='post')
 		{ 
 			$requestData = $this->request->getPost();
-			$stripeemailId	= (isset($requestdata['stripe_email'])) ? $requestdata['stripe_email'] : '';
+			$stripeemailId	= (isset($requestData['stripe_email'])) ? $requestData['stripe_email'] : '';
 
-			$accountid = '';
-          	if($stripeemailId!=''){
-				 $connectedaccount = $this->stripe->createConnectedAccounts($stripeemailId);
-				 $accountid = $connectedaccount['id'];			
+			if($stripeemailId!=''){
+				$stripeconnect = $this->stripe->stripeconnect($requestData);
 			}
-		
-			$requestdata['stripe_account_id'] = $accountid;
+			
+			$requestData['stripe_account_id'] = $stripeconnect;
+
 			$userid = $this->users->action($requestData); 
 			if($userid){ 
 				$this->session->setFlashdata('success', 'Your Account Updated Successfully'); 

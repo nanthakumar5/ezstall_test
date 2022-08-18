@@ -47,7 +47,7 @@
 							</div>
 							<div class="col-md-12">
 								<input type="hidden" name="actionid" value="<?php echo $userdetail['id']; ?>">
-								<button type="submit" class="btn btn-primary account-btn" id="updateinfo" >Update</button>
+								<button type="submit" class="btn btn-danger account-btn" id="updateinfo" >Update</button>
 							</div>
 						</div>
 					</div>

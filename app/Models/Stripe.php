@@ -52,7 +52,7 @@ class Stripe extends BaseModel
 			$customer 			= $this->createCustomer($userid, $name, $email);
 			$stripecustomerid 	= $customer->id;
 		}else{
-			$retrievecustomer = $this->retrieveCustomer($stripecustomerid);
+			$retrievecustomer 	= $this->retrieveCustomer($stripecustomerid);
 			
 			if(!$retrievecustomer){
 				$customer 			= $this->createCustomer($userid, $name, $email);
@@ -322,6 +322,25 @@ class Stripe extends BaseModel
         }
     }
 
+    function stripeconnect($requestData)
+    {
+
+		$stripe_account_id 	= isset($result['stripe_account_id']) ? $result['stripe_account_id'] : '';
+		$stripeemailId		= $requestData['stripe_email'];
+
+		if($stripe_account_id == ''){
+			$connectedaccount = $this->createConnectedAccounts($stripeemailId);
+			return $accountid = $connectedaccount['id'];			
+		}else{
+			$retrieveaccount = $this->retriveAccount($accountid);
+			
+			if(!$retrieveaccount){
+				$connectedaccount = $this->createConnectedAccounts($stripeemailId);
+				return $accountid = $connectedaccount['id'];			
+			}
+		}
+    }
+
 	function createConnectedAccounts($stripeEmail)
 	{
 		try{
@@ -340,6 +359,22 @@ class Stripe extends BaseModel
 		}
 
 	}
+
+    function retriveAccount($accountId)
+    {
+		try{
+			
+			$settings = getSettings();
+			$stripe = new \Stripe\StripeClient($settings['stripeprivatekey']);
+
+			$data = $stripe->accounts->retrieve($accountId,[]);
+
+			return $data;
+
+		}catch(Exception $e){
+			return false;
+		}
+    }
 
     function createTransfer($accountId, $amount)
     {
@@ -360,23 +395,5 @@ class Stripe extends BaseModel
             return false;
         }
     }
-
-    function retriveaccount()
-    {
-		try{
-			
-			$settings = getSettings();
-			$stripe = new \Stripe\StripeClient($settings['stripeprivatekey']);
-
-			$data = $stripe->accounts->retrieve('acct_1LXjJpPKY4UMqOdV',[]);
-
-			return $data;
-
-		}catch(Exception $e){
-			return false;
-		}
-
-    }
-
 }
 

@@ -9,6 +9,7 @@
 		$type 					= isset($result['type']) ? $result['type'] : '';
 		$parentid 				= isset($result['parent_id']) ? $result['parent_id'] : '';
 		$stripe_email 			= isset($result['stripe_email']) ? $result['stripe_email'] : '';
+		$stripe_account_id 		= isset($result['stripe_account_id']) ? $result['stripe_account_id'] : '';
 		$status 				= isset($result['status']) ? $result['status'] : '';
 		$pageaction 			= $id=='' ? 'Add' : 'Update';
 	?>
@@ -72,7 +73,8 @@
 							<div class="col-md-12 stripaccountid">
 								<div class="form-group">
 									<label>Stripe Email ID</label>
-									 <input type ="email" name="stripe_email" id="stripe_email" class="form-control" value="<?php echo $stripe_email;?>"><?php echo $stripe_email; ?>
+									 <input type ="email" name="stripe_email" id="stripe_email" class="form-control" value="<?php echo $stripe_email;?>">
+							 		<input type ="hidden" name="stripe_account_id" id="stripe_account_id" class="form-control" value="<?php echo $stripe_account_id;?>">
 								</div>
 							</div>
 							<div class="col-md-12 parentid">

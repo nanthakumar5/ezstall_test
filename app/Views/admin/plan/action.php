@@ -66,8 +66,8 @@
 							</div>						
 							<div class="col-md-12">
 								<input type="hidden" name="actionid" value="<?php echo $id; ?>">
-								<input type="submit" class="btn btn-primary" value="Submit">
-								<a href="<?php echo getAdminUrl(); ?>/plan" class="btn btn-primary">Back</a>
+								<input type="submit" class="btn btn-danger" value="Submit">
+								<a href="<?php echo getAdminUrl(); ?>/plan" class="btn btn-dark">Back</a>
 							</div>
 						</div>
 					</div>
