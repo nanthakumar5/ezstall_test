@@ -48,7 +48,7 @@
 						</div>
 						<div class="row">
 							<div class="col-lg-6  mb-4">
-								<input placeholder="Mobile Number" name="mobile" autocomplete='off'  value="">
+								<input placeholder="Mobile Number" name="mobile" id="mobile" autocomplete='off'  value="">
 							</div>
 							<div class="col-lg-6 mb-4">
 								<span class="info-box d-flex justify-content-between"><img class="dash-info-i" src="<?php echo base_url()?>/assets/site/img/chekout-info.png"><p>You may receive a text message with your stall assignment before your arrival.</p></span>
@@ -127,7 +127,7 @@
 								<?php
 								$barnstalldata = '';
 								$barnname = '';
-								foreach ($barnstall as $data) { 
+								foreach ($barnstall as $data) {
 									if($barnname!=$data['barn_name']){
 										$barnname = $data['barn_name'];
 										$barnstalldata .= '<div><span class="col-12 fw-bold">'.$barnname.'</span></div>';
@@ -142,7 +142,15 @@
 										$intervalss = $data['interval'];
 									}
 
-									$barnstalldata .= '<div class="row"><span class="col-7 event_c_text">'.$data['stall_name'].'</span><span class="col-5 text-end event_c_text">('.$data['price'].'x'.$intervalss.') '.$data['total'].'</span></div>';
+									if($data['chargingid']=='4'){
+										$intervaldays = $currencysymbol.$data['price'];
+										$total 		  = $currencysymbol.$data['price'];
+									}else{
+										$intervaldays = $currencysymbol.$data['price'].'x'.$intervalss;
+										$total 		  = $currencysymbol.$data['total'];
+									}
+
+									$barnstalldata .= '<div class="row"><span class="col-7 event_c_text">'.$data['stall_name'].'</span><span class="col-5 text-end event_c_text">('.$intervaldays.') '.$total.'</span></div>';
 									echo '<p>'.$data['stall_name'].'</p>';
 								}
 								?>
@@ -169,8 +177,16 @@
 										}else{ 
 											$intervalss = $rvdata['interval'];
 										}
-										
-										$rvbarnstalldata .= '<div class="row"><span class="col-7 event_c_text">'.$rvdata['stall_name'].'</span><span class="col-5 text-end event_c_text">('.$rvdata['price'].'x'.$intervalss.') '.$rvdata['total'].'</span></div>';
+
+										if($rvdata['chargingid']=='4'){
+										$intervaldays = $currencysymbol.$rvdata['price'];
+										$total 		  = $currencysymbol.$rvdata['price'];
+									}else{
+										$intervaldays = $currencysymbol.$rvdata['price'].'x'.$intervalss;
+										$total 		  = $currencysymbol.$rvdata['total'];
+									}
+
+										$rvbarnstalldata .= '<div class="row"><span class="col-7 event_c_text">'.$rvdata['stall_name'].'</span><span class="col-5 text-end event_c_text">('.$intervaldays.') '.$total.'</span></div>';
 										echo '<p>'.$rvdata['stall_name'].'</p>';
 									}
 									?>
@@ -270,6 +286,7 @@
 <?php echo $stripe; ?>
 	<script>
 		$(function(){
+		    $('#mobile').inputmask("(999) 999-9999");
 			validation( 
 				'.checkoutform',
 				{

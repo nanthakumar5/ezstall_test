@@ -289,7 +289,10 @@ $comments        	= (isset($comments)) ? $comments : [];
 														<td style="border: 1px solid #e4e4e4;"><?php echo $feed['name'];?></td>
 														<td style="border: 1px solid #e4e4e4;"><?php echo $feed['price'];?></td>
 														<td style="border: 1px solid #e4e4e4;">
-															<input type="number" min="0" class="form-control quantity" data-productid="<?php echo $feed['id']?>" data-flag="3" <?php if($cartevent=='1' || $checkevent['status']=='0'){ echo 'disabled'; } ?>>
+															<?php if($feed['quantity']==0){ $msg = '(Sold out)'; $readonly = 'readonly';} else{ $msg = ''; $readonly = ''; } ?>
+															<input type="number" <?php echo $readonly ?> min="0" class="form-control quantity" data-productid="<?php echo $feed['id']?>" data-flag="3" <?php if($cartevent=='1' || $checkevent['status']=='0'){ echo 'disabled'; } ?>>
+															<p style="color:red">
+																<?php echo $msg; ?></p>
 														</td>
 														<td style="border: 1px solid #e4e4e4;">
 															<?php if($cartevent!='1' && $checkevent['status']!='0'){ ?>
@@ -321,7 +324,7 @@ $comments        	= (isset($comments)) ? $comments : [];
 														<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['name'];?></td>
 														<td style="border: 1px solid #e4e4e4;"><?php echo $shaving['price'];?></td>
 														<td style="border: 1px solid #e4e4e4;">
-															<?php if($shaving['quantity']==0){ $msg = '(sold out)'; $readonly = 'readonly';} else{ $msg = ''; $readonly = ''; } ?>
+															<?php if($shaving['quantity']==0){ $msg = '(Sold out)'; $readonly = 'readonly';} else{ $msg = ''; $readonly = ''; } ?>
 															<input type="number" min="0" class="form-control quantity" <?php echo $readonly;?> data-productid="<?php echo $shaving['id']?>" data-flag="4" <?php if($cartevent=='1' || $checkevent['status']=='0'){ echo 'disabled'; } ?>>
 															<p style="color:red">
 																<?php echo $msg; ?></p></td>
@@ -795,10 +798,26 @@ $comments        	= (isset($comments)) ? $comments : [];
 								data += '<div><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
 							}
 
-							data += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+currencysymbol+v.price+'x'+v.interval+') '+currencysymbol+v.total+'</span></div>';
-							$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
-							name = v.barn_name;
-						});
+							if(v.interval%7==0){
+								var interval = v.interval/7;
+							}else if(v.interval%30==0){
+								var interval = v.interval/30; 
+							}else{ 
+								var interval = v.interval
+							}
+							
+							if(v.chargingid=='4'){ console.log("e");
+								var intervaldays = currencysymbol+v.price;
+								var total 		 = currencysymbol+v.price;
+							}else{ console.log("e12");
+								var intervaldays = currencysymbol+v.price+'x'+interval;
+								var total 		 = currencysymbol+v.total;
+							}
+
+					data += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+intervaldays+') '+total+'</span></div>';
+					$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
+					name = v.barn_name;
+				});
 					}else{
 						data += '<div class="event_cart_title"><span class="col-12 fw-bold">'+title+'</span></div>';
 						$(result).each(function(i,v){								

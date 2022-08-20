@@ -25,7 +25,7 @@
 				<p>Account Information</p>
 			</a>
 		</li>
-		<?php if($role!='6'){ ?>
+		<?php if($role=='3' || $role=='2'  || ($role=='4' && ($parenttype == '3' || $parenttype == '2'))){ ?>
 			<li>
 				<a class="side-nav-a" href="<?php echo base_url();?>/myaccount/events">
 					<i class="side-nav-i bi bi-calendar2-event"></i>

@@ -263,6 +263,7 @@ function getCart($type=''){
 		$daydiff           		= ceil(abs($start - $end) / 86400);
 		$interval           	= $daydiff==0 ? 1 : $daydiff;
 		$type          			= array_unique(array_column($result, 'type'))[0];
+
 		$barnstall = $rvbarnstall = $feed =  $shaving = [];
 
 		$intervalss = ($interval%7==0) ? ($interval/7) : $interval;
@@ -279,11 +280,12 @@ function getCart($type=''){
 					'stall_id' 		=> $res['stall_id'],
 					'stall_name' 	=> $res['stallname'],
 					'price' 		=> $res['price'],
+					'chargingid' 	=> $res['chargingid'],
 					'interval' 		=> $interval,
-					'total' 		=> $res['price'] * $intervalss
+					'total' 		=> ($res['chargingid']=='4') ? $res['price'] : $res['price'] * $intervalss
 				];
 				
-				$price += $res['price'] * $intervalss;
+				$price += ($res['chargingid']=='4') ? $res['price'] : $res['price'] * $intervalss;
 
 			}else if($res['flag']=='2'){
 				$rvbarnstall[] = [
@@ -292,11 +294,12 @@ function getCart($type=''){
 					'stall_id' 		=> $res['stall_id'],
 					'stall_name' 	=> $res['stallname'],
 					'price' 		=> $res['price'],
+					'chargingid' 	=> $res['chargingid'],
 					'interval' 		=> $interval,
-					'total' 		=> $res['price'] * $intervalss
+					'total' 		=> ($res['chargingid']=='4') ? $res['price'] : $res['price'] * $intervalss
 				];
 				
-				$price += $res['price'] * $intervalss;
+				$price += ($res['chargingid']=='4') ? $res['price'] : $res['price'] * $intervalss;
 			}else if($res['flag']=='3'){
 				$feed[] = [
 					'product_id'	=> $res['product_id'], 

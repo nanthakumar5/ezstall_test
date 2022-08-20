@@ -653,8 +653,16 @@ $profileimage 	= base_url().'/assets/uploads/profile/'.$detail['profile_image'];
 					}else{ 
 						var intervalss = v.interval
 					}
+					
+					if(v.chargingid=='4'){ console.log("e");
+						var intervaldays = currencysymbol+v.price;
+						var total 		 = currencysymbol+v.price;
+					}else{ console.log("e12");
+						var intervaldays = currencysymbol+v.price+'x'+intervalss;
+						var total 		 = currencysymbol+v.total;
+					}
 
-					data += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+currencysymbol+v.price+'x'+intervalss+') '+currencysymbol+v.total+'</span></div>';
+					data += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+intervaldays+') '+total+'</span></div>';
 					$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
 					name = v.barn_name;
 				});

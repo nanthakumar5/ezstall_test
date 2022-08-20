@@ -26,7 +26,7 @@ class Cart extends BaseModel
 		}
 		
 		if(in_array('stall', $querydata)){
-			$data		= 	['s.name stallname'];							
+			$data		= 	['s.name stallname, s.charging_id chargingid'];							
 			$select[] 	= 	implode(',', $data);
 		}
 		
