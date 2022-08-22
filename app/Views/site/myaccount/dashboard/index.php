@@ -248,15 +248,15 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($upcomingevents as $value){ ?>
+						<?php foreach ($upcomingevents as $value){ 
+						$url = ($value['type']=='2') ? 'facility' : 'events'; ?>
 							<tr class="upcoming"> 
 								<td><?php echo  date('m-d-Y',strtotime($value['start_date'])); ?></td>
 								<td><?php echo $value['name']; ?></td>
 								<td>
 									<button class="View">
-										<a href="<?php echo base_url().'/myaccount/events/view/'.$value['id']; ?>">View</a>
+										<a href="<?php echo base_url().'/myaccount/'.$url.'/view/'.$value['id']; ?>">View</a>
 									</button>
-										
 								</td>
 							</tr>
 						<?php } ?>
