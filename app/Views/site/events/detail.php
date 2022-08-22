@@ -805,11 +805,11 @@ $comments        	= (isset($comments)) ? $comments : [];
 							}else{ 
 								var interval = v.interval
 							}
-							
-							if(v.chargingid=='4'){ console.log("e");
+
+							if(v.chargingid=='4'){
 								var intervaldays = currencysymbol+v.price;
 								var total 		 = currencysymbol+v.price;
-							}else{ console.log("e12");
+							}else{
 								var intervaldays = currencysymbol+v.price+'x'+interval;
 								var total 		 = currencysymbol+v.total;
 							}
