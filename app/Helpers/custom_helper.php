@@ -485,7 +485,8 @@ function smsTemplate($data){
 	$token 		= $sms['token'];
   	$client 	= new Twilio\Rest\Client($sid, $token);
 
-  	$msg = str_replace(
+  	try{
+  		$msg = str_replace(
 		        [
 					'#username',
 					'#eventname'
@@ -507,4 +508,11 @@ function smsTemplate($data){
 			'body' => $msg,
 		]
 	);
+    //sent successfully
+   // echo "sent to $to successfully<br>";
+  }catch(Exception $e){
+    echo $e->getCode() . ' : ' . $e->getMessage()."<br>";
+  }
+
+  	
 }
