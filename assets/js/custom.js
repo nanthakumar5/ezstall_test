@@ -360,6 +360,22 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 
 	/*place holder name*/
     	var placeholder = (barnstallname=='rvhookups') ? 'Lots' : 'Stalls';
+    		var srheading  		= 'Stalls';
+    		var srrate     		= 'Stalls Rate';
+    		var srname     		= 'Stalls Name';
+    		var srprice    		= 'Stalls Price';
+    		var srimage    		= 'Stalls Image';
+    		var srtotalnumber 	= 'Total Number of Stalls';
+    		var srfirstnumber 	= 'First Stalls Number';
+    	if(barnstallname=='rvhookups'){
+    		var srheading  		= 'RV Lots';
+    		var srrate     		= 'RV Lots Rate';
+    		var srname     		= 'RV Lots Name';
+    		var srprice    		= 'RV Lots Price';
+    		var srimage    		= 'RV Lots Image';
+    		var srtotalnumber 	= 'Total Number of RV Lots';
+    		var srfirstnumber 	= 'First RV Lots Number';
+    	}
 	/*place holder name*/
 
 	function barndata(result=[], type=''){ 
@@ -367,7 +383,6 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 		var stall		= result['stall'] ? result['stall'] : (result['rvstall'] ? result['rvstall'] : []);
 		
 		var activeclass = $.trim($(barn_append).html())=='' ? 'active' : '';
-		var menubtn = (barnstallname=='rvhookups') ? 'Lots' : 'Stall';
 		if(barnstallname=='rvhookups'){
 			var barnName 	= result['name'] ? result['name'] : 'Campsites';
 			var stallcamp 	= 'Lots';
@@ -377,6 +392,7 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 			var stallcamp 	= 'Stall';
 			var BarnLots    = 'Barn';
 		}
+
 		var barntab='\
 			<li class="nav-item text-center mb-3">\
 				<a class="nav-link tab-link '+activeclass+'" data-bs-toggle="pill" data-bs-target="#tabtarget_'+barnstallname+'_'+barnIndex+'">\
@@ -452,7 +468,7 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 			var blockunblock = '';
 			
 			var blockunblock = '<div class="col-md-6 mb-3">\
-					<input type="checkbox" id="stall_'+barnstallname+'_'+stallIndex+'_block_unblock" '+checked+' name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][block_unblock]" value="1">Reserved\
+					<input type="checkbox" id="stall_'+barnstallname+'_'+stallIndex+'_block_unblock" '+checked+' name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][block_unblock]" value="1">  Reserved\
 				</div>';
 		
 		var availability = '<a href="javascript:void(0);" class="dash-stall-remove fs-7 stallremovebtn_'+barnstallname+'" data-barnIndex="'+barnIndex+'"><i class="fas fa-times text-white"></i></a>';
@@ -467,10 +483,10 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 			    </select>\
 			</div>\
 			<div class="col-md-6 mb-3">\
-				<input type="text" id="stall_'+barnstallname+'_'+stallIndex+'_name" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][name]" class="form-control  fs-7" placeholder="'+placeholder+' Name" value="'+stallName+'">\
+				<input type="text" id="stall_'+barnstallname+'_'+stallIndex+'_name" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][name]" class="form-control  fs-7" placeholder="Enter Your '+srname+'" value="'+stallName+'">\
 			</div>\
 			<div class="col-md-6 mb-3">\
-				<input type="text" id="stall_'+barnstallname+'_'+stallIndex+'_price" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][price]" class="form-control fs-7" placeholder="Price" value="'+stallPrice+'">\
+				<input type="text" id="stall_'+barnstallname+'_'+stallIndex+'_price" name="'+barnstallname+'['+barnIndex+'][stall]['+stallIndex+'][price]" class="form-control fs-7" placeholder="Enter Your '+srprice+'" value="'+stallPrice+'">\
 			</div>\
 			<div class="col-md-3 mb-3">\
 				<a href="'+stallImages+'" target="_blank">\
@@ -622,13 +638,13 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 					<div class="modal-dialog">\
 						<div class="modal-content">\
 							<div class="modal-header">\
-								<h4 class="modal-title">Stall</h4>\
+								<h4 class="modal-title">'+srheading+'</h4>\
 								<button type="button" class="close" data-bs-dismiss="modal">&times;</button>\
 							</div>\
 							<div class="modal-body">\
 								<div class="col-md-12 my-2">\
 									<div class="form-group">\
-										<label>Stall Rate</label>\
+										<label>'+srrate+'</label>\
 										<select class="form-control stall_charging_id_'+barnstallname+'">\
 										'+charging_flagmodal+'\
 										</select>\
@@ -636,19 +652,19 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 								</div>\
 								<div class="col-md-12 my-2">\
 									<div class="form-group">\
-										<label>Stall Name</label>\
-										<input type="text" class="form-control stall_name_'+barnstallname+'" placeholder="Enter Your '+placeholder+' Name">\
+										<label>'+srname+'</label>\
+										<input type="text" class="form-control stall_name_'+barnstallname+'" placeholder="Enter Your '+srname+'">\
 									</div>\
 								</div>\
 								<div class="col-md-12 my-2">\
 									<div class="form-group">\
-										<label>Price</label>\
-										<input type="number" class="form-control stall_price_'+barnstallname+'" placeholder="Enter Price">\
+										<label>'+srprice+'</label>\
+										<input type="number" class="form-control stall_price_'+barnstallname+'" placeholder="Enter Your '+srprice+'">\
 									</div>\
 								</div>\
 								<div class="col-md-6 my-2">\
 									<div class="form-group">\
-										<label>Stall Image</label>\
+										<label>'+srimage+'</label>\
 										<div>\
 											<a href="" target="_blank">\
 												<img src="" class="stall_source_'+barnstallname+'" width="100">\
@@ -660,14 +676,14 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 								</div>	\
 								<div class="col-md-12 my-2">\
 									<div class="form-group">\
-										<label>Total Number of Stalls</label>\
-										<input type="number" class="form-control stall_total_'+barnstallname+'" placeholder="Enter Total Number of '+placeholder+'" min="1" required>\
+										<label>'+srtotalnumber+'</label>\
+										<input type="number" class="form-control stall_total_'+barnstallname+'" placeholder="Enter Your '+srtotalnumber+'" min="1" required>\
 									</div>\
 								</div>\
 								<div class="col-md-12 my-2">\
 									<div class="form-group">\
-										<label>First Stall Number</label>\
-										<input type="text" class="form-control stall_number_'+barnstallname+'" placeholder="Enter First '+placeholder+' Number" min="1" required>\
+										<label>'+srfirstnumber+'</label>\
+										<input type="text" class="form-control stall_number_'+barnstallname+'" placeholder="Enter Your '+srfirstnumber+'" min="1" required>\
 									</div>\
 								</div>\
 							</div>\
@@ -746,17 +762,12 @@ function products(productsname, productsitem=[], productsresult=[]){
 		var productName     		= result['name'] ? result['name'] : ''; 
 		var productQuantity    		= result['quantity'] ? result['quantity'] : '';
 		var productPrice    		= result['price'] ? result['price'] : '';
-		
-		var soldoutmsg = '';
-		if(productQuantity==0){
-			soldoutmsg = 'sold out';
-		}
+	
 		
 		var data='\
 		<div class="row mb-2 dash-stall-base">\
 			<div class="col-md-6 mb-4">\
 				<input type="text" id="product_'+productsname+'_'+productIndex+'_name" name="'+productsname+'['+productIndex+'][name]" class="form-control fs-7" placeholder="Name" value="'+productName+'">\
-				<p class="tagline">'+soldoutmsg+'</p>\
 			</div>\
 			<div class="col-md-2 mb-4">\
 				<input type="text" id="product_'+productsname+'_'+productIndex+'_quantity" name="'+productsname+'['+productIndex+'][quantity]" class="form-control fs-7" placeholder="Quantity" value="'+productQuantity+'">\

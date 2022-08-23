@@ -2,8 +2,9 @@
 <?php $this->section('content') ?>
 <?php
       $transactionid  	= isset($result['id']) ? $result['id'] : '';
-      $username       	= isset($result['username']) ? $result['username'] : '';
-      $name     		= isset($result['name']) ? $result['name'] : '';
+      $name       	    = isset($result['username']) ? $result['username'] : '';
+      $firstname     		= isset($result['firstname']) ? $result['firstname'] : '';
+      $lastname         = isset($result['lastname']) ? $result['lastname'] : '';
       $email          	= isset($result['email']) ? $result['email'] : '';
       $type           	= isset($result['type']) ? $paymenttype[$result['type']] : '';
       $amount         	= isset($result['amount']) ? $result['amount'] : '';
@@ -33,7 +34,7 @@
       <p class="my-2">Name</p>
     </div>
     <div class="col" align="left">
-      <p class="my-2"><?php echo $username;?></p>
+      <p class="my-2"><?php echo $firstname;?><?php echo $lastname;?></p>
     </div>
   </div>
   <div class="row col-md-12 base-style">

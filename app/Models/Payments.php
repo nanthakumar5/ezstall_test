@@ -25,7 +25,7 @@ class Payments extends BaseModel
 		}
 		
 		if(in_array('booking', $querydata)){
-			$data		= 	['b.payment_id'];							
+			$data		= 	['b.payment_id, b.firstname, lastname'];							
 			$select[] 	= 	implode(',', $data);
 		}
 		
