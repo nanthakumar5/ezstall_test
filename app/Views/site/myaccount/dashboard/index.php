@@ -354,6 +354,30 @@
     							</div>';
     						
     				}
+    				if($stalldetail['rvbarnstall']!=""){
+	    				foreach($stalldetail['rvbarnstall'] as $rvbarnstall){
+	    					$btnlockunlock ='<button class="btn_dash_lock"  data-stallid="'.$rvbarnstall['stall_id'].'">Lock</button>';
+	    					$btndirtyclean ='<button class="btn_dash_dirty" data-stallid="'.$rvbarnstall['stall_id'].'">Dirty</button>';
+	    
+	    					if($rvbarnstall['lockunlock']=='1'){
+	    						$btnlockunlock = '<button class="btn_dash_lock">Unlock</button>';
+	    					}
+	    					if($rvbarnstall['dirtyclean']=='1'){
+	    						$btndirtyclean = '<button class="btn_dash_dirty">Clean</button>'; 
+	    					}
+	    						echo '
+	    							<div class="d-flex col-md-6 justify-content-between my-2 dash_border_ ">
+	    								<div>
+	    									<p class="mb-0 fw-bold">'.$eventname.'</p>
+	    									<p class="mb-0">'.$rvbarnstall['stallname'].'</p>
+	    								</div>
+	    								<div>'.$btnlockunlock.'
+	    									'.$btndirtyclean.'
+	    								</div>	
+	    							</div>';
+	    						
+	    				}
+	    			}
     			}
 		    }
 		}
