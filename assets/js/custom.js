@@ -359,7 +359,6 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 	});
 
 	/*place holder name*/
-    	var placeholder = (barnstallname=='rvhookups') ? 'Lots' : 'Stalls';
     		var srheading  		= 'Stalls';
     		var srrate     		= 'Stalls Rate';
     		var srname     		= 'Stalls Name';
@@ -385,7 +384,7 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 		var activeclass = $.trim($(barn_append).html())=='' ? 'active' : '';
 		if(barnstallname=='rvhookups'){
 			var barnName 	= result['name'] ? result['name'] : 'Campsites';
-			var stallcamp 	= 'Lots';
+			var stallcamp 	= 'Rv Lots';
 			var BarnLots    = 'Campsites';
 		}else if(barnstallname=='barn'){
 			var barnName 	= result['name'] ? result['name'] : 'Barn';

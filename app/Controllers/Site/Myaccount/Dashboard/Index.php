@@ -35,16 +35,16 @@ class Index extends BaseController
 		$parentdetails 		= getSiteUserDetails($parentid);
 		$parenttype   		= $parentdetails ? $parentdetails['type'] : '';
     	$data['usertype'] 	= $this->config->usertype;
-    	$userid 			= ($usertype=='4') ? $parentdetails['id'] : $userdetail['id'];
-		$allids 			= getStallManagerIDS($userid); 
+    	$userid 			= ($usertype=='4' || $usertype=='6') ? $parentdetails['id'] : $userdetail['id'];
+		$allids 			= getStallManagerIDS($userid);
 		array_push($allids, $userid);
 
       	if($usertype=='3' || ($usertype=='4' && $parenttype == '3')){ 
-      		$currentreservation = $this->event->getEvent('all', ['event', 'barn', 'stall'],['status' => ['1'], 'userids' => $allids, 'type' => '1', 'gtenddate' => $date]);
+      		$currentreservation = $this->event->getEvent('all', ['event', 'barn', 'stall','rvbarn','rvstall'],['status' => ['1'], 'userids' => $allids, 'type' => '1', 'gtenddate' => $date]);
       	}
       	
       	if($usertype=='2' || ($usertype=='4' && $parenttype == '2')){
-      		$currentreservation = $this->event->getEvent('all', ['event', 'barn', 'stall'],['status' => ['1'], 'userids' => $allids, 'type' => '2', 'fenddate' => $date]);
+      		$currentreservation = $this->event->getEvent('all', ['event', 'barn', 'stall','rvbarn','rvstall'],['status' => ['1'], 'userids' => $allids, 'fenddate' => $date]);
       	}
       	
       	if($usertype=='2' || $usertype =='3' || ($usertype=='4' && $parenttype == '2') || ($usertype=='4' && $parenttype == '3')){
@@ -52,24 +52,34 @@ class Index extends BaseController
 	  			foreach ($event['barn'] as $barn) {
 					$countcurrentstall += count(array_column($barn['stall'], 'id'));
 				}
+				if($event['rvbarn']!=''){
+					foreach ($event['rvbarn'] as $rvbarn) {
+						$countcurrentstall += count(array_column($rvbarn['rvstall'], 'id'));
+					}
+				}
 
-				$bookedevents = $this->booking->getBooking('all', ['booking','event','barnstall'],['eventid'=> $event['id'], 'status' => '1']);
+
+				$bookedevents = $this->booking->getBooking('all', ['booking','event','barnstall','rvbarnstall'],['eventid'=> $event['id'], 'status' => '1']);
+
 				if(count($bookedevents) > 0){
 					$data['checkinstall'] = $bookedevents;
 					foreach($bookedevents as $bookedevent){
 						$barnstall = $bookedevent['barnstall'];
-
+						$rvbarnstall = $bookedevent['rvbarnstall'];
 						if(count($barnstall) > 0) $countcurrentbooking += count(array_column($barnstall, 'stall_id'));
+						if(count($rvbarnstall) > 0) $countcurrentbooking += count(array_column($rvbarnstall, 'stall_id'));
 					}
 				}
 	      	}
       	
-	      	$pastevent = $this->booking->getBooking('all', ['booking','event','payment','barnstall'],['userid'=> $allids, 'ltenddate' => $date, 'status' => '1']);
+	      	$pastevent = $this->booking->getBooking('all', ['booking','event','payment','barnstall','rvbarnstall'],['userid'=> $allids, 'ltenddate' => $date, 'status' => '1']);
 
 			foreach ($pastevent as $event) {  
 	  			$countpastevent[] = $event['event_id'];
 	  			$barnstall = $event['barnstall'];
+	  			$rvbarnstall = $event['rvbarnstall'];
 	  			if(count($barnstall) > 0) $countpaststall += count(array_column($barnstall, 'stall_id'));
+	  			if(count($rvbarnstall) > 0) $countpaststall += count(array_column($rvbarnstall, 'stall_id'));
 	  			$countpastamount += $event['amount'];
 	      	}
       	}
@@ -78,7 +88,7 @@ class Index extends BaseController
 		$data['monthlyincome'] = $this->booking->getBooking('all', ['booking', 'event', 'payment'],['userid'=> $allids, 'status' => '1'], ['groupby' => 'DATE_FORMAT(b.created_at, "%M %Y")', 'select' => 'SUM(p.amount) as paymentamount, DATE_FORMAT(b.created_at, "%M %Y") AS month']);
 		
 		if($usertype=='2' || ($usertype=='4' && $parenttype == '2')){
-			$data['upcomingevents'] = $this->event->getEvent('all', ['event'],['userids' => $allids, 'fenddate'=> $date, 'status' => ['1'], 'type' => '2']);
+			$data['upcomingevents'] = $this->event->getEvent('all', ['event'],['userids' => $allids, 'fenddate'=> $date, 'status' => ['1']]);
 		}
 		
 		if($usertype=='3' || ($usertype=='4' && $parenttype == '3')){
@@ -87,20 +97,24 @@ class Index extends BaseController
     	
     	if($usertype=='5'){
 
-    		$horseevent = $this->booking->getBooking('all', ['booking','event','payment','barnstall'],['userid'=> $allids,'ltcheck_out' => $date, 'status' => '1']);
+    		$horseevent = $this->booking->getBooking('all', ['booking','event','payment','barnstall','rvbarnstall'],['userid'=> $allids,'ltcheck_out' => $date, 'status' => '1']);
 
     		foreach ($horseevent as $event) {  
 	  			$countpastevent[] = $event['event_id'];
 	  			$barnstall = $event['barnstall'];
+	  			$rvbarnstall = $event['rvbarnstall'];
 	  			if(count($barnstall) > 0) $countpaststall += count(array_column($barnstall, 'stall_id'));
+	  			if(count($rvbarnstall) > 0) $countpaststall += count(array_column($rvbarnstall, 'stall_id'));
 	  			$countpastamount += $event['amount'];
 	      	}
 
-    		$currentreservation = $this->booking->getBooking('all', ['booking','event','payment','barnstall'],['userid'=> $allids,'gtcheck_in' => $date, 'status' => '1']);
+    		$currentreservation = $this->booking->getBooking('all', ['booking','event','payment','barnstall','rvbarnstall'],['userid'=> $allids,'gtcheck_in' => $date, 'status' => '1']);
     		foreach ($currentreservation as $event) {  
 	  			$countcurrentevent[] = $event['event_id'];
 	  			$barnstall = $event['barnstall'];
+	  			$rvbarnstall = $event['rvbarnstall'];
 	  			if(count($barnstall) > 0) $countcurrentstall += count(array_column($barnstall, 'stall_id'));
+	  			if(count($rvbarnstall) > 0) $countcurrentstall += count(array_column($rvbarnstall, 'stall_id'));
 	  			$countpayedamount += $event['amount'];
 	      	}
 
@@ -110,7 +124,7 @@ class Index extends BaseController
     	}
 
 		if($usertype=='6'){
-    		$checkinstall = $this->booking->getBooking('all', ['booking','event','barnstall'],['userid'=> $allids, 'stallcheck_in'=>[$yesterday, $tday]]);
+    		$checkinstall = $this->booking->getBooking('all', ['booking','event','barnstall','rvbarnstall'],['userid'=> $allids, 'stallcheck_in'=>[$yesterday, $tday]]);
       		$data['checkinstall'] 			= $checkinstall;
       	}
 

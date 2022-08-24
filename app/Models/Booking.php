@@ -217,6 +217,7 @@ class Booking extends BaseModel
 		if(isset($data['type']) && $data['type']!='')      	           	 		$request['type'] 	      		= $data['type'];
 		if(isset($data['price']) && $data['price']!='')      	           	 	$request['price'] 	      		= $data['price'];
 		if(isset($data['transactionfee']) && $data['transactionfee']!='')      	$request['transaction_fee'] 	= $data['transactionfee'];
+		if(isset($data['cleaningfee']) && $data['cleaningfee']!='')      	$request['cleaning_fee'] 	= $data['cleaningfee'];
 		if(isset($data['amount']) && $data['amount']!='')      	           	 	$request['amount'] 	      		= $data['amount'];
  		$request['status'] = '1';
 

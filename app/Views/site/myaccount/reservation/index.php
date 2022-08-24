@@ -73,7 +73,7 @@
 							<p class="ticket_event_tag">STALL</p>
 						</div>
 						<?php foreach ($data['barnstall'] as $stalls) {
-							if($userdetail['type'] =='6'){ 
+							if($userdetail['type'] =='4'){ 
 								$btnlockunlock = '<i data-stallid="'.$stalls['stall_id'].'"  class="fas fa-lock event_lock lockunlock"></i>';
 								$btndirtyclean = '<i data-stallid="'.$stalls['stall_id'].' " class="fas fa-virus event_virus dirtyclean"></i>';
 
@@ -90,7 +90,7 @@
 								<p class="ticket_values"><?php echo $stalls['barnname'];?></p>
 								<span class="d-flex flex-wrap">
 									<p class="ticket_sub_values"><?php echo $stalls['stallname'];?></p>
-									<?php if($userdetail['type'] =='6'){ ?>
+									<?php if($userdetail['type'] =='4'){ ?>
 										<a href="#" class="ms-2"><?php echo $btnlockunlock;?></i></a>
 										<a href="#" class="mx-2"><?php echo $btndirtyclean;?></a>
 									<?php } ?>
@@ -105,7 +105,7 @@
 								<p class="ticket_event_tag">RV HOOKUP</p>
 							</div>
 							<?php foreach ($data['rvbarnstall'] as $rvstall) {
-								if($userdetail['type'] =='6'){ 
+								if($userdetail['type'] =='4'){ 
 									$btnlockunlock = '<i data-stallid="'.$rvstall['stall_id'].'" class="fas fa-lock event_lock lockunlock"></i>';
 									$btndirtyclean = '<i data-stallid="'.$rvstall['stall_id'].' " class="fas fa-virus event_virus dirtyclean"></i>';
 
@@ -121,7 +121,7 @@
 										<p class="ticket_values"><?php echo $rvstall['barnname'];?></p>
 										<span class="d-flex flex-wrap">
 											<p class="ticket_sub_values"><?php echo $rvstall['stallname'];?></p>
-											<?php if($userdetail['type'] =='6'){ ?>
+											<?php if($userdetail['type'] =='4'){ ?>
 												<a href="#" class="ms-2"><?php echo $btnlockunlock;?></i></a>
 												<a href="#" class="mx-2"><?php echo $btndirtyclean;?></a>
 											<?php } ?>

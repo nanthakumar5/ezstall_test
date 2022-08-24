@@ -9,14 +9,15 @@
 	$stall              = isset($result['stall']) ? $result['stall'] : '';
 	$checkin            = isset($result['check_in']) ? formatdate($result['check_in'], 1) : '';
 	$checkout           = isset($result['check_out']) ? formatdate($result['check_out'], 1) : '';
-	$createdat       	  = isset($result['created_at']) ? formatdate($result['created_at'], 2) : '';
+	$createdat       	= isset($result['created_at']) ? formatdate($result['created_at'], 2) : '';
 	$barnstalls         = isset($result['barnstall']) ? $result['barnstall'] : '';
-	$rvbarnstall       = isset($result['rvbarnstall']) ? $result['rvbarnstall'] : '';
+	$rvbarnstall       	= isset($result['rvbarnstall']) ? $result['rvbarnstall'] : '';
 	$feed               = isset($result['feed']) ? $result['feed'] : '';
 	$shaving            = isset($result['shaving']) ? $result['shaving'] : '';
 	$paymentmethod      = isset($result['paymentmethod_name']) ? $result['paymentmethod_name'] : '';
 
 ?>
+
 <div class="row">
 	<div class="col">
 		<h2 class="fw-bold mb-4">View Reservation</h2>
@@ -51,46 +52,6 @@
 			</div>
 			<div class="row base_stripe">
 				<div class="col-md-6">
-					<p class="ticket_title_tag">Barn & Stall Name</p>
-					<?php 	
-						$barnname = '';
-						foreach ($barnstalls as $barnstall) {
-							if($barnname!=$barnstall['barnname']){
-								$barnname = $barnstall['barnname'];
-								echo '<p class="mb-0 fw-bold h6">'.$barnstall['barnname'].'</p>';
-							}
-							echo '<p class="ticket_values">'.$barnstall['stallname'].'</p>';
-						} ?>
-				</div>
-				<div class="res_mt_3 col-md-5">
-					<p class="ticket_title_tag">Rv & Stall Name</p>
-					<?php 
-						$rvbarnname = '';
-						foreach ($rvbarnstall as $rvbarnstall) {
-							if($rvbarnname!=$rvbarnstall['barnname']){
-								$rvbarnname = $rvbarnstall['barnname'];
-								echo ' <p class="mb-0 fw-bold h6">'.$rvbarnstall['barnname'].'</p>';
-							}
-							echo ' <p class="ticket_values">'.$rvbarnstall['stallname'].'</p>';
-					} ?>
-				</div>
-			</div>
-			<div class="row base_stripe">
-				<div class="col-md-6">
-					<p class="ticket_title_tag">Feed Name</p>
-					<?php foreach ($feed as $feed) {
-						echo ' <p class="ticket_values">'.$feed['productname'].'</p>';
-					} ?>
-				</div>
-				<div class="res_mt_3 col-md-5">
-					<p class="ticket_title_tag">Shaving Name</p>
-					<?php foreach ($shaving as $shaving) {
-						echo ' <p class="ticket_values">'.$shaving['productname'].'</p>';
-					} ?>
-				</div>
-			</div>
-			<div class="row base_stripe">
-				<div class="col-md-6">
 					<p class="ticket_title_tag">Check In</p>
 					<p class="ticket_values"><?php echo $checkin;?></p>
 				</div>
@@ -117,6 +78,120 @@
 				<div class="res_mt_3 col-md-2">
 					<?php $statuscolor = ($result['status']=='2') ? "cancelcolor" : "activecolor"; ?>
 					<p class="my-2 ticket_values ticket_status <?php echo  $statuscolor;?>"><?php echo $bookingstatus[$result['status']];?></p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>
+<section class="container-lg">
+	<div class="row">
+		<div class="col-12">
+			<div class="border rounded pt-3 ps-3 pe-3">
+				<div class="row">
+					<h2 class="fw-bold">Cart Summary</h2>
+						<?php if(!empty($barnstalls)){ ?>
+							<table class="table-hover table-striped table-light table">
+								<h5 class="fw-bold text-muted">Barn&Stall</h5>
+								<?php 	
+									$barnname = '';
+									foreach ($barnstalls as $barnstall) {
+										if($barnname!=$barnstall['barnname']){
+										$barnname = $barnstall['barnname'];?>
+									<thead>
+											<tr>
+											<th><?php echo $barnname;?></th>
+											<th>Total</th>
+										</tr>
+									</thead>
+								<?php }?>
+									<tbody>
+										<tr>
+											<td><?php echo $barnstall['stallname']?></td>
+											<td><?php echo '('.$currencysymbol.$barnstall['price'].'x'.$barnstall['quantity'].')'.$currencysymbol.$barnstall['total']?></td>
+										</tr>
+									</tbody>
+								<?php } ?>
+							</table>
+						<?php } ?>
+
+						<?php if(!empty($rvbarnstall)){ ?>
+							<table class="table-hover table-striped table-light table">
+								<h5 class="fw-bold text-muted">Campsites</h5>
+								<?php 	
+									$rvbarnstalls = '';
+									foreach ($rvbarnstall as $rvbarnstall) {
+										$rvstallname = $rvbarnstall['stallname'];
+										$rvprice     = $rvbarnstall['price'];
+										$rvtotal     = $rvbarnstall['total'];
+										$rvquantity     = $rvbarnstall['quantity'];
+										if($rvbarnstall!=$rvbarnstall['barnname']){
+										$rvbarnstalls = $rvbarnstall['barnname'];?>
+									<thead>
+											<tr>
+											<th><?php echo $rvbarnstalls;?></th>
+											<th>Total</th>
+										</tr>
+									</thead>
+								<?php }?>
+									<tbody>
+										<tr>
+											<td><?php echo $rvstallname;?></td>
+											<td><?php echo '('.$currencysymbol.$rvprice.'x'.$rvquantity.')'.$currencysymbol.$rvtotal ?></td>
+										</tr>
+									</tbody>
+								<?php } ?>
+							</table>
+						<?php } ?>
+
+						<?php if(!empty($feed)){?>
+							<table class="table-hover table-striped table-light table">
+								<h5 class="fw-bold text-muted">Feed</h5>
+								<thead>
+									<tr>
+										<th>Feed Name</th>
+										<th>Total</th>
+									</tr>
+								</thead>
+								<tbody>
+
+								<?php foreach ($feed as $feed) {?>
+									<tr>
+										<td><?php echo $feed['productname'];?></td>
+										<td><?php echo $currencysymbol.$feed['total'];?></td>
+									</tr>
+									<?php } ?>
+								</tbody>
+							</table>
+						<?php } ?>
+
+						<?php if(!empty($shaving)){ ?>
+							<table class="table-hover table-striped table-light table">
+								<h5 class="fw-bold text-muted">Shavings</h5>
+								<thead>
+									<tr>
+										<th>Shavings Name</th>
+										<th>Total</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php foreach ($shaving as $shaving) {?>
+									<tr>
+										<td><?php echo $shaving['productname']?></td>
+										<td><?php echo $currencysymbol.$shaving['total']?></td>
+									</tr>
+								<?php } ?>
+								</tbody>
+							</table>
+						<?php } ?>
+
+						<p><b>Total</b></p> <p align="right"><?php echo $currencysymbol.$result['price'];?></p>
+						<p><b>Transaction Fees</b></p><p align="right"><?php echo $currencysymbol.$result['transaction_fee'];?></p>
+						<?php 
+						if($result['cleaning_fee']!=""){?>
+						<p><b>Cleaning Fee</b></p><p align="right"><?php echo $currencysymbol.$result['cleaning_fee'];?>
+						<?php } ?>
+						<p><b>Amount</b></p><p align="right"><?php echo $currencysymbol.$result['amount'];?></p>
 				</div>
 			</div>
 		</div>

@@ -80,6 +80,7 @@
 					<input type="hidden" name="checkout" value="<?php echo formatdate($cartdetail['check_out']); ?>" >
 					<input type="hidden" name="price" value="<?php echo $cartdetail['price']; ?>" >
 					<input type="hidden" name="transactionfee" value="<?php echo $transactionfee; ?>" >
+					<input type="hidden" name="cleaningfee" value="<?php echo $cleaning_fee; ?>" >
 					<input type="hidden" name="amount" value="<?php echo $cartdetail['price']+$transactionfee+$cleaning_fee; ?>" >
 					<input type="hidden" name="eventid" value="<?php echo $cartdetail['event_id']; ?>" >
 					<input type="hidden" name="type" value="<?php echo $cartdetail['type']; ?>" >

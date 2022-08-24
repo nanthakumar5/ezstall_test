@@ -40,11 +40,11 @@ class Index extends BaseController
 			$month 			= date('m',strtotime($result['check_out'])) == date('m');
 			$statuscolor 	= ($result['status']=='2') ? "cancelcolor" : "activecolor"; 
 
-			$action = 	'<a href="'.getAdminUrl().'/reservations/view/'.$result['id'].'" data-id="'.$result['id'].'" class="view">View</a>';
+			$action = 	'<a href="'.getAdminUrl().'/reservations/view/'.$result['id'].'" data-id="'.$result['id'].'" class="view btn btn-primary">View</a>';
 
 			if($result['status']=='1' && $month){
-			 	$action = 	'<a href="'.getAdminUrl().'/reservations/view/'.$result['id'].'" data-id="'.$result['id'].'" class="view">View</a><a href="javascript:void(0);" data-id="'.$result['id'].'"" data-paymentid="'.$result['payment_id'].'" data-paymentintentid="'.$result['stripe_paymentintent_id'].'" data-amount="'.$result['amount'].'" class="striperefunds">
-					<i class="fas fa-times-circle" style="font-size: 30px;"></i></a>';
+			 	$action = 	'<a href="'.getAdminUrl().'/reservations/view/'.$result['id'].'" data-id="'.$result['id'].'" class="view btn btn-primary">View</a><a href="javascript:void(0);" data-id="'.$result['id'].'"" data-paymentid="'.$result['payment_id'].'" data-paymentintentid="'.$result['stripe_paymentintent_id'].'" data-amount="'.$result['amount'].'" class="striperefunds btn btn-danger">
+					Cancel</a>';
 			}
 				
 				

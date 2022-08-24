@@ -57,7 +57,7 @@ class Index extends BaseController
     	$userid = getSiteUserID();
 
 		$result = $this->booking->getBooking('row', ['booking', 'event', 'users','barnstall', 'rvbarnstall', 'feed', 'shaving','payment','paymentmethod'], ['userid' => [$userid], 'id' => $id]);
-
+		
 		if($result){
 			$data['result'] = $result;
 		}else{
@@ -67,6 +67,7 @@ class Index extends BaseController
 		
 		$data['usertype'] 		= $this->config->usertype;
 		$data['bookingstatus'] 	= $this->config->bookingstatus;
+		$data['currencysymbol'] = $this->config->currencysymbol; 
 		return view('site/myaccount/reservation/view', $data);
 	}	
 
