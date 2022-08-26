@@ -103,80 +103,6 @@
 						<tr><td style="padding-bottom: 20px;"></td></tr>
 					</tbody>
 					<thead>
-						<tr>
-							<td scope="col" class="ticket_title_tag" style="padding-left: 40px;">Mobile</td>
-							<td scope="col" class="ticket_title_tag" style="">Booked Event</td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th class="ticket_values" style="padding-left: 40px;"><?php echo $mobile;?></th>
-							<th class="ticket_values" style="">Event ( <?php echo $eventname;?> )</th>
-							<tr><td style="padding-bottom: 20px;"></td></tr>
-						</tr>
-					</tbody>
-					<thead>
-						<tr style="background-color: #F9F9F9">
-							<td scope="col" class="ticket_title_tag" style="padding-top: 10px; padding-left: 40px;">Barn & Stall Name</td>
-							<td scope="col" class="ticket_title_tag" style="padding-top: 10px; ">Rv & Stall Name</td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr style="background-color: #F9F9F9;">
-							<?php 	
-							if(!empty($barnstalls)) {  
-								foreach ($barnstalls as $barnstall) { 
-									echo '<th style="padding-left: 40px;"><p class="mb-0 fw-bold h6">'.$barnstall["barnname"].'</p><p class="mb-0 fw-bold"style="font-size:12px;">'.$barnstall["stallname"].'</p></th>';
-								} 
-							} else{
-									echo '<th style="padding-bottom: 10px; padding-left: 40px;"><p class="mb-0 fw-bold h6">No Data</p></th>';
-							}
-							?>
-							<?php 
-							if(!empty($rvbarnstalls)) {
-								foreach ($rvbarnstalls as $rvbarnstall) {
-									echo '<th style="padding-bottom: 10px;  font-size: 12px;"><p class="mb-0 fw-bold">'.$rvbarnstall['barnname'].'</p>
-									<p class="mb-0 fw-bold">'.$rvbarnstall['stallname'].'</p>
-									</th>';
-								} 
-							}
-							else{
-									echo '<th style="padding-bottom: 10px;  font-size: 12px;"><p class="mb-0 fw-bold h6">No Data</p></th>';
-							} 
-							?>
-							<tr><td style="padding-bottom: 20px;"></td></tr>
-						</tr>
-					</tbody>
-					<thead>
-						<tr>
-							<td scope="col" class="ticket_title_tag" style="padding-left: 40px;">Feed Name</td>
-							<td scope="col" class="ticket_title_tag" style="">Shaving Name</td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<?php 
-							if(!empty($feeds)) {  
-								foreach ($feeds as $feed) { 
-									echo '<th class="ticket_values" style="padding-left: 40px;">'.$feed['productname'].'</th>';
-								} 
-							} else { 
-									echo '<th class="ticket_values" style="padding-left: 40px;">No Data</th>';
-							} 
-							?>
-							<?php 
-							if(!empty($shavings)) { 
-								foreach ($shavings as $shaving) {
-									echo '<th class="ticket_values" style="">'.$shaving['productname'].'</th>';
-								} 
-							} else { 
-								echo '<th class="ticket_values" style="">No Data</th>';
-							} 
-							?>
-						</tr>
-						<tr><td style="padding-bottom: 20px;"></td></tr>
-					</tbody>
-					<thead>
 						<tr style="background-color: #F9F9F9">
 							<td scope="col" class="ticket_title_tag" style="padding-top: 10px; padding-left: 40px;">Check In</td>
 							<td scope="col" class="ticket_title_tag" style="padding-top: 10px; ">Check Out</td>
@@ -212,6 +138,153 @@
 						<tr style="background-color: #F9F9F9;">
 							<th class="ticket_values" style="width: 50%; padding-bottom: 10px; padding-left: 40px;"><?php echo $paymentmethod;?></th>
 							<th>Booked</th>
+						</tr>
+					</tbody>
+					<thead>
+						<tr>
+							<td scope="col" class="ticket_title_tag" style="padding-left: 40px;">Mobile</td>
+							<td scope="col" class="ticket_title_tag" style="">Booked Event</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th class="ticket_values" style="padding-left: 40px;"><?php echo $mobile;?></th>
+							<th class="ticket_values" style="">Event ( <?php echo $eventname;?> )</th>
+							<tr><td style="padding-bottom: 20px;"></td></tr>
+						</tr>
+					</tbody>
+
+					<thead>
+						<tr>
+							<td align="cemter">Cart Summary</td>
+						</tr>
+						<tr style="background-color: #F9F9F9">
+							<td scope="col" class="ticket_title_tag" style="padding-top: 10px; padding-left: 40px;">Barn & Stall Name</td>
+							<td scope="col" class="ticket_title_tag" style="padding-top: 10px; ">Total</td>
+						</tr>
+					</thead>
+					<tbody>
+						<?php 	
+							if(!empty($barnstalls)) {  
+								foreach ($barnstalls as $barnstall) { 
+
+									echo '<tr style="background-color: #F9F9F9;">';
+							
+									echo '<th style="padding-left: 40px;"><p class="mb-0 fw-bold h6">'.$barnstall["barnname"].'</p><p class="mb-0 fw-bold"style="font-size:12px;">'.$barnstall["stallname"].'</p></th>';
+
+									echo '<th style="padding-left: 40px;"><p class="mb-0 fw-bold h6">('.$currencysymbol.$barnstall['price'].'x'.$barnstall['quantity'].')'.$currencysymbol.$barnstall['total'].'</p></th>';
+								
+								echo '</tr>';
+								echo '<tr><td style="padding-bottom: 20px;"></td></tr>';
+							} 
+						} else { 
+									echo '<th class="ticket_values" style="padding-left: 40px;">No Data</th>';
+							} 
+						?>
+					</tbody>
+
+					<thead>
+						<tr style="background-color: #F9F9F9">
+							<td scope="col" class="ticket_title_tag" style="padding-top: 10px; padding-left: 40px;">Rv & Stall Name</td>
+							<td scope="col" class="ticket_title_tag" style="padding-top: 10px; ">Total</td>
+						</tr>
+					</thead>
+					<tbody>
+						<?php 
+						if(!empty($rvbarnstalls)) {
+							foreach ($rvbarnstalls as $rvbarnstall) {
+								echo '<tr style="background-color: #F9F9F9;">';
+									echo '<th style="padding-bottom: 10px;  font-size: 12px;"><p class="mb-0 fw-bold">'.$rvbarnstall['barnname'].'</p>
+									<p class="mb-0 fw-bold">'.$rvbarnstall['stallname'].'</p>
+									</th>';
+
+									echo '<th style="padding-bottom: 10px;  font-size: 12px;"><p class="mb-0 fw-bold">('.$currencysymbol.$rvbarnstall['price'].'x'.$rvbarnstall['quantity'].')'.$currencysymbol.$rvbarnstall['total'].'</p></th>';
+								
+								echo '</tr>';
+								echo '<tr><td style="padding-bottom: 20px;"></td></tr>';
+							} 
+						}else { 
+									echo '<th class="ticket_values" style="padding-left: 40px;">No Data</th>';
+							} 
+						?>
+					</tbody>
+					<thead>
+						<tr>
+							<td scope="col" class="ticket_title_tag" style="padding-left: 40px;">Feed Name</td>
+							<td scope="col" class="ticket_title_tag" style="">Total</td>
+						</tr>
+					</thead>
+					<tbody>
+							<?php 
+							if(!empty($feeds)) {  
+								foreach ($feeds as $feed) {  
+									echo '<tr>';
+									echo '<th class="ticket_values" style="padding-left: 40px;">'.$feed['productname'].'</th>';
+
+									echo '<th class="ticket_values" style="padding-left: 40px;">('.$feed['price'].'x'.$feed['quantity'].')'.$feed['total'].'</th>';
+							
+									echo '<tr><td style="padding-bottom: 20px;"></td></tr>';
+									echo '</tr>';
+								} 
+							} else { 
+									echo '<th class="ticket_values" style="padding-left: 40px;">No Data</th>';
+							} 
+							?>
+					</tbody>
+					<thead>
+						<tr>
+							<td scope="col" class="ticket_title_tag" style="padding-left: 40px;">Shavings Name</td>
+							<td scope="col" class="ticket_title_tag" style="">Total</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<?php 
+							if(!empty($shavings)) {  
+								foreach ($shavings as $shaving) {  
+									echo '<th class="ticket_values" style="padding-left: 40px;">'.$shaving['productname'].'</th>';
+
+									echo '<th class="ticket_values" style="padding-left: 40px;">('.$shaving['price'].'x'.$shaving['quantity'].')'.$shaving['total'].'</th>';
+								
+							echo '</tr>';
+							echo '<tr><td style="padding-bottom: 20px;"></td></tr>';
+						} 
+						} else { 
+									echo '<th class="ticket_values" style="padding-left: 40px;">No Data</th>';
+							} 
+						?>
+					</tbody>
+					<thead>
+						<tr>
+							<td scope="col" class="ticket_title_tag" style="padding-left: 40px;">Total</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th class="ticket_values" style="padding-left: 40px;"><?php echo $currencysymbol.$reservationpdf['price'];?></th>
+							<tr><td style="padding-bottom: 20px;"></td></tr>
+						</tr>
+					</tbody>
+					<thead>
+						<tr>
+							<td scope="col" class="ticket_title_tag" style="padding-left: 40px;">Cleaning Fee</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th class="ticket_values" style="padding-left: 40px;"><?php if(!empty($reservationpdf['cleaning_fee'])) { echo $currencysymbol.$reservationpdf['cleaning_fee']; } ?></th>
+							<tr><td style="padding-bottom: 20px;"></td></tr>
+						</tr>
+					</tbody>
+					<thead>
+						<tr>
+							<td scope="col" class="ticket_title_tag" style="padding-left: 40px;">Amount</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th class="ticket_values" style="padding-left: 40px;"><?php echo $currencysymbol.$reservationpdf['amount'];?></th>
+							<tr><td style="padding-bottom: 20px;"></td></tr>
 						</tr>
 					</tbody>
 				</table>

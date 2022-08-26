@@ -158,7 +158,7 @@
 								<?php foreach ($feed as $feed) {?>
 									<tr>
 										<td><?php echo $feed['productname'];?></td>
-										<td><?php echo $currencysymbol.$feed['total'];?></td>
+										<td><?php echo '('.$currencysymbol.$feed['price'].'x'.$feed['quantity'].')'.$currencysymbol.$feed['total']?></td>
 									</tr>
 									<?php } ?>
 								</tbody>
@@ -178,7 +178,7 @@
 								<?php foreach ($shaving as $shaving) {?>
 									<tr>
 										<td><?php echo $shaving['productname']?></td>
-										<td><?php echo $currencysymbol.$shaving['total']?></td>
+										<td><?php echo '('.$currencysymbol.$shaving['price'].'x'.$shaving['quantity'].')'.$currencysymbol.$shaving['total']?></td>
 									</tr>
 								<?php } ?>
 								</tbody>

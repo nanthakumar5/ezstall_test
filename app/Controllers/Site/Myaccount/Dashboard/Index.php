@@ -15,14 +15,15 @@ class Index extends BaseController
     
     public function index()
     { 	
-		$countcurrentstall 		= 0;
-      	$countcurrentbooking 	= 0;
-      	$countpastevent 		= [];
-      	$countpaststall 		= 0;
-      	$countpastamount 		= 0;
-      	$countpayedamount		= 0;
-      	$countcurrentstall 		= 0;
-      	$countcurrentevent  	= [];
+		$countcurrentstall 			= 0;
+      	$countcurrentbookingstalls 	= 0;
+      	$countcurrentbookingrvlots 	= 0;
+      	$countpastevent 			= [];
+      	$countpaststall 			= 0;
+      	$countpastamount 			= 0;
+      	$countpayedamount			= 0;
+      	$countcurrentrvlots 		= 0;
+      	$countcurrentevent  		= [];
 		
 		$yesterday 	=  date("Y-m-d", strtotime("yesterday")); 
 		$tday 		=  date("Y-m-d", strtotime("today"));
@@ -54,7 +55,7 @@ class Index extends BaseController
 				}
 				if($event['rvbarn']!=''){
 					foreach ($event['rvbarn'] as $rvbarn) {
-						$countcurrentstall += count(array_column($rvbarn['rvstall'], 'id'));
+						$countcurrentrvlots += count(array_column($rvbarn['rvstall'], 'id'));
 					}
 				}
 
@@ -66,8 +67,8 @@ class Index extends BaseController
 					foreach($bookedevents as $bookedevent){
 						$barnstall = $bookedevent['barnstall'];
 						$rvbarnstall = $bookedevent['rvbarnstall'];
-						if(count($barnstall) > 0) $countcurrentbooking += count(array_column($barnstall, 'stall_id'));
-						if(count($rvbarnstall) > 0) $countcurrentbooking += count(array_column($rvbarnstall, 'stall_id'));
+						if(count($barnstall) > 0) $countcurrentbookingstalls += count(array_column($barnstall, 'stall_id'));
+						if(count($rvbarnstall) > 0) $countcurrentbookingrvlots += count(array_column($rvbarnstall, 'stall_id'));
 					}
 				}
 	      	}
@@ -114,7 +115,7 @@ class Index extends BaseController
 	  			$barnstall = $event['barnstall'];
 	  			$rvbarnstall = $event['rvbarnstall'];
 	  			if(count($barnstall) > 0) $countcurrentstall += count(array_column($barnstall, 'stall_id'));
-	  			if(count($rvbarnstall) > 0) $countcurrentstall += count(array_column($rvbarnstall, 'stall_id'));
+	  			if(count($rvbarnstall) > 0) $countcurrentrvlots += count(array_column($rvbarnstall, 'stall_id'));
 	  			$countpayedamount += $event['amount'];
 	      	}
 
@@ -128,13 +129,16 @@ class Index extends BaseController
       		$data['checkinstall'] 			= $checkinstall;
       	}
 
-      	$data['userdetail'] 			= $userdetail;
-      	$data['countcurrentstall'] 		= $countcurrentstall; 
-      	$data['countcurrentbooking'] 	= $countcurrentbooking;
-      	$data['countcurrentavailable'] 	= ($countcurrentstall - $countcurrentbooking);
-      	$data['pastevent'] 				= count(array_unique($countpastevent));
-      	$data['countpaststall'] 		= $countpaststall;
-      	$data['countpastamount'] 		= $countpastamount;
+      	$data['userdetail'] 					= $userdetail;
+      	$data['countcurrentstall'] 				= $countcurrentstall; 
+      	$data['countcurrentrvlots'] 			= $countcurrentrvlots; 
+      	$data['countcurrentbookingstalls'] 		= $countcurrentbookingstalls;
+      	$data['countcurrentbookingrvlots'] 		= $countcurrentbookingrvlots; 
+      	$data['countcurrentavailablestalls'] 	= ($countcurrentstall - $countcurrentbookingstalls);
+      	$data['countcurrentavailablervlots'] 	= ($countcurrentrvlots - $countcurrentbookingrvlots);
+      	$data['pastevent'] 						= count(array_unique($countpastevent));
+      	$data['countpaststall'] 				= $countpaststall;
+      	$data['countpastamount'] 				= $countpastamount;
 		
 		return view('site/myaccount/dashboard/index',$data);
 	}

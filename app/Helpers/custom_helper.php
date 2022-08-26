@@ -183,7 +183,6 @@ function createDirectory($path)
 
 function send_mail($to,$subject,$message,$attachment='')
 {
-
 	$email = \Config\Services::email();
 
 	$config['protocol'] 	= 'smtp';
@@ -210,10 +209,11 @@ function send_mail($to,$subject,$message,$attachment='')
     if($email->send()){
         return "sent";
     }else{
-       	print_r($email->printDebugger());exit;
+        print_r($email->printDebugger());exit;
         return "not sent";
     }
-} 
+
+}  
 
 function getUsersList($data=[])
 {    
@@ -413,7 +413,7 @@ function getSettings()
 function getBooking($condition=[])
 {
 	$booking = new \App\Models\Booking;
-	return $booking->getBooking('all', ['booking','users','barnstall'], $condition);
+	return $booking->getBooking('all', ['booking','users','barnstall','rvbarnstall','feed','shaving'], $condition);
 }
 
 function send_message_template($id, $extras=[]){  

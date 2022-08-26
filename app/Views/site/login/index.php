@@ -7,7 +7,7 @@
 </div>
 <div class="signInRight">
     <div class="signInFormPanel">
-        <h1 class="topPad">Let's Sign In</h1><p>Enter details to signin</p>
+        <h1 class="topPad">Let's Sign In</h1><p>Enter details to Sign In</p>
         <form class="signInForm" id="form" method="post" action="" autocomplete="off">
             <span>
                 <input type="email" class="signInEmail" placeholder="Enter email" name="email">

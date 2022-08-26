@@ -45,6 +45,9 @@ table tr td {
 							<tr>
 								<th width="40%">Horse Owner</th>
 								<th width="30%">Stalls Reserved</th>
+								<th width="30%">Rv Reserved</th>
+								<th width="30%">Feed Reserved</th>
+								<th width="30%">Shavings Reserved</th>
 								<th width="30%">Contact Phone Number</th>
 							</tr>
 					  </thead>
@@ -53,7 +56,21 @@ table tr td {
 								<?php foreach ($arriving as $data) { ?>
 									<tr>
 										<td><?php echo $data['firstname'].' '.$data['lastname'];?></td>
-										<td><?php echo implode(', ', array_column($data['barnstall'], 'stallname')); ?></td>
+
+										<td><?php 
+											$barnstall = (array_column($data['barnstall'], 'stallname')) ?  implode(', ', array_column($data['barnstall'], 'stallname')) : 'No Stalls available.'; 
+												echo $barnstall; ?></td>
+
+										<td><?php 
+											$rvlots = (array_column($data['rvbarnstall'], 'stallname')) ?  implode(', ', array_column($data['rvbarnstall'], 'stallname')) : 'No RV lots available.'; 
+												echo $rvlots; ?></td>
+
+										<td><?php 
+											$feed = (array_column($data['feed'], 'productname')) ?  implode(', ', array_column($data['feed'], 'productname')) : 'No Feed inventory available.'; 
+												echo $feed; ?>
+										</td>
+										<td><?php $shavings = (array_column($data['shaving'], 'productname')) ?  implode(', ', array_column($data['shaving'], 'productname')) : 'No Shavings inventory available.'; 
+												echo $shavings; ?></td>
 										<td><?php echo $data['mobile'];?></td>		
 									</tr>
 								<?php } ?>
@@ -69,6 +86,9 @@ table tr td {
 							<tr>
 								<th width="40%">Horse Owner</th>
 								<th width="30%">Stalls Reserved</th>
+								<th width="30%">RV Reserved</th>
+								<th width="30%">Feed Reserved</th>
+								<th width="30%">Shavings Reserved</th>
 								<th width="30%">Contact Phone Number</th>
 							</tr>
 						</thead>
@@ -78,6 +98,9 @@ table tr td {
 									<tr>
 										<td><?php echo $data['firstname'].' '.$data['lastname'];?></td>
 										<td><?php echo implode(', ', array_column($data['barnstall'], 'stallname')); ?></td>
+										<td><?php echo implode(', ', array_column($data['rvbarnstall'], 'stallname')); ?></td>
+										<td><?php echo implode(', ', array_column($data['feed'], 'productname')); ?></td>
+										<td><?php echo implode(', ', array_column($data['shaving'], 'productname')); ?></td>
 										<td><?php echo $data['mobile'];?></td>		
 									</tr>
 								<?php } ?>

@@ -213,9 +213,6 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 									<p class="fs-2 fw-bold mb-0 barntfont">Barn</p>
 								</div>
 								<div class="col-md-9 t-right p-0 respsm">
-									<input type="hidden" value="" name="barnvalidation" id="barnvalidation">
-									<a href="javascript:void(0);" class="btn btn-info bulkbtn_barn">Add Bulk Barn</a>
-									<input type="file" class="bulkfile_barn" style="display:none;">
 									<button class="btn-stall barnbtn" value="4" name="tst" id="tes">Add Barn</button>
 								</div>
 							</div>
@@ -327,7 +324,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 
 		$('#mobile').inputmask("(999) 999-9999");
 		uidatepicker("#start_date, #end_date");
-		fileupload([".image_file"], ['.image_input', '.image_source','.image_msg']);
+		fileupload([".image_file"], ['.image_input', '.image_source','.image_msg'],['1']);
 		fileupload([".eventflyer_file", ['jpg','jpeg','png','gif','tiff','tif','pdf']], ['.eventflyer_input', '.eventflyer_source','.eventflyer_msg']);
 		fileupload([".stallmap_file", ['jpg','jpeg','png','gif','tiff','tif','pdf']], ['.stallmap_input', '.stallmap_source','.stallmap_msg']);
 		fileupload([".stall_file"], ['.stall_input', '.stall_source','.stall_msg']);

@@ -384,10 +384,12 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 		var activeclass = $.trim($(barn_append).html())=='' ? 'active' : '';
 		if(barnstallname=='rvhookups'){
 			var barnName 	= result['name'] ? result['name'] : 'Campsites';
+			var uploadName  = 'Campsites';
 			var stallcamp 	= 'Rv Lots';
 			var BarnLots    = 'Campsites';
 		}else if(barnstallname=='barn'){
 			var barnName 	= result['name'] ? result['name'] : 'Barn';
+			var uploadName  = 'Barn';
 			var stallcamp 	= 'Stall';
 			var BarnLots    = 'Barn';
 		}
@@ -408,6 +410,9 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 					<input type="hidden" name="stallvalidation_'+barnstallname+'_'+barnIndex+'" id="stallvalidation_'+barnstallname+'_'+barnIndex+'">\
 					<button class="btn-stall stallbtn_'+barnstallname+'" data-barnIndex="'+barnIndex+'" >Add '+stallcamp+'</button>\
 					<button class="btn-stall bulkstallmodal_'+barnstallname+'" data-barnIndex="'+barnIndex+'" data-bs-toggle="modal" data-bs-target="#bulkstallmodal_'+barnstallname+'">Add Bulk '+stallcamp+'</button>\
+					<input type="hidden" value="" name="barnvalidation" id="barnvalidation">\
+					<a href="javascript:void(0);" class="btn btn-info bulkbtn_'+barnstallname+'">Upload '+uploadName+'</a>\
+					<input type="file" class="bulkfile_'+barnstallname+'" style="display:none;">\
 					<button class="btn-stall barnremovebtn_'+barnstallname+'">Remove '+BarnLots+' and '+stallcamp+'</button>\
 				</div>\
 			</div>\

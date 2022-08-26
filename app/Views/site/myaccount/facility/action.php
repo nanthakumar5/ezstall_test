@@ -151,9 +151,6 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 									<p class="fs-2 fw-bold mb-0 barntfont">Barn</p>
 								</div>
 								<div class="col-md-9 t-right p-0 respsm">
-									<input type="hidden" value="" name="barnvalidation" id="barnvalidation">
-									<a href="javascript:void(0);" class="btn btn-info bulkbtn_barn">Add Bulk Barn</a>
-									<input type="file" class="bulkfile_barn" style="display:none;">
 									<button class="btn-stall barnbtn" value="4" name="tst" id="tes">Add Barn</button>
 								</div>
 							</div>

@@ -2,13 +2,12 @@
 <?php $this->section('content') ?>
 <div class="welcome-content mb-5">
 	<h3 class="fw-bold d-flex flex-wrap">Welcome to EZStall, <p class="welcome-user"><?php echo $userdetail['name']; ?></p></h3>
-	
 	<p class="c-5">
 		<?php echo "Thank you for being an EZ stall"." ".$usertype[$userdetail['type']]?>
 	</p> 
 	<?php if($userdetail['type']=='2' || $userdetail['type']=='3' || $userdetail['type']=='4' ) { ?>
 		<div class="col-md-12 mt-4 p-4 bg-white rounded-sm">
-			<h5 class="font-w-600">Current Reservation</h5>
+			<h5 class="font-w-600">Stalls Current Reservation</h5>
 			<div class="row mt-4 first">
 				<div class="col-md-4 mb-3">
 					<div class="card">
@@ -33,7 +32,7 @@
 								/>
 							</div>
 							<div class="col-md-9"> 
-								<h2><?php echo $countcurrentavailable;?></h2>
+								<h2><?php echo $countcurrentavailablestalls;?></h2>
 								<p>Currently Available</p>
 							</div>
 						</div>
@@ -49,7 +48,58 @@
 								/>
 							</div>
 							<div class="col-md-9">
-								<h2><?php echo $countcurrentbooking;?></h2>
+								<h2><?php echo $countcurrentbookingstalls;?></h2>
+								<p>Currently booked</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-12 mt-4 p-4 bg-white rounded-sm">
+			<h5 class="font-w-600">Rv Current Reservation</h5>
+			<div class="row mt-4 first">
+				<div class="col-md-4 mb-3">
+					<div class="card">
+						<div class="row mt-4 p-3">
+							<div class="col-md-3">
+								<img src="<?php echo base_url()?>/assets/site/img/stall.png" class="rounded d-block" />
+							</div>
+							<div class="col-md-9">
+								<h2><?php echo $countcurrentrvlots;?></h2>
+								<p>Total no of. Rv Lots</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 mb-3">
+					<div class="card">
+						<div class="row mt-4 p-3">
+							<div class="col-md-3">
+								<img
+								src="<?php echo base_url()?>/assets/site/img/currently_available.png"
+								class="rounded d-block"
+								/>
+							</div>
+							<div class="col-md-9"> 
+								<h2><?php echo $countcurrentavailablervlots;?></h2>
+								<p>Currently Available</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 mb-3">
+					<div class="card">
+						<div class="row mt-4 p-3">
+							<div class="col-md-3">
+								<img
+								src="<?php echo base_url()?>/assets/site/img/currently_booked.png"
+								class="rounded d-block"
+								/>
+							</div>
+							<div class="col-md-9">
+								<h2><?php echo $countcurrentbookingrvlots;?></h2>
 								<p>Currently booked</p>
 							</div>
 						</div>
@@ -115,6 +165,19 @@
 							<div class="col-md-9">
 								<h2><?php echo $countcurrentstall;?></h2>
 								<p>Total no of. Stalls</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 mb-3">
+					<div class="card">
+						<div class="row mt-4 p-3">
+							<div class="col-md-3">
+								<img src="<?php echo base_url()?>/assets/site/img/stall.png" class="rounded d-block" />
+							</div>
+							<div class="col-md-9">
+								<h2><?php echo $countcurrentrvlots;?></h2>
+								<p>Total no of. Rv Lots</p>
 							</div>
 						</div>
 					</div>
@@ -333,8 +396,8 @@
     			foreach($checkinstall as $stalldetail){ 
     				$eventname = $stalldetail['eventname'];
     				foreach($stalldetail['barnstall'] as $stall){
-    					$btnlockunlock ='<button class="btn_dash_lock"  data-stallid="'.$stall['stall_id'].'">Lock</button>';
-    					$btndirtyclean ='<button class="btn_dash_dirty" data-stallid="'.$stall['stall_id'].'">Dirty</button>';
+    					$btnlockunlock ='<button class="btn_dash_lock lockunlock"  data-stallid="'.$stall['stall_id'].'">Lock</button>';
+    					$btndirtyclean ='<button class="btn_dash_dirty dirtyclean" data-stallid="'.$stall['stall_id'].'">Dirty</button>';
     
     					if($stall['lockunlock']=='1'){
     						$btnlockunlock = '<button class="btn_dash_lock">Unlock</button>';
@@ -354,6 +417,7 @@
     							</div>';
     						
     				}
+
     				if($stalldetail['rvbarnstall']!=""){
 	    				foreach($stalldetail['rvbarnstall'] as $rvbarnstall){
 	    					$btnlockunlock ='<button class="btn_dash_lock"  data-stallid="'.$rvbarnstall['stall_id'].'">Lock</button>';
