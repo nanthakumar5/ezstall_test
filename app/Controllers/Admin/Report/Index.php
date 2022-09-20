@@ -37,7 +37,9 @@ class Index extends BaseController
 			$sheet->setCellValue('G1', 'start_time');
 			$sheet->setCellValue('H1', 'end_time');
 			$sheet->setCellValue('I1', 'stalls_price');
+			$sheet->setCellValue('J1', 'Total Amount');
 
+      		$totalamount 			= 0;
 			$row = 2;
 			foreach($data as $data){
 				$sheet->setCellValue('A' . $row, $data['name']);
@@ -59,8 +61,12 @@ class Index extends BaseController
 						$stallname  = $stall['name'];
 						
 						$bookedstall = '';
-						foreach($stall['bookedstall'] as $keys=> $booking){ 
-							$bookedstall	.=   "\nName : ".$booking['name']."\nDate  : ".formatdate($booking['check_in'])." to ".formatdate($booking['check_out'])."\nPayment_Method : ".$booking['paymentmethod'];
+						$totalbookingamount = 0;
+						foreach($stall['bookedstall'] as $keys=> $booking){
+							$totalbookingamount +=  $booking['amount'];
+							$sheet->setCellValue('J' . $row, $totalbookingamount);
+							$totalamount += $booking['amount'];
+							$bookedstall	.=   "\nName : ".$booking['name']."\nDate  : ".formatdate($booking['check_in'])." to ".formatdate($booking['check_out'])."\nPayment_Method : ".$booking['paymentmethod']."\nAmount : ".$booking['amount'];
 						}
 						
 						$sheet->setCellValue('A'.$row, $stallname.$bookedstall);
@@ -71,6 +77,8 @@ class Index extends BaseController
 				}
 				
 				$row++;
+
+				$sheet->setCellValue('J' . $row, $totalamount);
 			}
 
 			header('Content-Type: application/vnd.ms-excel');

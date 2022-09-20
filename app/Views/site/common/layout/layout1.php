@@ -44,8 +44,14 @@
 									<?php if(getCart()){ ?>
 										<a href="<?php echo base_url().'/checkout'; ?>" class="text-decoration-none me-3"><i class="fa fa-shopping-cart text-white"></i></a>
 									<?php } ?>
-									<a class="text-decoration-none text-white" href="<?php echo base_url().'/myaccount/dashboard'; ?>" class="ml-2rem nav-link">Hi <?php echo ucfirst($userdetail['name']);?></a> 
+									<!-- <a class="text-decoration-none text-white" href="<?php //echo base_url().'/myaccount/dashboard'; ?>" class="ml-2rem nav-link">Hi <?php //echo ucfirst($userdetail['name']);?></a> 
+									<span class="text-white px-2"> /</span> -->
+
+
+									<a class="text-decoration-none text-white" href="<?php echo base_url().'/myaccount/dashboard'; ?>" class="ml-2rem nav-link">Dashboard</a> 
 									<span class="text-white px-2"> /</span>
+
+
 									<a class="text-decoration-none text-white" href="<?php echo base_url().'/logout'; ?>" class="ml-2rem nav-link">Logout</a> 
 								</div>
 							<?php }else{ ?>

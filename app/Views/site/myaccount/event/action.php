@@ -6,6 +6,9 @@ $id 					= isset($result['id']) ? $result['id'] : '';
 $name 					= isset($result['name']) ? $result['name'] : '';
 $description 		    = isset($result['description']) ? $result['description'] : '';
 $location 				= isset($result['location']) ? $result['location'] : '';
+$city 					= isset($result['city']) ? $result['city'] : '';
+$state 					= isset($result['state']) ? $result['state'] : '';
+$zipcode 				= isset($result['zipcode']) ? $result['zipcode'] : '';
 $latitude 				= isset($result['latitude']) ? $result['latitude'] : '';
 $longitude 				= isset($result['longitude']) ? $result['longitude'] : '';
 $mobile 				= isset($result['mobile']) ? $result['mobile'] : '';
@@ -60,10 +63,28 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 						</div>
 						<div class="col-md-6 my-2">
 							<div class="form-group">
-								<label>Location</label>								
+								<label>Street</label>								
 								<input type="text" name="location" class="form-control" id="location" placeholder="Enter Location" value="<?php echo $location; ?>">
+							</div>
+						</div>
+						<div class="col-md-6">
+	                    	<div class="form-group">
+		                        <label>City</label>                        
+		                        <input type="text" name="city" class="form-control" id="city" placeholder="Enter City" value="<?php echo $city; ?>">
 								<input type="hidden" name="latitude" id="latitude" value="<?php echo $latitude; ?>">
 								<input type="hidden" name="longitude" id="longitude" value="<?php echo $longitude; ?>">
+		                    </div>
+	                    </div>
+		                <div class="col-md-6">
+		                    <div class="form-group">
+		                        <label>State</label>                      
+		                        <input type="text" name="state" class="form-control" id="state" placeholder="Enter State" value="<?php echo $state; ?>">
+		                    </div>
+		                </div>
+						<div class="col-md-6">
+							<div class="form-group">
+							    <label>Zip Code</label>                      
+							    <input type="text" name="zipcode" class="form-control" id="zipcode" placeholder="Enter Zip Code" value="<?php echo $zipcode; ?>">
 							</div>
 						</div>
 						<div class="col-md-6 my-2">
@@ -213,6 +234,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 									<p class="fs-2 fw-bold mb-0 barntfont">Barn</p>
 								</div>
 								<div class="col-md-9 t-right p-0 respsm">
+									<input type="hidden" value="" name="barnvalidation" id="barnvalidation">
 									<button class="btn-stall barnbtn" value="4" name="tst" id="tes">Add Barn</button>
 								</div>
 							</div>
@@ -226,8 +248,9 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 								<div class="col-md-3">
 									<h4 class="fw-bold mb-0 barntfontfeed">Feed</h4>
 								</div>
-								<div class="col-md-9 t-right p-0 respsm">
-								<button class="btn-stall feedbtn">Add feed</button>
+								<div class="col-md-9 t-right p-0 respsm">									
+									<input type="hidden" value="" name="feedvalidation" id="feedvalidation">
+									<button class="btn-stall feedbtn">Add feed</button>
 								</div>
 							</div>
 
@@ -243,7 +266,8 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 								<div class="col-md-3">
 									<h4 class="fw-bold mb-0 barntfontshavings">Shavings</h4>
 								</div>
-								<div class="col-md-9 t-right p-0 respsm">
+								<div class="col-md-9 t-right p-0 respsm">									
+									<input type="hidden" value="" name="shavingsvalidation" id="shavingsvalidation">
 									<button class="btn-stall shavingsbtn">Add Shavings</button>
 								</div>
 							</div>
@@ -261,8 +285,6 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 								</div>
 								<div class="col-md-9 t-right p-0 respsm">
 									<input type="hidden" value="" name="rvhookupsvalidation" id="rvhookupsvalidation">
-									<a href="javascript:void(0);" class="btn btn-info bulkbtn_rvhookups">Add Bulk RV Hookups</a>
-									<input type="file" class="bulkfile_rvhookups" style="display:none;">
 									<button class="btn-stall rvhookupsbtn">Add RV Hookups</button>
 								</div>
 							</div>
@@ -340,7 +362,16 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 				},
 				location 	 : {
 					required	: 	true
-				},					
+				},
+				city 	 : {
+					required	: 	true
+				},
+				state 	 : {
+					required	: 	true
+				},
+				zipcode 	 : {
+					required	: 	true
+				},				
 				mobile       : {
 					required	: 	true
 				},
@@ -359,9 +390,21 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 				status        : {  
 					required	: 	true
 				},
-				barnvalidation : {
+				cleaning_fee  : {  
+					required	: 	true
+				},
+				barnvalidation : { 
 					required 	: true
-				}
+				},
+				rvhookupsvalidation : { 
+					required 	: true
+				}/*,
+				feedvalidation : { 
+					required 	: true
+				},
+				shavingsvalidation : { 
+					required 	: true
+				}*/
 			},
 			{},
 			{
@@ -451,8 +494,8 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 		};
 	}
 
-	document.getElementById("location").addEventListener('keyup', debounce( () => {
-		getCoordinates(document.getElementById("location").value);
+	document.getElementById("city").addEventListener('keyup', debounce( () => {
+		getCoordinates(document.getElementById("city").value);
 	}, 1000))
 	
 	function getCoordinates(address){

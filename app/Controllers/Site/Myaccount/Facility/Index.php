@@ -151,9 +151,10 @@ class Index extends BaseController
 
 		$sheet->setCellValue('A1', 'Event Name');
 		$sheet->setCellValue('B1', 'Description');
+		$sheet->setCellValue('C1', 'Amount');
 
         $row = 2;
-
+		$totalamount 			= 0;
 			$sheet->setCellValue('A' . $row, $data['name']);
 			$sheet->setCellValue('B' . $row, strip_tags($data['description']));
 			
@@ -163,10 +164,14 @@ class Index extends BaseController
 				
 				foreach($barn['stall'] as $key=> $stall){  
 					$stallname  = $stall['name'];
-					
+
+					$totalbookingamount = 0;
 					$bookedstall = '';
 					foreach($stall['bookedstall'] as $keys=> $booking){
-						$bookedstall	.=   "\nName : ".$booking['name']."\nDate  : ".formatdate($booking['check_in'])." to ".formatdate($booking['check_out']);
+						$totalbookingamount +=  $booking['amount'];
+						$sheet->setCellValue('C' . $row, $totalbookingamount);
+						$totalamount += $booking['amount'];
+						$bookedstall	.=   "\nName : ".$booking['name']."\nDate  : ".formatdate($booking['check_in'])." to ".formatdate($booking['check_out'])."\nPayment Method : ".$booking['paymentmethod']."\nAmount : ".$booking['amount'];
 					}
 					
 					$sheet->setCellValue('A'.$row, $stallname.$bookedstall);
@@ -177,6 +182,7 @@ class Index extends BaseController
 			}
 			
 			$row++;
+			$sheet->setCellValue('C' . $row, $totalamount);
 
 
 		header('Content-Type: application/vnd.ms-excel');

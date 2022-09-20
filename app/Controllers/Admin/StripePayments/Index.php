@@ -58,8 +58,12 @@ class Index extends BaseController
 			$amount 			= $requestdata['amount'];
 			$userdetail 		= getUserDetails($userid);
 			$stripeaccountId 	= $userdetail['stripe_account_id'];
-			
-            $transfer = $this->stripe->createTransfer($stripeaccountId, $amount);
+			if($stripeaccountId!=''){        	
+				$transfer = $this->stripe->createTransfer($stripeaccountId, $amount);
+			}else{
+				$this->session->setFlashdata('danger', 'Please Connect your Email ID to Stripe account.');
+				return redirect()->to(getAdminUrl().'/stripepayments/action'); 
+			}
             
 			if($transfer){
 				$requestdata['userid'] = getAdminUserID();
@@ -70,7 +74,7 @@ class Index extends BaseController
 				$this->session->setFlashdata('success', 'Paid successfully.');
 				return redirect()->to(getAdminUrl().'/stripepayments'); 
 			}else{
-				$this->session->setFlashdata('danger', 'Try Later.');
+				$this->session->setFlashdata('danger', 'Please Connect Connected Stripe Account ID. Your are Connect Stripe Account ID.');
 				return redirect()->to(getAdminUrl().'/stripepayments'); 
 			}
         }

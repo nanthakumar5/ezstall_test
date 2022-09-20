@@ -173,6 +173,7 @@ class Index extends BaseController
 		$sheet->setCellValue('H1', 'end_time');
 		$sheet->setCellValue('I1', 'stalls_price');
 		$sheet->setCellValue('J1', 'rvspots_price');
+		$sheet->setCellValue('K1', 'Total Amount');
 
      	$row = 2;
 		$sheet->setCellValue('A' . $row, $data['name']);
@@ -185,16 +186,21 @@ class Index extends BaseController
 		$sheet->setCellValue('H' . $row, formattime($data['end_time']));
 		$sheet->setCellValue('I' . $row, $data['stalls_price']);
 		
+		$totalamount 			= 0;
 		foreach ($data['barn'] as $key => $barn) { 
 			$sheet->setCellValue('A'.$row, $barn['name']);
 			$row++;
 			
 			foreach($barn['stall'] as $key=> $stall){  
 				$stallname  = $stall['name'];
-				
+
+				$totalbookingamount = 0;
 				$bookedstall = '';
 				foreach($stall['bookedstall'] as $keys=> $booking){
-					$bookedstall	.=   "\nName : ".$booking['name']."\nDate  : ".formatdate($booking['check_in'])." to ".formatdate($booking['check_out'])."\nPayment Method : ".$booking['paymentmethod'];
+					$totalbookingamount +=  $booking['amount'];
+					$sheet->setCellValue('K' . $row, $totalbookingamount);
+					$totalamount += $booking['amount'];
+					$bookedstall	.=   "\nName : ".$booking['name']."\nDate  : ".formatdate($booking['check_in'])." to ".formatdate($booking['check_out'])."\nPayment Method : ".$booking['paymentmethod']."\nAmount : ".$booking['amount'];
 				}
 				
 				$sheet->setCellValue('A'.$row, $stallname.$bookedstall);
@@ -205,7 +211,8 @@ class Index extends BaseController
 		}
 		
 		$row++;
-
+		$sheet->setCellValue('K' . $row, $totalamount);
+		
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment;filename="'.$data['name'].'.xlsx"');
 		header('Cache-Control: max-age=0');
@@ -255,3 +262,5 @@ class Index extends BaseController
 		$mpdf->Output('Eventreport.pdf','D');
     }
 }
+
+

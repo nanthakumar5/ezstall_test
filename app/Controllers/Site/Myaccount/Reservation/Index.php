@@ -33,7 +33,7 @@ class Index extends BaseController
 		$date	= date('Y-m-d');
 
     	$userdetail 	= getSiteUserDetails();
-		$userid 		= ($userdetail['type']=='6') ? $userdetail['parent_id'] : getSiteUserID();
+		$userid 		= ($userdetail['type']=='4' || $userdetail['type']=='6') ? $userdetail['parent_id'] : getSiteUserID();
 		$allids 		= getStallManagerIDS($userid);
 		array_push($allids, $userid);
 
@@ -77,11 +77,19 @@ class Index extends BaseController
 		$result = array();
 
 		if (isset($requestData['search'])) {
-			$result = $this->booking->getBooking('all', ['booking'], ['page' => 'reservations', 'search' => ['value' => $requestData['search']]]);
+			$result = $this->booking->getBooking('all', ['booking', 'bookingdetails', 'stall'], ['page' => 'reservations', 'search' => ['value' => $requestData['search']], 'lockunlock' => '0', 'dirtyclean' => '0']);
 		}
 
 		$response['data'] = $result;
 
 		return $this->response->setJSON($result);
+	}
+
+	public function paidunpaid()
+	{
+		if($this->request->getMethod()=='post'){ 
+			$id = $this->booking->paiddata($this->request->getPost());
+			return redirect()->to(base_url().'/myaccount/bookings/view/'.$id); 
+		}
 	}
 }

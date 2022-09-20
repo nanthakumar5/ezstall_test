@@ -130,7 +130,7 @@ class Event extends BaseModel
 										$bookedstalls = 	$this->db->table('booking_details bd')
 																->join('booking bk', 'bd.booking_id = bk.id', 'left')
 																->join('payment_method pm','bk.paymentmethod_id = pm.id' )
-																->select('concat(bk.firstname, " ", bk.lastname) name, bk.check_in, bk.check_out, bk.status, (pm.name) paymentmethod')
+																->select('concat(bk.firstname, " ", bk.lastname) name, bk.check_in, bk.check_out, bk.status, (pm.name) paymentmethod, bk.amount amount')
 																->where(['bd.stall_id' => $stalldata['id'], 'bd.barn_id' => $barndata['id'], 'bk.event_id' => $eventdata['id']])
 																->get()
 																->getResultArray();
@@ -161,7 +161,7 @@ class Event extends BaseModel
 										$bookedstalls = 	$this->db->table('booking_details bd')
 															->join('booking bk', 'bd.booking_id = bk.id', 'left')
 															->join('payment_method pm','bk.paymentmethod_id = pm.id' )
-															->select('concat(bk.firstname, " ", bk.lastname) name, bk.status, bk.check_in, bk.check_out, (pm.name) paymentmethod')
+															->select('concat(bk.firstname, " ", bk.lastname) name, bk.status, bk.check_in, bk.check_out, (pm.name) paymentmethod, bk.amount amount')
 															->where(['bd.stall_id' => $stalldata['id'], 'bd.barn_id' => $barndata['id'], 'bk.event_id' => $result['id']])
 															->get()
 															->getResultArray();
@@ -213,7 +213,10 @@ class Event extends BaseModel
 		$request['status'] 	= '1';
 		if(isset($data['name']) && $data['name']!='')      		        		$request['name'] 				= $data['name'];
 		if(isset($data['description']) && $data['description']!='')     		$request['description']    	 	= $data['description'];
-		if(isset($data['location']) && $data['location']!='')           		$request['location'] 			= $data['location'];
+		if(isset($data['location']) && $data['location']!='')           				$request['location'] 			= $data['location'];
+		if(isset($data['city']) && $data['city']!='')           				$request['city'] 			= $data['city'];
+		if(isset($data['state']) && $data['state']!='')           				$request['state'] 			= $data['state'];
+		if(isset($data['zipcode']) && $data['zipcode']!='')           			$request['zipcode'] 			= $data['zipcode'];
 		if(isset($data['latitude']) && $data['latitude']!='')           		$request['latitude'] 			= $data['latitude'];
 		if(isset($data['longitude']) && $data['longitude']!='')           		$request['longitude'] 			= $data['longitude'];
 		if(isset($data['mobile']) && $data['mobile']!='')      	        		$request['mobile'] 				= $data['mobile'];
@@ -233,8 +236,10 @@ class Event extends BaseModel
 		if(isset($data['type']) && $data['type']!='')    		 				$request['type'] 				= $data['type'];
 		
 		if(isset($data['image']) && $data['image']!=''){
- 			$request['image'] = $data['image'];		
-			filemove($data['image'], './assets/uploads/event');		
+ 			$request['image'] = $data['image'];	
+ 			if(filemove($data['image'], './assets/uploads/temp')== $data['image']){	
+				filemove($data['image'], './assets/uploads/event');	
+			}	
 		}
 		
 		if(isset($data['eventflyer']) && $data['eventflyer']!=''){

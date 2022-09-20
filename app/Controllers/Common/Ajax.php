@@ -15,11 +15,23 @@ class Ajax extends BaseController
 	
 	public function fileupload()
 	{
-		$file = $this->request->getFile('file');
-		$name = $file->getRandomName();
+
+		$file 	= $this->request->getFile('file');
+		$name 	= $file->getRandomName();
+
 		$file->move($this->request->getPost('path'), $name);
-		
+
 		$this->db->table('fileupload')->insert(['name' => $name, 'date' => date('Y-m-d')]);
+
+		$imageresize = array(['120','90'],['400','350']);
+		if($this->request->getPost('resize')!=''){
+			foreach($imageresize as $imageresize){ 
+				\Config\Services::image()->withFile('assets/uploads/temp/' . $name)
+	                        ->resize($imageresize[0],$imageresize[1])
+	         				->save('assets/uploads/event' . '/' . $imageresize[0].'x'.$imageresize[1].'_'.$name);
+			}
+		}
+
 		echo json_encode(['success' => $name]);
 	}
 	
@@ -29,8 +41,7 @@ class Ajax extends BaseController
 		$checkin = formatdate($this->request->getPost('checkin'));
 		$checkout = formatdate($this->request->getPost('checkout'));
 		$result = getOccupied($eventid, ['checkin' => $checkin, 'checkout' => $checkout]);
-		
-		echo json_encode(['success' => $result]); 
+		echo json_encode(['success' => $result, 'totalstallcount' => count($result)]); 
 	}
 	
 	public function ajaxreserved()
@@ -59,7 +70,7 @@ class Ajax extends BaseController
 	}
 	
 	public function ajaxstripepayment()
-	{
+	{ 
 		$requestData = $this->request->getPost();		
 		$stripeModel = new \App\Models\Stripe();
 		

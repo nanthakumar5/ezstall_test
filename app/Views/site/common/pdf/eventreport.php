@@ -65,12 +65,23 @@ table tr td {
 											$rvlots = (array_column($data['rvbarnstall'], 'stallname')) ?  implode(', ', array_column($data['rvbarnstall'], 'stallname')) : 'No RV lots available.'; 
 												echo $rvlots; ?></td>
 
-										<td><?php 
-											$feed = (array_column($data['feed'], 'productname')) ?  implode(', ', array_column($data['feed'], 'productname')) : 'No Feed inventory available.'; 
-												echo $feed; ?>
+										<td><?php if(!empty($data['feed'])){
+        										foreach($data['feed'] as $feed){
+        										    $quantity = $feed['quantity'];
+        										}
+    											$feed = (array_column($data['feed'], 'productname')) ?  implode(', ', array_column($data['feed'], 'productname')) : 'No Feed inventory available.'; 
+    												echo $feed.'('. $quantity .')';
+												} else{
+												    echo 'No Feed inventory available.';
+												}?>
 										</td>
-										<td><?php $shavings = (array_column($data['shaving'], 'productname')) ?  implode(', ', array_column($data['shaving'], 'productname')) : 'No Shavings inventory available.'; 
-												echo $shavings; ?></td>
+										<td><?php if(!empty($data['shaving'])){
+        										foreach($data['shaving'] as $shaving){
+        										    $quantity = $shaving['quantity'];
+        										}
+        										$shavings = (array_column($data['shaving'], 'productname')) ?  implode(', ', array_column($data['shaving'], 'productname')) : 'No Shavings inventory available.'; 
+    												echo $shavings.'('. $quantity .')';
+    										}else{ echo 'No Shavings inventory available.';}?></td>
 										<td><?php echo $data['mobile'];?></td>		
 									</tr>
 								<?php } ?>

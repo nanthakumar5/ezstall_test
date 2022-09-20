@@ -383,12 +383,12 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 		
 		var activeclass = $.trim($(barn_append).html())=='' ? 'active' : '';
 		if(barnstallname=='rvhookups'){
-			var barnName 	= result['name'] ? result['name'] : 'Campsites';
+			var barnName 	= result['name'] ? result['name'] : '';
 			var uploadName  = 'Campsites';
 			var stallcamp 	= 'Rv Lots';
 			var BarnLots    = 'Campsites';
 		}else if(barnstallname=='barn'){
-			var barnName 	= result['name'] ? result['name'] : 'Barn';
+			var barnName 	= result['name'] ? result['name'] : '';
 			var uploadName  = 'Barn';
 			var stallcamp 	= 'Stall';
 			var BarnLots    = 'Barn';
@@ -396,9 +396,8 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 
 		var barntab='\
 			<li class="nav-item text-center mb-3">\
-				<a class="nav-link tab-link '+activeclass+'" data-bs-toggle="pill" data-bs-target="#tabtarget_'+barnstallname+'_'+barnIndex+'">\
-					<span class="barnametext">'+barnName+'</span>\
-					<input type="text" id="barn_'+barnstallname+'_'+barnIndex+'_name" name="'+barnstallname+'['+barnIndex+'][name]" class="form-control barnnametextbox" placeholder="Enter Barn Name" value="'+barnName+'" style="display:none;">\
+				<a class="nav-link tab-link " data-bs-toggle="pill" data-bs-target="#tabtarget_'+barnstallname+'_'+barnIndex+'">\
+					<input type="text" id="barn_'+barnstallname+'_'+barnIndex+'_name" name="'+barnstallname+'['+barnIndex+'][name]" class="form-control " placeholder="Enter Barn Name" value="'+barnName+'"">\
 				</a>\
 				<input type="hidden" name="'+barnstallname+'['+barnIndex+'][id]" value="'+barnId+'">\
 			</li>\
@@ -771,13 +770,13 @@ function products(productsname, productsitem=[], productsresult=[]){
 		var data='\
 		<div class="row mb-2 dash-stall-base">\
 			<div class="col-md-6 mb-4">\
-				<input type="text" id="product_'+productsname+'_'+productIndex+'_name" name="'+productsname+'['+productIndex+'][name]" class="form-control fs-7" placeholder="Name" value="'+productName+'">\
+				<input type="text" id="product_'+productsname+'_'+productIndex+'_name" required name="'+productsname+'['+productIndex+'][name]" class="form-control fs-7" placeholder="Name" value="'+productName+'">\
 			</div>\
 			<div class="col-md-2 mb-4">\
-				<input type="text" id="product_'+productsname+'_'+productIndex+'_quantity" name="'+productsname+'['+productIndex+'][quantity]" class="form-control fs-7" placeholder="Quantity" value="'+productQuantity+'">\
+				<input type="text" id="product_'+productsname+'_'+productIndex+'_quantity" required name="'+productsname+'['+productIndex+'][quantity]" class="form-control fs-7" placeholder="Quantity" value="'+productQuantity+'">\
 			</div>\
 			<div class="col-md-2 mb-4">\
-				<input type="text" id="product_'+productsname+'_'+productIndex+'_price" name="'+productsname+'['+productIndex+'][price]" class="form-control fs-7" placeholder="Price" value="'+productPrice+'">\
+				<input type="text" id="product_'+productsname+'_'+productIndex+'_price" required name="'+productsname+'['+productIndex+'][price]" class="form-control fs-7" placeholder="Price" value="'+productPrice+'">\
 			</div>\
 			<div class="col-md-1 mb-4 delete">\
 				<a href="javascript:void(0);" class="dash-stall-remove fs-7 productremovebtn_'+productsname+'"><i class="fas fa-times text-white"></i></a>\

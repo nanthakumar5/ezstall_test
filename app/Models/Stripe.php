@@ -38,14 +38,14 @@ class Stripe extends BaseModel
 	}
 
 	function stripepayment($requestData)
-	{
+	{	
 		$userdetails			= getSiteUserDetails();
 		
 		$userid 				= $userdetails['id'];
 		$name 					= $userdetails['name'];
 		$email 					= $userdetails['email'];
 		$stripecustomerid 		= $userdetails['stripe_customer_id'];
-		$price 					= $requestData['price'] * 100;
+		$price 					= isset($requestData['amount']) ? $requestData['amount'] * 100 : $requestData['price'] * 100;
         $currency 				= "inr";
 		
 		if($stripecustomerid==''){
@@ -330,7 +330,8 @@ class Stripe extends BaseModel
 
 		if($stripe_account_id == ''){
 			$connectedaccount = $this->createConnectedAccounts($stripeemailId);
-			return $accountid = $connectedaccount['id'];			
+			return $accountid = isset($connectedaccount['id']) ? $connectedaccount['id'] : 0;
+			//return $accountid = $connectedaccount['id'];			
 		}else{
 			$retrieveaccount = $this->retriveAccount($accountid);
 			
@@ -356,7 +357,9 @@ class Stripe extends BaseModel
 			return $data;	
 		}catch(Exception $e){
 			return false;
-		}
+		}catch (\Stripe\Exception\InvalidRequestException $e) {
+		    return false;
+        }
 
 	}
 
@@ -393,6 +396,8 @@ class Stripe extends BaseModel
 
         }catch(Exception $e){
             return false;
+        }catch (\Stripe\Exception\InvalidRequestException $e) {
+		    return false;
         }
     }
 }

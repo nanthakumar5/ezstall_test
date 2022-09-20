@@ -2,7 +2,7 @@
 <?php $this->section('content') ?>
 <div class="dFlexComBetween eventTP flex-wrap">
 	<h2 class="fw-bold mb-4">Current Reservation</h2>
-	<?php if(!empty($bookings)) {  ?>
+	<?php if(!empty($bookings)) { ?>
 		<div class="flex-row-reverse bd-highlight"> 
 			<input type="text" placeholder="Search By Name" class="searchEvent bookedby" id="bookedby" value="" />
 			<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="searchIcon searchiconreserve" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -15,7 +15,7 @@
 	<div class="d-none button" onmousedown="party.confetti(this)">Click me!</div>
 	<?php if(!empty($bookings)) {  ?>
 	<?php foreach ($bookings as $data) { ?>
-		<div class="event__ticket m-5 p-3">
+		<div class="event__ticket mt-5 mb-5 p-3">
 			<div class="row position-relative">
 				<div class="row col-md-12 ticket_row mt-3">
 					<div class="ticket_content res_mx_3 col-md-2 mx-3">
@@ -54,6 +54,10 @@
 						<p class="ticket_title_tag">Cost</p>
 						<p class="ticket_values ticket_checkinout"><?php echo $currencysymbol.$data['amount'];?></p>
 					</div>
+					<div class="ticket_content col-md-2 mx-2">
+						<p class="ticket_title_tag">Special Request</p>
+						<p class="ticket_values ticket_checkinout"><?php if(!empty($data['special_notice'])){ echo$data['special_notice']; } else{ echo "No Special Request";}?></p>
+					</div>
 					<div class="ticket_content col-md-2 mx-2 d-flex align-items-end">
 						<?php $statuscolor = ($data['status']=='2') ? "cancelcolor" : "activecolor"; ?>
 							<p class="my-2 ticket_values ticket_status <?php echo  $statuscolor;?>" ><?php echo $bookingstatus[$data['status']];?></p>
@@ -85,7 +89,7 @@
 							}
 						} ?>
 					<?php } ?>
-						<div class="d-flex col-md-10 flex-wrap">
+						<div class="d-flex flex-wrap">
 							<div class="mx-3">
 								<p class="ticket_values"><?php echo $stalls['barnname'];?></p>
 								<span class="d-flex flex-wrap">
@@ -100,7 +104,7 @@
 						<?php } ?>
 						</div>
 						<div class="flex-wrap d-flex align-items-center">
-							<?php if(!empty($data['rvbarnstall'])){?>
+						<?php if(!empty($data['rvbarnstall'])){?>
 							<div class="col-md-2 px-3">
 								<p class="ticket_event_tag">RV HOOKUP</p>
 							</div>
@@ -116,7 +120,7 @@
 										$btndirtyclean = '<i class="fas fa-broom event_broom"></i>'; 
 									}
 								} ?>
-								<div class="d-flex col-md-10 flex-wrap">
+								<div class="d-flex flex-wrap">
 									<div class="mx-3">
 										<p class="ticket_values"><?php echo $rvstall['barnname'];?></p>
 										<span class="d-flex flex-wrap">
@@ -130,7 +134,6 @@
 								</div>
 							<?php } } ?>
 						</div>
-
 						<div class="flex-wrap d-flex align-items-center">
 							<?php if(!empty($data['feed'])){?>
 							<div class="col-md-2 px-3">
@@ -139,7 +142,8 @@
 							<?php foreach ($data['feed'] as $feed) { ?>
 							<div class="d-flex align-items-center mx-3">
 								<span class="d-flex flex-wrap">
-									<p class="ticket_sub_values e_mr_1"><?php echo $feed['productname'];?></p>
+									<p class="ticket_sub_values e_mr_1"><?php echo $feed['productname'];?>
+								<?php echo '('.$feed['quantity'].')'.$currencysymbol.$feed['total']?></p>
 								</span>
 							</div>
 							<?php } } ?>
@@ -150,9 +154,9 @@
 								<p class="ticket_event_tag">SHAVINGS</p>
 							</div>
 							<?php foreach ($data['shaving'] as $shaving) { ?>
-							<div class="d-flex col-md-10 flex-wrap">
+							<div class="d-flex flex-wrap">
 								<div class="d-flex align-items-center mx-3">
-									<p class="ticket_sub_values e_mr_1"><?php echo $shaving['productname'];?></p>
+									<p class="ticket_sub_values e_mr_1"><?php echo $shaving['productname'];?>  <?php echo '('.$shaving['quantity'].')'.$currencysymbol.$shaving['total']?></p>
 								</div>
 							</div>
 							<?php } } ?>
@@ -160,13 +164,15 @@
 					</div>
 				</div>
 				<div class="text-center event_border">
-					<a href="<?php echo base_url().'/myaccount/bookings/view/'.$data['id']; ?>" class="mt-0 mx-3 view-res">View</a>
-					<?php if($data['status']=='1'){ ?>
-						<?php $amount = $data['amount']-($data['amount'] * 10/100); ?>
-							<a href="javascript:void(0);" style='align: right;' data-id='<?php echo $data['id']; ?>' data-paymentid='<?php echo $data['paymentid']; ?>' data-paymentintentid='<?php echo $data['stripe_paymentintent_id']; ?>' data-amount='<?php echo $amount; ?>' class="striperefunds">
-								<button class="mt-0 mx-3 striperefunds btn btn-danger">Cancel</button>
-							</a>
-					<?php } ?>
+					<?php if($userdetail['type']!='6'){ ?> 
+						<a href="<?php echo base_url().'/myaccount/bookings/view/'.$data['id']; ?>" class="mt-0 mx-3 view-res">View</a>
+						<?php if($data['status']=='1'){ ?>
+							<?php $amount = $data['amount']-($data['amount'] * 10/100); ?>
+								<a href="javascript:void(0);" style='align: right;' data-id='<?php echo $data['id']; ?>' data-paymentid='<?php echo $data['paymentid']; ?>' data-paymentintentid='<?php echo $data['stripe_paymentintent_id']; ?>' data-amount='<?php echo $amount; ?>' class="striperefunds bookingcancel">
+									Cancel
+								</a>
+						<?php }
+					 } ?>
 					<i id="ticket_toggle_up" class="fas fa-angle-up ticket__up"></i>
 					<i id="ticket_toggle_down" class="fas fa-angle-down ticket__down"></i>
 				</div>
@@ -243,15 +249,15 @@
 	});	
 
 	$(document).ready(function(){
-		$("#ticket_toggle_up").click(function(){
-			$(".top_event_border").slideUp();
-			$("#ticket_toggle_up").css("display", "none");
-			$("#ticket_toggle_down").css("display", "block");
+		$(".ticket__up").click(function(){
+			$(this).parent().siblings(".top_event_border").slideUp();
+			$(this).css("display", "none");
+			$(this).next(".ticket__down").css("display", "block");
 		});
-		$("#ticket_toggle_down").click(function(){
-			$(".top_event_border").slideDown();
-			$("#ticket_toggle_up").css("display", "block");
-			$("#ticket_toggle_down").css("display", "none");
+		$(".ticket__down").click(function(){
+			$(this).parent().siblings(".top_event_border").slideDown();  
+			$(this).prev(".ticket__up").css("display", "block");
+			$(this).css("display", "none");
 		});
 	});
 

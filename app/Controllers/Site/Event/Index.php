@@ -7,6 +7,8 @@ use App\Models\Event;
 use App\Models\Users;
 use App\Models\Comments;
 use App\Models\Booking;
+use App\Models\Cart;
+use App\Models\Bookingdetails;
 
 
 class Index extends BaseController
@@ -17,6 +19,8 @@ class Index extends BaseController
 		$this->users 	= new Users();
 		$this->comments = new Comments();
 		$this->booking 	= new Booking();	
+		$this->cart 	= new Cart();	
+		$this->bookingdetails 	= new Bookingdetails();	
 	}
     
     public function lists()
@@ -81,7 +85,6 @@ class Index extends BaseController
 		$data['checkevent'] 		= checkEvent($event);
 		$data['detail']  			= $event;
 		$data['bookings']  			= $bookings;
-		$data['comments']  			= $comments;
 		$data['settings']  			= getSettings();
 		$data['currencysymbol']  	= $this->config->currencysymbol;
 		$data['usertype']			= $usertype;
@@ -98,6 +101,15 @@ class Index extends BaseController
         exit();
 	}
 
+	public function downloadstallmap($filename)
+	{ 
+		$filepath   = base_url().'/assets/uploads/stallmap/'.$filename;		
+		header("Content-Type: application/octet-stream"); 
+        header("Content-Disposition: attachment; filename=\"". basename($filepath) ."\"");
+        readfile ($filepath);
+        exit();
+	}
+
 	public function latlong()
 	{
 		$data 	= $this->request->getPost(); 
@@ -106,6 +118,60 @@ class Index extends BaseController
 		$radius = 50; 
 		$latlongs 	= $this->event->getEvent('all', ['event', 'latlong'], ['radius' => $radius, 'latitude' => $lat, 'longitude' => $long, 'status'=> ['1'], 'type' => '1'], ['orderby' =>'e.id desc', 'groupby' => 'e.id']);
 		
-		echo json_encode($latlongs);
+		$bookingbtn = [];
+		foreach ($latlongs as $key =>  $latlong) {
+			$bookingbtn[] = checkEvent($latlong);
+		}
+		
+		echo json_encode(['latlongs' => $latlongs, 'bookingbtn' => $bookingbtn]);
+	}
+
+	public function updatereservation($id='')
+	{  
+		$userdetail 		= getSiteUserDetails() ? getSiteUserDetails() : [];
+		$userid 			= (isset($userdetail['id'])) ? $userdetail['id'] : 0;
+		$usertype 			= (isset($userdetail['type'])) ? $userdetail['type'] : 0;
+		$uri 				= current_url(true);
+		$bookingid 			= $uri->getSegment(5);
+
+		if ($this->request->getMethod()=='post'){ 
+			$requestData 	= $this->request->getPost();
+			$datauncheckedstallid = $requestData['uncheckedstallid'];
+			$updatedbookingstall = $requestData['updatedbookingstall'];
+
+			foreach($requestData['uncheckedstallid'] as $akey => $bkids){
+				foreach($requestData['updatedbookingstall'] as $bkey => $ubstallid){
+					
+					if($akey==$bkey){
+						$bk = $this->bookingdetails->getBookingdetails('row', ['bookingdetails'],['booking_id' => $requestData['bookingid'],'id' => $bkids['bkid']]);
+						$result = $this->bookingdetails->action($bk);
+
+						
+						$this->bookingdetails->updatedbkstall(['bdid' => $bkids['bkid'], 'updastallid' => $ubstallid['stallid']]);
+						}
+				}
+			}
+
+			if($result){
+				$this->session->setFlashdata('success', 'Your Stall is Updated Successfully');
+				return redirect()->to(base_url().'/myaccount/bookings'); 
+        	}
+
+		}
+
+		$event 		= $this->event->getEvent('row', ['event', 'barn', 'stall', 'rvbarn', 'rvstall', 'feed', 'shaving'],['id' => $id, 'type' =>'1']);
+
+		$bookings 	= $this->booking->getBooking('row', ['booking', 'event', 'users','barnstall', 'rvbarnstall', 'feed', 'shaving','payment','paymentmethod'],['user_id' => $userid, 'id' => $bookingid,'status'=> ['1']]);
+
+
+
+		$data['checkevent'] 		= checkEvent($event);
+		$data['detail']  			= $event;
+		$data['bookings']  			= $bookings;
+		$data['settings']  			= getSettings();
+		$data['currencysymbol']  	= $this->config->currencysymbol;
+		$data['usertype']			= $usertype;
+		
+		return view('site/events/updatereservation',$data);
 	}
 }

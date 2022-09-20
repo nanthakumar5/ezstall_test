@@ -35,7 +35,7 @@
 							<div class="EventFlex leftdata">
 								<span class="wi-30">
 									<span class="ucimg">
-										<img src="<?php echo base_url() ?>/assets/uploads/event/<?php echo $data['image']?>">
+										<img src="<?php echo base_url() ?>/assets/uploads/event/<?php echo '120X90_'.$data['image']?>">
 									</span>
 								</span>
 								<span class="wi-70"> 
@@ -73,7 +73,6 @@
 <?php $this->section('js') ?>
 <script>
 var baseurl 	= "<?php echo base_url(); ?>";
-var booknowBtn	= "<?php echo $recbooknowBtn; ?>";
 $(function() {
     $("#searchevent").autocomplete({
         source: function(request, response) {
@@ -123,38 +122,54 @@ $(document).ready(function(){
 			{
 				asynchronous : 1,
 				success : function(data){
-					$(data).each(function(i,v){ 
-						var result = '\
-					                  	<div class="ucEventInfo">\
-					                     	<div class="EventFlex">\
-						                        <span class="wi-50 m-0">\
-						                           <div class="EventFlex leftdata">\
-						                              <span class="wi-30">\
-						                                 <span class="ucimg">\
-						                                    <img src="'+ baseurl +'/assets/uploads/event/'+v['image']+'">\
-						                                 </span>\
-						                              </span>\
-						                              <span class="wi-70">\
-						                                 <p class="topdate">'+v['start_date']+' - '+v['end_date']+' - '+v['location']+'</p>\
-						                                 <a class="text-decoration-none" href="'+baseurl+'/events/detail/'+v['id']+'"><h5>'+v['name']+'<h5></a></h5>\
-						                              </span>\
-						                           </div>\
-						                        </span>\
-						                        <div class="wi-50-2 justify-content-between">\
-						                           <span class="m-left upevent">\
-						                              <p><img class="eventFirstIcon" src="'+baseurl+'/assets/site/img/horseShoe.svg">Stalls</p>\
-						                              <h6 class="ucprice"> from $'+v['stalls_price']+'/ night</h6>\
-						                           </span>\
-								                    <a class="text-decoration-none text-white" id="booknow_link" href="'+baseurl+'/events/detail/'+v['id']+'"><button class="ucEventBtn">\
-														'+booknowBtn+'\
-														</button></a>\
-						                        </div>\
-					                        </div>\
-					                   </div>\
-	               					';
-	               					$('.recommendedevent').append(result);
+					var bookingbtn  = data.bookingbtn;
+					var latlongdata = data.latlongs;
+					var buttonNames = bookingbtn.map(function(item){  return item.btn;});
+					
+					var finalArray = [];
 
-					});				
+					latlongdata.forEach((i, index)=>{
+					  finalArray.push([i,buttonNames[index]])
+					})
+
+					for (j=0; j<finalArray.length; j++){
+						$(finalArray[j][0]).each(function(i,v){
+							var booknowBtn = finalArray[j][1];
+							var result = '\
+						                  	<div class="ucEventInfo">\
+						                     	<div class="EventFlex">\
+							                        <span class="wi-50 m-0">\
+							                           <div class="EventFlex leftdata">\
+							                              <span class="wi-30">\
+							                                 <span class="ucimg">\
+							                                    <img src="'+ baseurl +'/assets/uploads/event/'+v['image']+'">\
+							                                 </span>\
+							                              </span>\
+							                              <span class="wi-70">\
+							                                 <p class="topdate">'+v['start_date']+' - '+v['end_date']+' - '+v['location']+'</p>\
+							                                 <a class="text-decoration-none" href="'+baseurl+'/events/detail/'+v['id']+'"><h5>'+v['name']+'<h5></a></h5>\
+							                              </span>\
+							                           </div>\
+							                        </span>\
+							                        <div class="wi-50-2 justify-content-between">\
+							                           <span class="m-left upevent">\
+							                              <p><img class="eventFirstIcon" src="'+baseurl+'/assets/site/img/horseShoe.svg">Stalls</p>\
+							                              <h6 class="ucprice"> from $'+v['stalls_price']+'/ night</h6>\
+							                           </span>\
+									                    <a class="text-decoration-none text-white" id="booknow_link" href="'+baseurl+'/events/detail/'+v['id']+'"><button class="ucEventBtn">\
+															'+booknowBtn+'\
+															</button></a>\
+							                        </div>\
+						                        </div>\
+						                   </div>\
+		               					';
+		               					$('.recommendedevent').append(result);
+		               				
+
+						});	
+
+				    }
+		
 				}
 			}
 		)

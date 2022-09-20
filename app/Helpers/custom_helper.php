@@ -358,12 +358,14 @@ function getOccupied($eventid, $extras=[]){
 	if(count($extras) > 0) $condition 	= $condition+$extras;
 		
 	$booking	= new \App\Models\Booking;
-	$booking 	= $booking->getBooking('all', ['booking','barnstall'], $condition);
+	$booking 	= $booking->getBooking('all', ['booking','barnstall','rvbarnstall'], $condition);
 	
 	$occupied = [];
 	foreach ($booking as  $bookdata) {
-		$barnstall = $bookdata['barnstall'];
+		$barnstall 	= $bookdata['barnstall'];
+		$rvbarnstall = $bookdata['rvbarnstall'];
 		$occupied[] = implode(',', array_column($barnstall, 'stall_id'));
+		$occupied[] = implode(',', array_column($rvbarnstall, 'stall_id'));
 	}
 
 	return (count($occupied) > 0) ? explode(',', implode(',', $occupied)) : [];
@@ -412,7 +414,7 @@ function getSettings()
 
 function getBooking($condition=[])
 {
-	$booking = new \App\Models\Booking;
+ 	$booking = new \App\Models\Booking;
 	return $booking->getBooking('all', ['booking','users','barnstall','rvbarnstall','feed','shaving'], $condition);
 }
 
@@ -501,15 +503,59 @@ function smsTemplate($data){
 
   	$message = $client->messages->create(
 
-		'91'.$data['mobile'],
+		'1'.$data['mobile'],
 
 		[
 			'from' => $sms['from_number'],
 			'body' => $msg,
 		]
 	);
-    //sent successfully
-   // echo "sent to $to successfully<br>";
+  }catch(Exception $e){
+    echo $e->getCode() . ' : ' . $e->getMessage()."<br>";
+  }
+
+  	
+}
+
+function unlockedTemplate($data){
+
+	if($data['lockunlock']=='1'){
+		$id = '4';
+	}elseif($data['dirtyclean']=='1'){
+		$id = '5';
+	}
+
+	$sms = new App\Models\Emailtemplate;
+	$sms 	 = $sms->getEmailTemplate('row', ['emailtemplate'],['id' => $id]);
+
+	$sid 		= $sms['sid'];
+	$token 		= $sms['token'];
+  	$client 	= new Twilio\Rest\Client($sid, $token);
+
+  	try{
+  		$msg = str_replace(
+		        [
+					'#username',
+					'#stallname'
+		        ],
+		        [
+		            $data['username'],
+		            $data['stallsname']
+		        ],
+
+		      $sms['message'],  
+			);
+
+  	$message = $client->messages->create(
+
+		'1(575) 936-6183',
+
+		[
+			'from' => $sms['from_number'],
+			'body' => $msg,
+		]
+	);
+	
   }catch(Exception $e){
     echo $e->getCode() . ' : ' . $e->getMessage()."<br>";
   }

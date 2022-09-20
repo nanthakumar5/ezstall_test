@@ -23,7 +23,6 @@
 				<div class="card-body">	
 					<table class="table table-striped table-hover datatables">
 						<thead>
-							<th class="displaynone">ID</th>
 							<th>Name</th>
 							<th>Email</th>
 							<th>Subject</th>
@@ -42,7 +41,6 @@
 				url 		: 	'<?php echo getAdminUrl()."/contactus/DTcontactus"; ?>',	
 				data		:	{ 'page' : 'contactus' },				
 				columns 	: 	[
-    				                { 'data' : 'id' },
     				                { 'data' : 'name' },
                     				{ 'data' : 'email' },
                     				{ 'data' : 'subject' },

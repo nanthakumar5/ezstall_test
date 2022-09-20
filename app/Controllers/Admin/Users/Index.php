@@ -93,9 +93,14 @@ class Index extends BaseController
 
 			if($stripeemailId!=''){
 				$stripeconnect = $this->stripe->stripeconnect($requestdata);
+				if($stripeconnect!='0'){
+				    $requestdata['stripe_account_id'] = $stripeconnect;
+				}else{
+				    $this->session->setFlashdata('danger', 'Please add stripe connected account id.');
+				    return redirect()->to(getAdminUrl().'/users'); 
+				}
 			}
-		
-			$requestdata['stripe_account_id'] = $stripeconnect;
+			
 			$requestdata['userid'] = getAdminUserID();
             $result = $this->users->action($requestdata);
   

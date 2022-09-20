@@ -95,7 +95,7 @@
 						<p>Optional</p>
 						<p>Enter any requests, such as stall location or other renters you want to be placed near.
 						<b>Please note: special requests are not guaranteed</b></p>
-						<textarea placeholder="Message"></textarea>
+						<textarea placeholder="Message" name="special_notice"></textarea>
 					</div> 
 
 					<div class="checkout-reservation border rounded pt-4 ps-4 pe-4 mb-5">

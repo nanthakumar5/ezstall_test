@@ -7,6 +7,11 @@ $userid 				= isset($result['user_id']) ? $result['user_id'] : '';
 $name 					= isset($result['name']) ? $result['name'] : '';
 $description 		    = isset($result['description']) ? $result['description'] : '';
 $location 				= isset($result['location']) ? $result['location'] : '';
+$city 					= isset($result['city']) ? $result['city'] : '';
+$state 					= isset($result['state']) ? $result['state'] : '';
+$zipcode 				= isset($result['zipcode']) ? $result['zipcode'] : '';
+$latitude 				= isset($result['latitude']) ? $result['latitude'] : '';
+$longitude 				= isset($result['longitude']) ? $result['longitude'] : '';
 $mobile 				= isset($result['mobile']) ? $result['mobile'] : '';
 $start_date 		    = isset($result['start_date']) ? dateformat($result['start_date']) : '';
 $end_date 				= isset($result['end_date']) ? dateformat($result['end_date']) : '';
@@ -83,8 +88,28 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Location</label>								
+								<label>street</label>								
 								<input type="text" name="location" class="form-control" id="location" placeholder="Enter Location" value="<?php echo $location; ?>">
+							</div>
+						</div>
+						<div class="col-md-6">
+	                    	<div class="form-group">
+		                        <label>City</label>                        
+		                        <input type="text" name="city" class="form-control" id="city" placeholder="Enter City" value="<?php echo $city; ?>">
+		                        <input type="hidden" name="latitude" id="latitude" value="<?php echo $latitude; ?>">
+		                        <input type="hidden" name="longitude" id="longitude" value="<?php echo $longitude; ?>">
+		                    </div>
+	                    </div>
+		                <div class="col-md-6">
+		                    <div class="form-group">
+		                        <label>State</label>                      
+		                        <input type="text" name="state" class="form-control" id="state" placeholder="Enter State" value="<?php echo $state; ?>">
+		                    </div>
+		                </div>
+						<div class="col-md-6">
+							<div class="form-group">
+							    <label>Zip Code</label>                      
+							    <input type="text" name="zipcode" class="form-control" id="zipcode" placeholder="Enter Zip Code" value="<?php echo $zipcode; ?>">
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -281,8 +306,6 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 								</div>
 								<div class="col-md-9 t-right p-0 respsm">
 									<input type="hidden" value="" name="rvhookupsvalidation" id="rvhookupsvalidation">
-									<a href="javascript:void(0);" class="btn btn-info bulkbtn_rvhookups">Add Bulk RV Hookups</a>
-									<input type="file" class="bulkfile_rvhookups" style="display:none;">
 									<button class="btn-stall rvhookupsbtn">Add RV Hookups</button>
 								</div>
 							</div>
@@ -427,7 +450,16 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 				},
 				location 	 : {
 					required	: 	true
-				},					
+				},
+				city 	 : {
+					required	: 	true
+				},
+				state 	 : {
+					required	: 	true
+				},
+				zipcode 	 : {
+					required	: 	true
+				},						
 				mobile       : {
 					required	: 	true
 				},

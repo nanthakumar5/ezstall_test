@@ -78,7 +78,7 @@
 	$feeds              = isset($reservationpdf['feed']) ? $reservationpdf['feed'] : '';
 	$shavings           = isset($reservationpdf['shaving']) ? $reservationpdf['shaving'] : '';
 	$paymentmethod      = isset($reservationpdf['paymentmethod_name']) ? $reservationpdf['paymentmethod_name'] : '';
-	$path               = base_url().'/assets/uploads/settings/'.$settings['logo'];
+	$path               = base_url().'/assets/images/black-logo.png';
     $type               = pathinfo($path, PATHINFO_EXTENSION);
     $data               = file_get_contents($path);
     $logo               = 'data:image/' . $type . ';base64,' . base64_encode($data);
@@ -170,7 +170,9 @@
 
 									echo '<tr style="background-color: #F9F9F9;">';
 							
-									echo '<th style="padding-left: 40px;"><p class="mb-0 fw-bold h6">'.$barnstall["barnname"].'</p><p class="mb-0 fw-bold"style="font-size:12px;">'.$barnstall["stallname"].'</p></th>';
+									echo '<th style="padding-left: 40px;">
+									<p class="mb-0 fw-bold h6">'.$barnstall["barnname"].'</p>
+									<p class="mb-0 fw-bold"style="font-size:12px;">'.$barnstall["stallname"].'</p></th>';
 
 									echo '<th style="padding-left: 40px;"><p class="mb-0 fw-bold h6">('.$currencysymbol.$barnstall['price'].'x'.$barnstall['quantity'].')'.$currencysymbol.$barnstall['total'].'</p></th>';
 								
@@ -191,10 +193,13 @@
 					</thead>
 					<tbody>
 						<?php 
-						if(!empty($rvbarnstalls)) {
-							foreach ($rvbarnstalls as $rvbarnstall) {
-								echo '<tr style="background-color: #F9F9F9;">';
-									echo '<th style="padding-bottom: 10px;  font-size: 12px;"><p class="mb-0 fw-bold">'.$rvbarnstall['barnname'].'</p>
+						if(!empty($reservationpdf['rvbarnstall'])) {
+							foreach ($reservationpdf['rvbarnstall'] as $rvbarnstall) {
+								
+									echo '<tr style="background-color: #F9F9F9;">';
+
+									echo '<th style="padding-bottom: 10px;  font-size: 12px;">
+									<p class="mb-0 fw-bold">'.$rvbarnstall['barnname'].'</p>
 									<p class="mb-0 fw-bold">'.$rvbarnstall['stallname'].'</p>
 									</th>';
 

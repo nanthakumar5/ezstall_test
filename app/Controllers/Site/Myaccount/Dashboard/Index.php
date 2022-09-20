@@ -27,8 +27,7 @@ class Index extends BaseController
 		
 		$yesterday 	=  date("Y-m-d", strtotime("yesterday")); 
 		$tday 		=  date("Y-m-d", strtotime("today"));
-
-
+		
      	$date				= date('Y-m-d');
     	$userdetail 		= getSiteUserDetails();
     	$usertype 			= $userdetail['type'];
@@ -60,10 +59,9 @@ class Index extends BaseController
 				}
 
 
-				$bookedevents = $this->booking->getBooking('all', ['booking','event','barnstall','rvbarnstall'],['eventid'=> $event['id'], 'status' => '1']);
+				$bookedevents = $this->booking->getBooking('all', ['users','booking','event','barnstall','rvbarnstall'],['eventid'=> $event['id'], 'status' => '1']);
 
 				if(count($bookedevents) > 0){
-					$data['checkinstall'] = $bookedevents;
 					foreach($bookedevents as $bookedevent){
 						$barnstall = $bookedevent['barnstall'];
 						$rvbarnstall = $bookedevent['rvbarnstall'];
@@ -124,9 +122,9 @@ class Index extends BaseController
     		$data['countcurrentstall'] 	= $countcurrentstall;
     	}
 
-		if($usertype=='6'){
-    		$checkinstall = $this->booking->getBooking('all', ['booking','event','barnstall','rvbarnstall'],['userid'=> $allids, 'stallcheck_in'=>[$yesterday, $tday]]);
-      		$data['checkinstall'] 			= $checkinstall;
+		if($usertype=='6' || ($usertype=='4' && $parenttype == '2') || ($usertype=='4' && $parenttype == '3')){
+    		$data['checkinstall'] = $this->booking->getBooking('all', ['users','booking','event','barnstall','rvbarnstall'],['userid'=> $allids, 'stallcheck_in'=>[$tday]], ['orderby' =>'e.id asc', 'groupby' => 'e.id']);
+    		$data['checkoutstall'] = $this->booking->getBooking('all', ['users','booking','event','barnstall','rvbarnstall'],['userid'=> $allids, 'stallcheck_out'=>[$tday]], ['orderby' =>'e.id asc', 'groupby' => 'e.id']);
       	}
 
       	$data['userdetail'] 					= $userdetail;
@@ -145,10 +143,18 @@ class Index extends BaseController
 
 	public function updatedata(){
 		if($this->request->getMethod()=='post'){ 
-    		$requestData 	= $this->request->getPost();
+			
+    		$requestData 					= $this->request->getPost();
+    		$requestData['stallid'] 		= explode(',', $requestData['stallid']);
+
     		if(isset($requestData['lockunlock']) || isset($requestData['dirtyclean'])){
     			$result = $this->booking->updatedata($requestData);
+
+    			$unlocksms = $this->booking->getBooking('row', ['users', 'cleanbookingdetails', 'cleanstall'], ['stallid' => [$result]]);
+
+	    		unlockedTemplate($unlocksms);
 	    	}
+
 			return redirect()->to(base_url().'/myaccount/dashboard'); 
         }
 	}

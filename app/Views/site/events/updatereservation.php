@@ -6,8 +6,15 @@ $getcart 			= getCart('1');
 $cartevent 			= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 $bookedeventid 		= (isset($bookings['event_id'])) ? $bookings['event_id'] : 0;
 $bookeduserid 		= (isset($bookings['user_id'])) ? $bookings['user_id'] : 0;
-$comments        	= (isset($comments)) ? $comments : [];
+
+$checkin 			= (isset($bookings['check_in'])) ? $bookings['check_in'] : 0; 
+$checkout			= (isset($bookings['check_out'])) ? $bookings['check_out'] : 0;
+$eventid			= (isset($bookings['event_id'])) ? $bookings['event_id'] : 0;
+$bookingid			= (isset($bookings['id'])) ? $bookings['id'] : 0;
+$barnstall			= (isset($bookings['barnstall'])) ? $bookings['barnstall'] : 0;
+$rvbarnstall		= (isset($bookings['rvbarnstall'])) ? $bookings['rvbarnstall'] : 0;
 ?>
+
 <body style="overflow: initial;">
 	<section class="maxWidth">
 		<div class="pageInfo">
@@ -52,12 +59,6 @@ $comments        	= (isset($comments)) ? $comments : [];
 									</svg> 
 									<?php echo $detail['location'] ?>
 								</li>
-							<!-- <li class="mb-3">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar4" viewBox="0 0 16 16">
-									<path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z"/>
-								</svg> 
-								<?php //echo date('m-d-Y', strtotime($detail['start_date'])); ?>
-							</li> -->
 							<li class="mb-3">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
 									<path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
@@ -69,10 +70,6 @@ $comments        	= (isset($comments)) ? $comments : [];
 									<p class="mb-1 fw-bold"><img class="eventFirstIcon" src="<?php echo base_url()?>/assets/site/img/stall.jpg">Stalls</p>
 									<h6 class="ucprice"> from $<?php echo $detail['stalls_price'] ?> / night</h6>
 								</span>
-								<!-- <span class="col-6">
-									<p class="mb-1 fw-bold"><img class="eventSecondIcon" src="<?php //echo base_url()?>/assets/site/img/rv.jpg">RV Spots</p>
-									<h6 class="ucprice">from $<?php //echo $detail['rvspots_price'] ?> / night</h6>
-								</span> -->
 							</div>
 							<?php echo $detail['description'] ?>
 						</ul>
@@ -110,24 +107,28 @@ $comments        	= (isset($comments)) ? $comments : [];
 					</div> 
 				</div>
 			</div>
+			<form action="<?php echo base_url()?>/events/updatestall/action" method="post">
 			<div class="row m-0 p-0">
 				<div class="col-md-9 tabook">
-					<div class="border rounded py-2 ps-3 pe-3 mt-4 mb-3">
+					<div class="border rounded py-2 ps-3 pe-3 mt-4 mb-3">	
 						<div class="infoPanel form_check bookyourstalls">
 							<span class="infoSection bookborder flex-wrap">
 								<div class="col-md-6">
 									<p class="fw-bold mx-2 fs-5 mb-0">Check In</p>
 									<span class="iconProperty w-100 w-auto pad_100">			
-										<input type="text" name="startdate" id="startdate" class="w-100 land_width checkdate checkin borderyt" autocomplete="off" placeholder="Check-In" readonly/>
+										<input type="text" name="startdate" id="startdate" value="<?php echo dateformat($checkin);?>" class="w-100" autocomplete="off" readonly/>
 										<img src="<?php echo base_url() ?>/assets/site/img/calendar.svg" class="iconPlace" alt="Calender Icon">
 									</span>
 								</div>
 								<div class="col-md-6">
 									<p class="fw-bold mx-2 fs-5 mb-0">Check Out</p>
 									<span class="iconProperty w-100 col-md-12 w-auto pad_100">
-										<input type="text" name="enddate" id="enddate" class="w-100 land_width checkdate checkout borderyt" autocomplete="off"placeholder="Check-Out" readonly/>
+										<input type="text" name="enddate" id="enddate" class="w-100" value="<?php echo dateformat($checkout);?>" readonly/>
 										<img src="<?php echo base_url() ?>/assets/site/img/calendar.svg" class="iconPlace" alt="Calender Icon">
 									</span>
+								</div>
+								<input type="hidden" id="bookingid" name="bookingid" value="<?php echo $bookingid;?>">
+								<div id="uncheckedstallid">
 								</div>
 							</span>
 						</div>
@@ -185,10 +186,12 @@ $comments        	= (isset($comments)) ? $comments : [];
 												}
 
 												$tabcontent .= 	'<li class="list-group-item '.$typeofprice.'">
-												<input class="form-check-input eventbarnstall stallid me-1" data-price="'.$stalldata['price'].'" data-barnid="'.$stalldata['barn_id'].'" data-flag="1" value="'.$stalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
-												'.$stalldata['name'].'
-												<span class="'.$boxcolor.' stallavailability" data-stallid="'.$stalldata['id'].'" ></span>
-												</li>';
+													<input class="form-check-input eventbarnstall stallid me-1"  data-barnid="'.$stalldata['barn_id'].'" data-flag="1" data-price="'.$stalldata['price'].'" value="'.$stalldata['id'].'" 
+														name="updatedbookingstall[][stallid]"  type="checkbox" '.$checkboxstatus.'>
+
+													'.$stalldata['name'].'
+													<span class="'.$boxcolor.' stallavailability" data-stallid="'.$stalldata['id'].'" ></span>
+													</li>';
 											}
 											$tabcontent .= '</ul></div>';
 										}
@@ -245,11 +248,11 @@ $comments        	= (isset($comments)) ? $comments : [];
 														$checkboxstatus = 'disabled';
 													}
 
-													$tabcontent .= 	'<li class="list-group-item rvhookups '.$typeofprice.'">
-													<input class="form-check-input rvbarnstall stallid me-1" data-price="'.$rvstalldata['price'].'" data-barnid="'.$rvstalldata['barn_id'].'" data-flag="2" value="'.$rvstalldata['id'].'" name="checkbox"  type="checkbox" '.$checkboxstatus.'>
-													'.$rvstalldata['name'].'
-													<span class="'.$boxcolor.' stallavailability" data-stallid="'.$rvstalldata['id'].'" ></span>
-													</li>';
+														$tabcontent .= 	'<li class="list-group-item rvhookups '.$typeofprice.'">
+														<input class="form-check-input rvbarnstall stallid me-1" data-price="'.$rvstalldata['price'].'" data-barnid="'.$rvstalldata['barn_id'].'" data-flag="2" value="'.$rvstalldata['id'].'" name="updatedbookingstall[][stallid]"  type="checkbox" '.$checkboxstatus.'>
+														'.$rvstalldata['name'].'
+														<span class="'.$boxcolor.' stallavailability" data-stallid="'.$rvstalldata['id'].'" ></span>
+														</li>';
 												}
 												$tabcontent .= '</ul></div>';
 											}
@@ -346,207 +349,110 @@ $comments        	= (isset($comments)) ? $comments : [];
 									</div>    
 								</div>
 							</div>
-							<?php if(($usertype == '5') && ($bookedeventid == $detail['id']) && ($bookeduserid == $userid)){ ?>
-								<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
-									<h3 class="fw-bold mb-4">Add Comment</h3>
-									<form method="post" action="" id="comment_form" autocomplete="off">
-										<div class="mb-3">
-											<label class="form-label">Comment:</label>
-											<textarea class="form-control" name="comment" placeholder="Add Your Comment" id="comment" rows="3"></textarea>
-										</div>
-										<div class="row mb-1">
-											<label class="fw-bold col-md-3">Communication</label>
-											<div class="communicationRating commentratings col-md-6" data-rate-value="0"></div>
-										</div>
-										<div class="row mb-1">
-											<label class="fw-bold col-md-3">Cleanliness</label>
-											<div class="cleanlinessRating commentratings col-md-6" data-rate-value="0"></div>
-										</div>
-										<div class="row mb-3">
-											<label class="fw-bold col-md-3">Friendliness</label>
-											<div class="friendlinessRating commentratings col-md-6" data-rate-value="0"></div>
-										</div>
-										<input type="hidden" name="eventid" value="<?php echo $detail["id"]; ?>">
-										<input type="hidden" name="userid" 	value="<?php echo $userid; ?>">
-										<input type="hidden" name="communication" id="communication">
-										<input type="hidden" name="cleanliness" id="cleanliness">
-										<input type="hidden" name="friendliness" id="friendliness">
-										<button type="submit" class="btn btn-primary add-comment-btn">Submit</button>
-									</form>
-								</div>
-							<?php } ?>
-							<?php if(!empty($comments)) { ?>
-								<div class="border rounded py-4 ps-3 pe-3 mt-4 mb-3">
-									<h3 class="fw-bold mb-4">Comment List</h3>
-									<h5 class="fw-bold">User Comments</h5>
-									<?php foreach ($comments as $commentdata ) { ?>
-										<div id="usercommentlist">
-											<div class="mb-1">
-												<p class="commented_username"><?php echo $commentdata['username'];?></p>
-											</div>
-											<div class="mb-3">
-												<p class="usercomment"><?php echo $commentdata['comment'];?></p>
-											</div>
-											<div class="row mb-1">
-												<label for="communication_lbl" class="fw-bold col-md-3">Communication</label>
-												<div class="communicationRating commentratings col-md-6" data-rate-value="<?php echo $commentdata['communication'];?>">
-												</div>
-											</div>
-											<div class="row mb-1">
-												<label for="cleanliness_lbl" class="fw-bold col-md-3">Cleanliness</label>
-												<div class="cleanlinessRating commentratings col-md-6"  data-rate-value="<?php echo $commentdata['cleanliness'];?>">
-												</div>
-											</div>
-											<div class="row mb-1">
-												<label for="friendliness_lbl" class="fw-bold col-md-3">Friendliness</label>
-												<div class="friendlinessRating commentratings col-md-6" data-rate-value="<?php echo $commentdata['friendliness'];?>"></div>
-											</div>
-										</div>
-										<?php if(($usertype != '5') && ($detail['user_id'] == $userid)){ ?>
-											<button class="btn btn-primary replycomment" data-commentid="<?php echo $commentdata['id'];?>">Reply</button>
-											<div id="replybox<?php echo $commentdata['id'];?>"></div>
-										<?php } ?>
-										<?php if(!empty($commentdata['replycomments'])){ ?>
-											<!-- <h5 class="fw-bold">Replies : </h5> -->
-											<?php foreach ($commentdata['replycomments'] as $replydata){ ?>
-												<div id="replylist">
-													<div class="mb-1">
-														<p class="commented_username"><?php echo $replydata['username'];?></p>
-													</div>
-													<div>
-														<p class="usercomment"><?php echo $replydata['reply'];?></p>
-													</div>
-												</div>
-											<?php } ?>
-										<?php } ?>
-									<?php } ?>
-								</div>
-							<?php } ?>
 						</div> 
-						<div class="sticky-top checkout col-md-3 mt-4 h-100"></div>
+						<div><button class="btn btn-danger col-md-3 mt-4 h-100">update button</button></div>
 					</div>
+				</form>
 				</div>
+				<div class="totalcountcheckedstall"></div>
+				<div class="totalcountcheckedrvstall"></div>
 			</section>
-<div class="container mt-5">
-  <!-- Modal -->
-  <div class="modal fade e_detail_popup" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"  align="right">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-           <img src="<?php echo base_url();?>/event/pdf/<?php echo $detail['eventflyer'] ?>" width="100" height="100">
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary"><a href="<?php echo base_url();?>/event/pdf/<?php echo $detail['eventflyer'] ?>" class="text-decoration-none text-white"><i class="fa fa-download" aria-hidden="true"></i> Download</a></button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-		</body>
-		<?php $this->endSection() ?>
-		<?php $this->section('js') ?>
-		<script> 
-			var transactionfee		= '<?php echo $settings['transactionfee'];?>';  
-			var currencysymbol 		= '<?php echo $currencysymbol; ?>';
-			var eventid 			= '<?php echo $detail["id"]; ?>';
-			var cartevent 			= '<?php echo $cartevent; ?>';
-			var checkevent 			= '<?php echo $checkevent["status"]; ?>';
-			var eventstartdate  	= '<?php echo $detail["start_date"] > date("Y-m-d") ? formatdate($detail["start_date"], 1) : 0; ?>';
-			var eventenddate 		= '<?php echo formatdate($detail["end_date"], 1); ?>';
-			var eventenddateadd 	= '<?php echo formatdate(date("Y-m-d", strtotime($detail["end_date"]." +1 day")), 1); ?>';
+</body>
+<?php $this->endSection() ?>
+<?php $this->section('js') ?>
+<script> 
+	var startdate			= '<?php echo formatdate($checkin, 1);?>';  
+	var enddate				= '<?php echo formatdate($checkout, 1);?>';  
+	var barnstall			= $.parseJSON('<?php echo addslashes(json_encode($barnstall)); ?>');
+	var rvbarnstall			= $.parseJSON('<?php echo addslashes(json_encode($rvbarnstall)); ?>');
 
-			$(document).ready(function (){
-				if(cartevent == 0 ){
-					cart();
+	var transactionfee		= '<?php echo $settings['transactionfee'];?>';  
+	var currencysymbol 		= '<?php echo $currencysymbol; ?>';
+	var eventid 			= '<?php echo $detail["id"]; ?>';
+	var cartevent 			= '<?php echo $cartevent; ?>';
+	var checkevent 			= '<?php echo $checkevent["status"]; ?>';
+
+	$(document).ready(function (){
+		if(startdate && enddate!=''){
+
+				var startdates 		= new Date(startdate); 
+				var enddates 		= new Date(enddate);
+				var stallinterval  	= enddates.getTime() - startdates.getTime(); 
+				var intervaldays 	= stallinterval / (1000 * 3600 * 24);
+				$('.week_price').show();
+				$('.month_price').show();
+				$('.night_price').show();
+				if(intervaldays%7==0){
+					$('.night_price').hide();
+					$('.month_price').hide();
+				}else if(intervaldays%30==0){ 
+					$('.week_price').hide();
+					$('.night_price').hide();
 				}else{
-					$("#startdate, #enddate").attr('disabled', 'disabled');
+					$('.week_price').hide();
+					$('.month_price').hide();
 				}
+			occupiedreserved(startdate, enddate);
+		}
+	});
 
-				if(checkevent == 0){
-					$("#startdate, #enddate").attr('disabled', 'disabled');
-				}
+		function occupiedreserved(startdate, enddate, stallid=''){
 
-				uidatepicker(
-					'#startdate', 
-					{ 
-						'mindate' 	: eventstartdate,
-						'maxdate' 	: eventenddate,
-						'close' 	: function(selecteddate){
-							var date = new Date(selecteddate)
-							date.setDate(date.getDate() + 1);
-							$("#enddate").datepicker( "option", "minDate", date );
-						}
-					}
-					);
-
-				uidatepicker('#enddate', { 'mindate' : eventstartdate, 'maxdate' : eventenddateadd });
-			});
-
-			$("#enddate").click(function(){
-				var startdate 	= $("#startdate").val();
-				if(startdate==''){
-					$("#startdate").focus();
-				}
-			});
-
-			$("#startdate, #enddate").change(function(){
-				setTimeout(function(){
-					var startdate 	= $("#startdate").val(); 
-					var enddate   	= $("#enddate").val(); 
-					if(enddate!=""){
-						var startdates 		= new Date(startdate);
-						var enddates 		= new Date(enddate);
-						var stallinterval  	= enddates.getTime() - startdates.getTime(); 
-						var intervaldays 	= stallinterval / (1000 * 3600 * 24); 
-						$('.week_price').show();
-						$('.month_price').show();
-						$('.night_price').show();
-						if(intervaldays%7==0){
-							$('.night_price').hide();
-							$('.month_price').hide();
-						}else if(intervaldays%30==0){ 
-							$('.week_price').hide();
-							$('.night_price').hide();
-						}else{
-							$('.week_price').hide();
-							$('.month_price').hide();
-						}
-					}
-
-					if(startdate!='' && enddate!=''){
-						cart({type : '1', checked : 0}); 
-						$('.stallid').prop('checked', false).removeAttr('disabled');
-						$('.stallavailability').removeClass("yellow-box").removeClass("red-box").addClass("green-box");
-
-						occupiedreserved(startdate, enddate);
-					}
-				}, 100);
-			})
-
-			function occupiedreserved(startdate, enddate, stallid=''){
 				var result = 1;
 				ajax(
 					'<?php echo base_url()."/ajax/ajaxoccupied"; ?>',
 					{ eventid : eventid, checkin : startdate, checkout : enddate },
 					{
 						asynchronous : 1,
-						success : function(data){
+						success : function(data){ 
+						 $(".totalcountcheckedstall").append('<input type="hidden" id="barnstallcheckedcount" name="barnstallcheckedcount" value="'+data.totalstallcount+'">');
+
 							$(data.success).each(function(i,v){ 
-								if(stallid==v){
+								$('.stallid[value='+v+']').prop('checked', true).attr('disabled', 'disabled');
+								$('.stallavailability[data-stallid='+v+']').removeClass("green-box").addClass("red-box");
+								if(stallid==v){ 
 									result = 0;
 									toastr.warning('Stall is already booked.', {timeOut: 5000});
 									$('.stallid[value='+stallid+']').prop('checked', false);
 								}
-
-								$('.stallid[value='+v+']').prop('checked', true).attr('disabled', 'disabled');
-								$('.stallavailability[data-stallid='+v+']').removeClass("green-box").addClass("red-box");
 							});
+
+								if(barnstall!=''){
+									$(barnstall).each(function(i,value){ 
+										if(value.status!='2'){
+											if(jQuery.inArray(value.stall_id, data)) {
+												$('.stallid[value='+value.stall_id+']').prop("checked", true).removeAttr('disabled', 'disabled');
+												$('.stallid[value='+value.stall_id+']').attr('dataproductid',value.id);	
+
+												$('.stallid[value='+value.stall_id+']').removeAttr('name','updatedbookingstall[][stallid]');
+
+
+											  	$('.stallavailability[data-stallid='+value.stall_id+']').removeClass("green-box").removeClass("red-box").addClass("yellow-box");
+											}
+										}
+									});
+
+										
+								}
+
+								if(rvbarnstall!=''){ 
+									var countrvstallids = [];
+									$(rvbarnstall).each(function(i,value){ 
+										countrvstallids = (value.stall_id);
+										if(jQuery.inArray(value.stall_id, data)) {
+
+											$('.stallid[value='+value.stall_id+']').prop("checked", true).removeAttr('disabled', 'disabled');
+											$('.stallid[value='+value.stall_id+']').attr('dataproductid',value.id);
+
+											$('.stallid[value='+value.stall_id+']').removeAttr('name','updatedbookingstall[][stallid]');
+										   $('.stallavailability[data-stallid='+value.stall_id+']').removeClass("green-box").removeClass("red-box").addClass("yellow-box");
+										}
+
+									});
+								}
 						}
+
+
 					}
 					)
 
@@ -557,14 +463,13 @@ $comments        	= (isset($comments)) ? $comments : [];
 						asynchronous : 1,
 						success : function(data){
 							$.each(data.success, function (i, v) {
-								if(stallid==i){
+								$('.stallid[value='+i+']').prop('checked', true).attr('disabled', 'disabled');
+								$('.stallavailability[data-stallid='+i+']').removeClass("green-box").addClass("yellow-box");
+								if(stallid==i){ 
 									result = 0;
 									toastr.warning('Stall is already booked.', {timeOut: 5000});
 									$('.stallid[value='+stallid+']').prop('checked', false);
 								}
-
-								$('.stallid[value='+i+']').prop('checked', true).attr('disabled', 'disabled');
-								$('.stallavailability[data-stallid='+i+']').removeClass("green-box").addClass("yellow-box");
 							});
 						}
 					}
@@ -603,7 +508,7 @@ $comments        	= (isset($comments)) ? $comments : [];
 				return result;
 			}
 
-			$(".eventbarnstall").on("click", function() {
+			$(".eventbarnstall").on("click", function() { 
 				cartaction($(this), 1);
 			});
 
@@ -623,24 +528,35 @@ $comments        	= (isset($comments)) ? $comments : [];
 				checkdate($(this).attr('data-flag'));
 			})
 
-			function cartaction(_this, flag){
+			function cartaction(_this, flag){ 
+				var numberOfChecked = [];
+				var totalcountstallrv = parseInt($('#barnstallcheckedcount').val());
+				var numberOfChecked = $('input:checkbox:checked').length;
 				var datevalidation = checkdate(flag);
 				if(!datevalidation) return false;
 
 				var startdate 	= $("#startdate").val(); 
 				var enddate   	= $("#enddate").val(); 
 
-				if(flag==1 || flag==2){			
+				if(flag==1 || flag==2){		
 					var barnid    	= _this.attr('data-barnid');
-					var stallid		= _this.val(); 
+					var stallid		= _this.val();
 					var price 		= _this.attr('data-price');
+					var uncheckproductid = _this.attr('dataproductid');
 
-					if($(_this).is(':checked')){  
-						var checkoccupiedreserved = occupiedreserved(startdate, enddate, stallid);
-						if(checkoccupiedreserved==1) cart({event_id : eventid, barn_id : barnid, stall_id : stallid, price : price, quantity : 1, startdate : startdate, enddate : enddate, type : '1', checked : 1, flag : flag, actionid : ''});
+					if($(_this).is(':checked')){ 
+
+						if(totalcountstallrv < numberOfChecked){ 
+							toastr.warning('pls unchecked your stall.', {timeOut: 5000});
+							$('.stallid[value='+stallid+']').prop('checked', false);
+						}else{
+							$('.stallavailability[data-stallid='+stallid+']').removeClass("green-box").addClass("yellow-box");
+						}
 					}else{ 
+
+						$('#uncheckedstallid').append('<input type="hidden" id="uncheckedstallid" name="uncheckedstallid[][bkid]" value="'+uncheckproductid+'">');
+						$('.stallid[value='+stallid+']').prop('checked', false);
 						$('.stallavailability[data-stallid='+stallid+']').removeClass("yellow-box").addClass("green-box");
-						cart({stall_id : stallid, type : '1', checked : 0}); 
 					}		
 				}else{
 					var productid      		= _this.attr('data-productid');
@@ -711,160 +627,7 @@ $comments        	= (isset($comments)) ? $comments : [];
 				}
 
 				return true;
-			}
-
-			function cart(data={cart:1, type:1}){	
-				ajax(
-					'<?php echo base_url()."/cart"; ?>',
-					data,
-					{ 
-						asynchronous : 1,
-						success  : function(result){
-							if(Object.keys(result).length){  
-								$("#startdate").val(result.check_in); 
-								$("#enddate").val(result.check_out); 
-
-								occupiedreserved($("#startdate").val(), $("#enddate").val());
-
-								var barnstalldata = cartsummary(1, 'STALL', result.barnstall);
-								var rvbarnstalldata = cartsummary(1, 'RV HOOKUP', result.rvbarnstall);
-								var feeddata = cartsummary(2, 'FEED', result.feed);
-								var shavingdata = cartsummary(2, 'SHAVING', result.shaving);
-								var stallcleaning_fee = (result.cleaning_fee!='') ? result.cleaning_fee : '0';
-
-								var total = (parseFloat(stallcleaning_fee)+parseFloat(result.price)+parseFloat((transactionfee/100) * result.price)).toFixed(2);
-
-								var cleaning_fee = '';
-								if(result.cleaning_fee!=''){
-									var cleaning_fee = '<div class="col-8 event_c_text">Cleaning Fee</div>\
-									<div class="col-4 event_c_text text-end">'+currencysymbol+parseFloat(result.cleaning_fee).toFixed(2)+'\</div>';
-								}
-
-								if(result.interval%7==0){
-									$('.night_price').hide();
-									$('.month_price').hide();
-								}else if(result.interval%30==0){
-									$('.week_price').hide();
-									$('.night_price').hide();
-								}else{
-									$('.week_price').hide();
-									$('.month_price').hide();
-								}
-
-								var result ='\
-								<div class="w-100">\
-								<div class="border rounded pt-4 ps-3 pe-3 mb-5">\
-								<div class="row mb-2">\
-								<div class="col-md-12">\
-								<div class="row"> <span class="col-6 fw-bold">Total Day :</span><span class="col-6 fw-bold text-end">'+result.interval+'</span></div>\
-								'+barnstalldata+'\
-								'+rvbarnstalldata+'\
-								'+feeddata+'\
-								'+shavingdata+'\
-								</div>\
-								</div>\
-								<div class="row mb-2 event_border_top pt-4">\
-								<div class="col-8 event_c_text">Total</div>\
-								<div class="col-4 event_c_text text-end">'+currencysymbol+result.price.toFixed(2)+'\</div>\
-								<div class="col-8 event_c_text">Transaction Fees</div>\
-								<div class="col-4 event_c_text text-end">'+currencysymbol+((transactionfee/100) * result.price).toFixed(2)+'\</div>\
-								'+cleaning_fee+'\
-								</div>\
-								<div class="row mb-2 border-top mt-3 mb-3 pt-3">\
-								<div class="col-8 fw-bold ">Total Due</div>\
-								<div class="col-4 fw-bold">'+currencysymbol+total+'</div>\
-								</div>\
-								<div class="row mb-2 w-100">\
-								<a href="<?php echo base_url()?>/checkout" class="w-100 text-center mx-2 ucEventdetBtn ps-3 mb-3 ">Continue to Checkout</a>\
-								</div>\
-								</div>\
-								</div>\
-								';
-
-								$('.checkout').empty().append(result);
-							}else{
-								$('.checkout').empty();
-							}
-						}
-					}
-					);
-			}
-
-			function cartsummary(type, title, result){
-				var data = '';
-				if(result.length){
-					if(type==1){
-						var name = '';
-						data += '<div class="event_cart_title"><span class="col-12 fw-bold">'+title+'</span></div>';
-						$(result).each(function(i,v){
-							if(name!=v.barn_name){
-								data += '<div><span class="col-12 fw-bold">'+v.barn_name+'</span></div>';
-							}
-
-							if(v.interval%7==0){
-								var interval = v.interval/7;
-							}else if(v.interval%30==0){
-								var interval = v.interval/30; 
-							}else{ 
-								var interval = v.interval
-							}
-
-							if(v.chargingid=='4'){
-								var intervaldays = currencysymbol+v.price;
-								var total 		 = currencysymbol+v.price;
-							}else{
-								var intervaldays = currencysymbol+v.price+'x'+interval;
-								var total 		 = currencysymbol+v.total;
-							}
-
-					data += '<div class="row"><span class="col-7 event_c_text">'+v.stall_name+'</span><span class="col-5 text-end event_c_text">('+intervaldays+') '+total+'</span></div>';
-					$('.stallid[value='+v.stall_id+']').removeAttr('disabled');
-					name = v.barn_name;
-				});
-					}else{
-						data += '<div class="event_cart_title"><span class="col-12 fw-bold">'+title+'</span></div>';
-						$(result).each(function(i,v){								
-							data += '<div class="row"><span class="col-7 event_c_text">'+v.product_name+'</span><span class="col-5 text-end event_c_text">('+currencysymbol+v.price+'x'+v.quantity+') '+currencysymbol+v.total+'</span></div>';
-							$('.quantity[data-productid='+v.product_id+']').val(v.quantity);
-							$('.cartremove[data-productid='+v.product_id+']').removeClass('displaynone');
-						});
-					}
-				}
-
-				return data;
-			}
-
-			$(".commentratings").rate({ initial_value: 0, max_value: 5 });
-
-			$(".communicationRating").on("change", function(ev, data){
-				$('#communication').val(data.to);
-			});
-
-			$(".cleanlinessRating").on("change", function(ev, data){
-				$('#cleanliness').val(data.to);
-			});
-
-			$(".friendlinessRating").on("change", function(ev, data){
-				$('#friendliness').val(data.to);
-			});
-
-			$(".replycomment").on("click", function(ev, data){
-				replyComment($(this).attr('data-commentid'));
-			});
-
-			function replyComment(commentId){
-				var commentform = 	'<form method="post" action="" id="reply_form" autocomplete="off">\
-				<div class="mb-3">\
-				<textarea class="form-control" placeholder="Add Your Comment"  name="comment" id="replycomment" rows="3"></textarea>\
-				</div>\
-				<input type="hidden" name="eventid" value="<?php echo $detail["id"]; ?>">\
-				<input type="hidden" name="userid" 	value="<?php echo $userid; ?>">\
-				<input type="hidden" name="comment_id" value="'+commentId+'">\
-				<button type="submit" class="btn btn-primary">Submit</button>\
-				</form>';
-
-				$('#replybox'+commentId).empty().append(commentform);
-			}
-
+			}	
+	
 		</script>
 		<?php echo $this->endSection() ?>

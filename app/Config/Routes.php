@@ -56,14 +56,24 @@ $routes->get('bookingenddate', 'Common\Cron::bookingenddate');
 $routes->post('validation/emailvalidation', 'Common\Validation::emailvalidation');
 
 $routes->get('event/pdf/(:any)', 'Site\Event\Index::downloadeventflyer/$1');
+$routes->get('event/downloadstallmap/(:any)', 'Site\Event\Index::downloadstallmap/$1');
 $routes->get('facility/download/(:any)', 'Site\Facility\Index::download/$1');
 $routes->match(['get', 'post'], '/', 'Site\Home\Index::index');	
 $routes->match(['get','post'], 'login', 'Site\Login\Index::index', ['filter' => 'siteauthentication1']);
 $routes->match(['get','post'], 'register', 'Site\Register\Index::index', ['filter' => 'siteauthentication1']);
 $routes->get('verification/(:any)', 'Site\Register\Index::verification/$1');
 $routes->match(['get','post'], 'events', 'Site\Event\Index::lists');
-$routes->match(['get','post'], 'events/latlong', 'Site\Event\Index::latlong'); 
+$routes->match(['get','post'], 'events/latlong', 'Site\Event\Index::latlong');  
 $routes->match(['get','post'], 'events/detail/(:num)', 'Site\Event\Index::detail/$1');
+
+// event updatereservation
+$routes->match(['get','post'], 'events/updatereservation/(:num)/(:num)', 'Site\Event\Index::updatereservation/$1');
+$routes->match(['get','post'], 'events/updatestall/action', 'Site\Event\Index::updatereservation');
+
+// facility updatereservation
+$routes->match(['get','post'], 'facility/updatereservation/(:num)/(:num)', 'Site\Facility\Index::updatereservation/$1');
+$routes->match(['get','post'], 'facility/updatestall/action', 'Site\Facility\Index::updatereservation');
+
 $routes->match(['get','post'], 'facility', 'Site\Facility\Index::lists');
 $routes->match(['get','post'], 'facility/detail/(:num)', 'Site\Facility\Index::detail/$1');
 $routes->get('aboutus', 'Site\Aboutus\Index::index');
@@ -113,6 +123,7 @@ $routes->group('myaccount', ['filter' => 'siteauthentication2'], function($route
     $routes->match(['get', 'post'], 'stripe/(:any)', 'Site\Myaccount\Reservation\Index::index/$1'); 
     $routes->get('bookings/view/(:num)', 'Site\Myaccount\Reservation\Index::view/$1');
     $routes->post('bookings/searchbookeduser', 'Site\Myaccount\Reservation\Index::bookeduser');
+    $routes->match(['get','post'], 'paidunpaid','Site\Myaccount\Reservation\Index::paidunpaid');
 
     $routes->match(['get','post'], 'pastactivity','Site\Myaccount\PastActivity\Index::index');
     $routes->get('pastactivity/view/(:num)', 'Site\Myaccount\PastActivity\Index::view/$1');

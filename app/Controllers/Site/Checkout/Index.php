@@ -34,15 +34,20 @@ class Index extends BaseController
 		{    
 			$requestData 				= $this->request->getPost();
 			$userid             		= $userdetail['id'];
-			$paymentmethodid			= isset($requestData['paymentmethodid']);
+			$paymentmethodid			= $requestData['paymentmethodid'];
 			$mpdf 						= new \Mpdf\Mpdf();
 
 			if($paymentmethodid!='1') $payment = $this->stripe->action(['id' => $requestData['stripepayid']]);
 			else $payment = 1;
 			
 			if($payment){
-				$requestData['paymentid'] 	= ($paymentmethodid!='1') ? $payment : 0;
-				
+				$requestData['paymentid'] 	=  0;
+				$requestData['paidunpaid'] =  0;
+				if($paymentmethodid!='1'){
+					$requestData['paymentid'] 	= $payment;
+					$requestData['paidunpaid'] = 1;
+				}
+
 				$booking = $this->booking->action($requestData);
 				if($booking){
 					$this->cart->delete(['user_id' => $userid, 'type' => $requestData['type']]);

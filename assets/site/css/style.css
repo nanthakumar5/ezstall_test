@@ -1541,6 +1541,7 @@ input.subscriptionInput:focus {
 .ucimg img {
     width: 120px;
     height: 90px;
+    object-fit: cover;
     border-radius: 5px;
     display: inline-block;
 }
@@ -1625,7 +1626,7 @@ span.eventHead a {
 
 span.edimg img {
     display: inline-block;
-    /*max-width: 350px;*/
+    max-width: 350px;
     width: 100%;
     height: auto;
     border-radius: 5px;
@@ -4944,7 +4945,7 @@ div#multi-nav-tab button.nav-link.m-0 {
             width: 17px;
             background-color: #f1f1f1;
             position: absolute;
-            bottom: 25px;
+            bottom: 32px;
             left: -5px;
             border-radius: 0 150px 150px 0;
         }
@@ -4956,7 +4957,7 @@ div#multi-nav-tab button.nav-link.m-0 {
             background-color: #f1f1f1;
             position: absolute;
             right: -5px;
-            bottom: 25px;
+            bottom: 32px;
             border-radius: 150px 0 0 150px;
         }
 
@@ -5099,3 +5100,276 @@ div#multi-nav-tab button.nav-link.m-0 {
             }
         }
 /*06.08.2022 Style end*/
+
+/*03/09/2022*/
+
+.stall-summary-list h5 {
+    margin-top: 50px;
+    margin-bottom: 0px;
+    color: #000 !important;
+    font-size: 24px;
+}
+
+.stall-summary-list h5:first-child {
+    margin-top: 0;
+}
+
+.stall-summary-list .table th:last-child, .stall-summary-list .table td:last-child {
+    /* padding-right: 40px !important; */
+    text-align: right;
+}
+
+.stall-summary-list .table {
+    width: 90%;
+    border: 1px solid #f0f0f0;
+    margin-top: 20px;
+    border-left: 3px solid #e00000;
+}
+
+.summary-sec h5 {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 12px;
+    color: #000 !important;
+    font-size: 24px;
+}
+
+.summaryprc {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary-total .summary-sec .summaryprc {
+    height: auto;
+    padding: 10px 20px;
+    background: #fff;
+    margin-bottom: 12px;
+}
+
+.col-md-5.summary-total {
+    padding: 0;
+}
+
+.summary-sec {
+    border: 1px solid #f0f0f0;
+    padding-top: 10px;
+}
+
+.summary-sec h5 {
+    padding-left: 20px;
+}
+
+.totalbg{
+    background-color: #ffffff;
+    /* width: fit-content; */
+    /* float: right; */
+    padding: 8px 0px;
+    color: #e00000;
+    margin: 0;
+}
+
+.stall-summary-list .table th{
+    background-color: transparent;
+}
+
+.stall-summary-list .table th:last-child {
+    padding-right: 0;
+}
+
+.stall-summary-list .table th:first-child {
+    vertical-align: middle;
+}
+
+.summaryprcy {
+    background-color: #e00000;
+    color: #fff !important;
+    padding: 10px 20px !important;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stall-summary-list .table-striped>tbody>tr:nth-of-type(odd)>*, .stall-summary-list .table-striped>tbody>tr:nth-of-type(even)>* {
+    background-color: transparent !important;
+    box-shadow: none;
+    border-bottom: none;
+    padding-top: 0 !important;
+}
+
+.summaryprcy p, .summaryprcy p b {
+    margin: 0;
+    color: #fff;
+    font-weight: 600;
+}
+
+.cart-summary-section {
+    border: 1px solid #f0f0f0;
+}
+
+.cart-summary-section .col-md-7, .cart-summary-section .col-md-5 {
+    padding: 20px;
+}
+
+.cart-summary-section .col-md-5 {
+    background-color: #f0f0f0;
+}
+
+.summaryprc p {
+    margin: 0;
+}
+
+.stall-summary-list .table tr th {
+    border-bottom: none;
+    padding-bottom: 0;
+    padding: 0 15px !important;
+}
+
+.e_detail_popup .modal-body {
+    height: 360px !important;
+    border-radius: 0 !important;
+}
+
+.e_detail_popup .modal-header {
+    align-items: center;
+    justify-content: end;
+}
+
+.e_detail_popup .modal-header .close {
+    background-color: #e00000;
+    border: 1px solid #e00000;
+    color: #fff;
+    padding: 0px 9px;
+    border-radius: 65%;
+}
+
+.e_detail_popup .modal-header .close span {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.e_detail_popup .modal-content .modal-footer {
+    background-color: #fff !important;
+    border-radius: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.e_detail_popup .modal-content {
+    border-radius: 0;
+    height: 500px;
+    top: 0px;
+}
+
+.e_detail_popup .modal-content .modal-footer button {
+    background-color: #e00000;
+    border: 1px solid #e00000;
+}
+
+.e_detail_popup .modal-content .modal-footer button a {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.e_detail_popup .modal-content .modal-footer button i {
+    color: #fff;
+}
+
+.bookselect .form-check, .bookselect .bookdetails {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    margin-right: 40px;
+}
+                                
+.operator-list {
+    padding: 20px;
+    box-shadow: 0 8px 17px 0 rgb(0 0 0 / 10%);
+    margin: 30px 0 !important;
+    border: aliceblue;
+    border-left: 4px solid #e00000;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    padding: 20px;
+    text-align: left;
+}
+
+.operator-list:hover,.operator-list.checked {
+    box-shadow: 0 0 10px 3px #84848400;
+    border: 1px solid #f0f0f0 !important;
+    border-left: 4px solid #000000 !important;
+    transition: all 0.5s;
+    margin: 30px 0 !important;
+    background-color: #f0f0f0;
+}
+
+
+.bookselect  {
+  position: relative;
+  padding: 20px 0 20px 20px;
+  text-align: left;
+}
+
+.bookselect input:checked[type=checkbox] {
+    background-color: #f00 !important;
+    border: 1px solid #f00;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+}
+
+.bookselect input.form-check-input {
+    height: 30px;
+    width: 30px;
+}
+.bookselectbtn BUTTON {
+    WIDTH: 120px;
+}
+
+/* 09-sep-2022 */
+.operator-list .bookselectbtn {
+    display: inline-block;
+    position: relative;
+}
+
+.operator-list .bookselectbtn buttton {
+    height: 50px !important;
+}
+
+.operator-list .bookselect + div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.operator-list .bookselectbtn BUTTON {
+    width: 120px;
+    padding: 10px;
+    height: 40px;
+    margin: 10px;
+}
+.event__ticket  a.striperefunds.bookingcancel {
+    text-decoration: none;
+    color: #fff;
+    background: #e00000;
+    border-radius: 4px;
+    padding: 7px 25px;
+    font-weight: 500;
+    transition: all 1s ease;
+    margin-top: 10px;
+    font-size: 14px;
+    width: 100px;
+    margin-left: 20px;
+    display: inline-block;
+}
+
+.event__ticket  a.mt-0.mx-3.view-res {
+    width: 100px !important;
+    display: inline-block;
+}
+
+.event__ticket  a.striperefunds.bookingcancel:hover {
+        border-radius: 50px;
+    transition: all 1s ease;
+}

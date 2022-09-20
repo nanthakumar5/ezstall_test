@@ -19,6 +19,16 @@ class Booking extends BaseModel
 			$select[] 	= 	implode(',', $data);
 		}
 
+		if(in_array('cleanbookingdetails', $querydata)){
+			$data		= 	['bd.stall_id stallid'];							
+			$select[] 	= 	implode(',', $data);
+		}
+
+		if(in_array('cleanstall', $querydata)){
+			$data		= 	['s.lock_unlock lockunlock, s.dirty_clean dirtyclean, s.id stallsid, s.name stallsname'];							
+			$select[] 	= 	implode(',', $data);
+		}
+
 		if(in_array('users', $querydata)){
 			$data		= 	['u.name username','u.type usertype'];							
 			$select[] 	= 	implode(',', $data);
@@ -36,7 +46,10 @@ class Booking extends BaseModel
 		$query = $this->db->table('booking b');
 
 		if(in_array('event', $querydata)) 				$query->join('event e', 'e.id=b.event_id', 'left');
-		if(in_array('users', $querydata)) 				$query->join('users u', 'u.id=b.user_id', 'left');		
+		
+		if(in_array('users', $querydata)) 				$query->join('users u', 'u.id=b.user_id', 'left');
+		if(in_array('cleanbookingdetails', $querydata)) $query->join('booking_details bd', 'b.id=bd.booking_id', 'left');
+		if(in_array('cleanstall', $querydata)) 			$query->join('stall s', 's.id=bd.stall_id', 'left');		
 		if(in_array('payment',$querydata))				$query->join('payment p', 'p.id=b.payment_id', 'left');
 		if(in_array('paymentmethod',$querydata))		$query->join('payment_method pm', 'pm.id=b.paymentmethod_id', 'left');
 
@@ -49,11 +62,16 @@ class Booking extends BaseModel
 		if(isset($requestdata['check_in'])) 			$query->where('b.check_in', $requestdata['check_in']);
 
 		if(isset($requestdata['stallcheck_in'])) 		$query->whereIn('b.check_in', $requestdata['stallcheck_in']);		
+		if(isset($requestdata['stallcheck_out'])) 		$query->whereIn('b.check_out', $requestdata['stallcheck_out']);		
 		if(isset($requestdata['check_out'])) 		    $query->where('b.check_out', $requestdata['check_out']);
 
 		if(isset($requestdata['gtcheck_in'])) 			$query->where('b.check_in >=', $requestdata['gtcheck_in']);
 		if(isset($requestdata['ltcheck_out'])) 		    $query->where('b.check_out <=', $requestdata['ltcheck_out']);	
 		if(isset($requestdata['status'])) 				$query->where('b.status', $requestdata['status']);	
+
+		if(isset($requestdata['lockunlock'])) 			$query->where('s.lock_unlock', $requestdata['lockunlock']);
+		if(isset($requestdata['dirtyclean'])) 			$query->where('s.dirty_clean', $requestdata['dirtyclean']);
+		if(isset($requestdata['stallid'])) 			    $query->whereIn('s.id', $requestdata['stallid']);
 
 		if(isset($requestdata['userid'])) 				
 		{
@@ -164,7 +182,7 @@ class Booking extends BaseModel
 						}
 						
 						$bookingdetails = $bookingdetails
-						->where(['bd.booking_id'=> $booking['id'], 'bd.flag' => $flag])
+						->where(['bd.booking_id'=> $booking['id'], 'bd.flag' => $flag, 'bd.status'=> '1'])
 						->get()
 						->getResultArray();
 										
@@ -188,7 +206,7 @@ class Booking extends BaseModel
 					}
 					
 					$bookingdetails = $bookingdetails
-					->where(['bd.booking_id'=> $result['id'], 'bd.flag' => $flag])
+					->where(['bd.booking_id'=> $result['id'], 'bd.flag' => $flag, 'bd.status'=> '1'])
 					->get()
 					->getResultArray();
 									
@@ -213,12 +231,14 @@ class Booking extends BaseModel
 		if(isset($data['eventid']) && $data['eventid']!='')      	      		$request['event_id'] 	  		= $data['eventid'];
 		if(isset($data['paymentid']) && $data['paymentid']!='')      	   		$request['payment_id'] 			= $data['paymentid'];
 		if(isset($data['paymentmethodid']) && $data['paymentmethodid']!='')     $request['paymentmethod_id'] 	= $data['paymentmethodid'];
+		if(isset($data['paidunpaid']) && $data['paidunpaid']!='')     			$request['paid_unpaid'] 	= $data['paidunpaid'];
 		if(isset($data['userid']) && $data['userid']!='')      	           		$request['user_id'] 	  		= $data['userid'];
 		if(isset($data['type']) && $data['type']!='')      	           	 		$request['type'] 	      		= $data['type'];
 		if(isset($data['price']) && $data['price']!='')      	           	 	$request['price'] 	      		= $data['price'];
 		if(isset($data['transactionfee']) && $data['transactionfee']!='')      	$request['transaction_fee'] 	= $data['transactionfee'];
-		if(isset($data['cleaningfee']) && $data['cleaningfee']!='')      	$request['cleaning_fee'] 	= $data['cleaningfee'];
+		if(isset($data['cleaningfee']) && $data['cleaningfee']!='')      		$request['cleaning_fee'] 	= $data['cleaningfee'];
 		if(isset($data['amount']) && $data['amount']!='')      	           	 	$request['amount'] 	      		= $data['amount'];
+		if(isset($data['special_notice']) && $data['special_notice']!='')      	$request['special_notice'] 	      		= $data['special_notice'];
  		$request['status'] = '1';
 
 		if(isset($request)){				
@@ -275,21 +295,41 @@ class Booking extends BaseModel
     public function updatedata($data)
 	{ 
 		$this->db->transStart();
-
-		$stallid 	= $data['stallid'];
 		
 		$request		= [];
 		if(isset($data['lockunlock'])) $request['lock_unlock'] 	=  $data['lockunlock'];
 		if(isset($data['dirtyclean'])) $request['dirty_clean'] 	=  $data['dirtyclean'];
-		
-		if(!empty($request)) $stall = $this->db->table('stall')->update($request , ['id' => $stallid]);
-		
-		if(isset($stall) && $this->db->transStatus() === FALSE){
+
+		foreach($data['stallid'] as $stallid){
+			if(!empty($request)) $stall = $this->db->table('stall')->update($request , ['id' => $stallid]);
+			$stallid = $stallid;
+		}
+
+		if(isset($stallid) && $this->db->transStatus() === FALSE){
 			$this->db->transRollback();
 			return false;
 		}else{
 			$this->db->transCommit();
-			return true;
+			return $stallid;
+		}
+	}
+
+	public function paiddata($data)
+	{	
+		$this->db->transStart();
+
+		if(isset($data['paid_unpaid'])) $request['paid_unpaid'] 	=  $data['paid_unpaid'];
+
+		$booking = $this->db->table('booking')->update($request , ['id' => $data['bookingid']]);
+
+		$bookingupdateid = $data['bookingid']; 
+
+		if(isset($bookingupdateid) && $this->db->transStatus() === FALSE){ 
+			$this->db->transRollback();
+			return false;
+		}else{
+			$this->db->transCommit();
+			return $bookingupdateid;
 		}
 	}
 }
