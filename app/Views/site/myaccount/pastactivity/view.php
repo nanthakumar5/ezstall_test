@@ -1,6 +1,7 @@
 <?php $this->extend('site/common/layout/layout1') ?>
 <?php $this->section('content'); ?>
 <?php
+
 	$bookingid          = isset($result['id']) ? $result['id'] : '';
 	$firstname          = isset($result['firstname']) ? $result['firstname'] : '';
 	$lastname           = isset($result['lastname']) ? $result['lastname'] : '';
@@ -11,7 +12,7 @@
 	$checkout           = isset($result['check_out']) ? formatdate($result['check_out'], 1) : '';
 	$createdat       	  = isset($result['created_at']) ? formatdate($result['created_at'], 2) : '';
 	$barnstalls         = isset($result['barnstall']) ? $result['barnstall'] : '';
-	$rvbarnstalls       = isset($result['rvbarnstalls']) ? $result['rvbarnstalls'] : '';
+	$rvbarnstalls       = isset($result['rvbarnstall']) ? $result['rvbarnstall'] : '';
 	$feed               = isset($result['feed']) ? $result['feed'] : '';
 	$shaving            = isset($result['shaving']) ? $result['shaving'] : '';
 	$paymentmethod      = isset($result['paymentmethod_name']) ? $result['paymentmethod_name'] : '';
@@ -98,26 +99,30 @@
 			} ?>
 		</div>
 	</div>
-	<div class="row col-md-10 base-style">
-		<div class="col fw-600">
-			<p class="my-2">Feed Name</p>
+	<?php if(!empty($feed)){ ?> 
+		<div class="row col-md-10 base-style">
+			<div class="col fw-600">
+				<p class="my-2">Feed Name</p>
+			</div>
+			<div class="col" align="left">
+				<?php foreach ($feed as $feed) {
+					echo ' <p class="my-2">'.$feed['productname'].'</p>';
+				} ?>
+			</div>
 		</div>
-		<div class="col" align="left">
-			<?php foreach ($feed as $feed) {
-				echo ' <p class="my-2">'.$feed['productname'].'</p>';
-			} ?>
+	<?php } ?>
+	<?php if(!empty($shaving)){?> 
+		<div class="row col-md-10 base-style">
+			<div class="col fw-600">
+				<p class="my-2">Shaving Name</p>
+			</div>
+			<div class="col" align="left">
+				<?php foreach ($shaving as $shaving) {
+					echo ' <p class="my-2">'.$shaving['productname'].'</p>';
+				} ?>
+			</div>
 		</div>
-	</div>
-	<div class="row col-md-10 base-style">
-		<div class="col fw-600">
-			<p class="my-2">Shaving Name</p>
-		</div>
-		<div class="col" align="left">
-			<?php foreach ($shaving as $shaving) {
-				echo ' <p class="my-2">'.$shaving['productname'].'</p>';
-			} ?>
-		</div>
-	</div>
+	<?php } ?>
 	<div class="row col-md-10 base-style">
 		<div class="col fw-600">
 			<p class="my-2">Check In</p>

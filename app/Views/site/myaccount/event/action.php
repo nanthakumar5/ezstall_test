@@ -248,8 +248,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 								<div class="col-md-3">
 									<h4 class="fw-bold mb-0 barntfontfeed">Feed</h4>
 								</div>
-								<div class="col-md-9 t-right p-0 respsm">									
-									<input type="hidden" value="" name="feedvalidation" id="feedvalidation">
+								<div class="col-md-9 t-right p-0 respsm">
 									<button class="btn-stall feedbtn">Add feed</button>
 								</div>
 							</div>
@@ -266,8 +265,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 								<div class="col-md-3">
 									<h4 class="fw-bold mb-0 barntfontshavings">Shavings</h4>
 								</div>
-								<div class="col-md-9 t-right p-0 respsm">									
-									<input type="hidden" value="" name="shavingsvalidation" id="shavingsvalidation">
+								<div class="col-md-9 t-right p-0 respsm">	
 									<button class="btn-stall shavingsbtn">Add Shavings</button>
 								</div>
 							</div>
@@ -390,21 +388,9 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 				status        : {  
 					required	: 	true
 				},
-				cleaning_fee  : {  
-					required	: 	true
-				},
 				barnvalidation : { 
 					required 	: true
-				},
-				rvhookupsvalidation : { 
-					required 	: true
-				}/*,
-				feedvalidation : { 
-					required 	: true
-				},
-				shavingsvalidation : { 
-					required 	: true
-				}*/
+				}
 			},
 			{},
 			{
@@ -421,6 +407,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 		
 		barnstall('barn', [['.barnbtn'], ['.barntab', '.stalltab'], [0, 0], ['#barnvalidation'],[chargingflag, 3]], [barn, occupied, reserved])
 		barnstall('rvhookups', [['.rvhookupsbtn'], ['.rvhookupsbarntab', '.rvhookupsstalltab'], [0, 0], ['#rvhookupsvalidation'], [chargingflag, 3]], [rvbarn, occupied, reserved])
+		
 		products('feed', [['.feedbtn'], ['.feedlist'], [0]], [feed])
 		products('shavings', [['.shavingsbtn'], ['.shavingslist'], [0]], [shaving])
 	});

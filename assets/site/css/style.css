@@ -1747,6 +1747,41 @@ span.num_btn button {
     border-color: #222 !important;
 }
 
+.rvbarn-nav .nav-tabs .nav-link {
+    padding: 7px 20px !important;
+    border: 1px solid #ddd !important;
+    margin-right: 10px;
+    FONT-WEIGHT: 600;
+    font-size: 18px !important;
+    background: #f7f7f7;
+}
+
+.rvbarn-nav .nav-link.active {
+    color: #fff !important;
+    font-weight: 600;
+    letter-spacing: 0 !important;
+    border: 0px !important;
+    background-color: transparent;
+    background: #222 !important;
+}
+
+.rvbarn-nav li.list-group-item {
+    font-weight: 600;
+    width: 100%;
+    border: 1px;
+    background: #f7f7f7;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 14px;
+    box-shadow: 1px 1px 5px -2px rgb(186 186 186);
+    transition: all 0.7s !important;
+}
+
+.rvbarn-nav .form-check-input:checked {
+    background-color: #222 !important;
+    border-color: #222 !important;
+}
+
 span.red-box {
     width: 22px;
     height: 22px;

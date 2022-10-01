@@ -150,8 +150,8 @@ class Index extends BaseController
     		if(isset($requestData['lockunlock']) || isset($requestData['dirtyclean'])){
     			$result = $this->booking->updatedata($requestData);
 
-    			$unlocksms = $this->booking->getBooking('row', ['users', 'cleanbookingdetails', 'cleanstall'], ['stallid' => [$result]]);
-
+    			$unlocksms = $this->booking->getBooking('row', ['users', 'booking', 'cleanbookingdetails', 'cleanstall'], ['stallid' => [$result]]);
+    			
 	    		unlockedTemplate($unlocksms);
 	    	}
 

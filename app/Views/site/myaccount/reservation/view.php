@@ -152,7 +152,7 @@
 										$rvprice     = $rvbarnstall['price'];
 										$rvtotal     = $rvbarnstall['total'];
 										$rvquantity     = $rvbarnstall['quantity'];
-										if($rvbarnstall!=$rvbarnstall['barnname']){
+										if($rvbarnstalls!=$rvbarnstall['barnname']){
 										$rvbarnstalls = $rvbarnstall['barnname'];?>
 									<thead>
 											<tr>

@@ -364,8 +364,12 @@ function getOccupied($eventid, $extras=[]){
 	foreach ($booking as  $bookdata) {
 		$barnstall 	= $bookdata['barnstall'];
 		$rvbarnstall = $bookdata['rvbarnstall'];
-		$occupied[] = implode(',', array_column($barnstall, 'stall_id'));
-		$occupied[] = implode(',', array_column($rvbarnstall, 'stall_id'));
+		if($barnstall){
+			$occupied[] = implode(',', array_column($barnstall, 'stall_id'));
+		}
+		if($rvbarnstall){
+			$occupied[] = implode(',', array_column($rvbarnstall, 'stall_id'));
+		}
 	}
 
 	return (count($occupied) > 0) ? explode(',', implode(',', $occupied)) : [];
@@ -548,7 +552,8 @@ function unlockedTemplate($data){
 
   	$message = $client->messages->create(
 
-		'1(575) 936-6183',
+		//'1(575) 936-6183',
+		'1'.$data['mobile'],
 
 		[
 			'from' => $sms['from_number'],

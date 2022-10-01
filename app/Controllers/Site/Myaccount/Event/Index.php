@@ -146,7 +146,7 @@ class Index extends BaseController
 	
 	public function view($id)
     {  
-		$data['detail']  	= $this->event->getEvent('row', ['event', 'barn', 'stall', 'bookedstall'], ['id' => $id, 'type' => '1']);
+		$data['detail']  	= $this->event->getEvent('row', ['event', 'barn', 'stall', 'rvbarn', 'rvstall','bookedstall','rvbookedstall'], ['id' => $id, 'type' => '1']);
 		return view('site/myaccount/event/view',$data);
     }
 
@@ -159,6 +159,12 @@ class Index extends BaseController
     public function export($id)
     {	
     	$data 		= $this->event->getEvent('row', ['event', 'barn', 'stall', 'bookedstall'],['id' => $id, 'type' => '1']);
+
+    	$bookingtotalamount	= $this->booking->getBooking('all', ['booking'],['eventid' => $id]);
+		$totalamount = 0;
+    	foreach($bookingtotalamount as $bkam){
+			$totalamount +=  $bkam['amount'];
+    	}
 
 		$spreadsheet = new Spreadsheet();
 		$sheet 		 = $spreadsheet->getActiveSheet();
@@ -186,21 +192,16 @@ class Index extends BaseController
 		$sheet->setCellValue('H' . $row, formattime($data['end_time']));
 		$sheet->setCellValue('I' . $row, $data['stalls_price']);
 		
-		$totalamount 			= 0;
 		foreach ($data['barn'] as $key => $barn) { 
 			$sheet->setCellValue('A'.$row, $barn['name']);
 			$row++;
 			
 			foreach($barn['stall'] as $key=> $stall){  
 				$stallname  = $stall['name'];
-
-				$totalbookingamount = 0;
 				$bookedstall = '';
 				foreach($stall['bookedstall'] as $keys=> $booking){
-					$totalbookingamount +=  $booking['amount'];
-					$sheet->setCellValue('K' . $row, $totalbookingamount);
-					$totalamount += $booking['amount'];
-					$bookedstall	.=   "\nName : ".$booking['name']."\nDate  : ".formatdate($booking['check_in'])." to ".formatdate($booking['check_out'])."\nPayment Method : ".$booking['paymentmethod']."\nAmount : ".$booking['amount'];
+
+					$bookedstall	.=   "\nName : ".$booking['name']."\nDate  : ".formatdate($booking['check_in'])." to ".formatdate($booking['check_out'])."\nPayment Method : ".$booking['paymentmethod'];
 				}
 				
 				$sheet->setCellValue('A'.$row, $stallname.$bookedstall);

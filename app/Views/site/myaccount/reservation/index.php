@@ -88,7 +88,6 @@
 								$btndirtyclean = '<i class="fas fa-broom event_broom"></i>'; 
 							}
 						} ?>
-					<?php } ?>
 						<div class="d-flex flex-wrap">
 							<div class="mx-3">
 								<p class="ticket_values"><?php echo $stalls['barnname'];?></p>
@@ -101,7 +100,7 @@
 								</span>
 							</div>
 						</div>
-						<?php } ?>
+						<?php } } ?>
 						</div>
 						<div class="flex-wrap d-flex align-items-center">
 						<?php if(!empty($data['rvbarnstall'])){?>

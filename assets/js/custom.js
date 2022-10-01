@@ -4,7 +4,7 @@ function baseurl(){
 	if(base.host=='localhost'){
 		return base.protocol + "//" + base.host + "/ezstall2/";
 	}else{
-		return base.protocol + "//" + base.host + "/ezstall2/";
+		return base.protocol + "//" + base.host + "/";
 	}
 }
 
@@ -397,7 +397,7 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 		var barntab='\
 			<li class="nav-item text-center mb-3">\
 				<a class="nav-link tab-link " data-bs-toggle="pill" data-bs-target="#tabtarget_'+barnstallname+'_'+barnIndex+'">\
-					<input type="text" id="barn_'+barnstallname+'_'+barnIndex+'_name" name="'+barnstallname+'['+barnIndex+'][name]" class="form-control " placeholder="Enter Barn Name" value="'+barnName+'"">\
+					<input type="text" id="barn_'+barnstallname+'_'+barnIndex+'_name" name="'+barnstallname+'['+barnIndex+'][name]" class="form-control " placeholder="Enter '+uploadName+' Name" value="'+barnName+'"">\
 				</a>\
 				<input type="hidden" name="'+barnstallname+'['+barnIndex+'][id]" value="'+barnId+'">\
 			</li>\
@@ -409,7 +409,7 @@ function barnstall(barnstallname, barnstallitem=[], barnstallresult=[]){
 					<input type="hidden" name="stallvalidation_'+barnstallname+'_'+barnIndex+'" id="stallvalidation_'+barnstallname+'_'+barnIndex+'">\
 					<button class="btn-stall stallbtn_'+barnstallname+'" data-barnIndex="'+barnIndex+'" >Add '+stallcamp+'</button>\
 					<button class="btn-stall bulkstallmodal_'+barnstallname+'" data-barnIndex="'+barnIndex+'" data-bs-toggle="modal" data-bs-target="#bulkstallmodal_'+barnstallname+'">Add Bulk '+stallcamp+'</button>\
-					<input type="hidden" value="" name="barnvalidation" id="barnvalidation">\
+					<input type="hidden" value="" name="barnvalidationd" id="barnvalidatiod">\
 					<a href="javascript:void(0);" class="btn btn-info bulkbtn_'+barnstallname+'">Upload '+uploadName+'</a>\
 					<input type="file" class="bulkfile_'+barnstallname+'" style="display:none;">\
 					<button class="btn-stall barnremovebtn_'+barnstallname+'">Remove '+BarnLots+' and '+stallcamp+'</button>\

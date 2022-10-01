@@ -16,13 +16,15 @@ class Index extends BaseController
 	public function index()
     { 
     	if($this->request->getMethod()=='post'){ 
-    		$requestData 	= $this->request->getPost();
-    		
+    		$requestData 					= $this->request->getPost();
+    		$requestData['stallid'] 		= explode(',', $requestData['stallid']);
+
     		if(isset($requestData['lockunlock']) || isset($requestData['dirtyclean'])){
     			$result = $this->booking->updatedata($requestData);
-	    	}else{
-				$this->stripe->striperefunds($requestData);
-			}
+    			$unlocksms = $this->booking->getBooking('row', ['booking','users', 'cleanbookingdetails', 'cleanstall'], ['stallid' => [$result]]);
+
+	    		unlockedTemplate($unlocksms);
+	    	}
 			return redirect()->to(base_url().'/myaccount/bookings'); 
         }
 
@@ -77,7 +79,7 @@ class Index extends BaseController
 		$result = array();
 
 		if (isset($requestData['search'])) {
-			$result = $this->booking->getBooking('all', ['booking', 'bookingdetails', 'stall'], ['page' => 'reservations', 'search' => ['value' => $requestData['search']], 'lockunlock' => '0', 'dirtyclean' => '0']);
+			$result = $this->booking->getBooking('all', ['booking', 'cleanbookingdetails', 'cleanstall'], ['page' => 'reservations', 'search' => ['value' => $requestData['search']], 'dirtyclean' => '0', 'lockunlock' => '0']);
 		}
 
 		$response['data'] = $result;

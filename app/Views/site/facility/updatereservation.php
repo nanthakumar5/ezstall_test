@@ -348,7 +348,13 @@ $shaving 			= (isset($bookings['shaving'])) ? $bookings['shaving'] : 0;
 					{
 						asynchronous : 1,
 						success : function(data){
-						 $(".totalcountcheckedstall").append('<input type="hidden" id="barnstallcheckedcount" name="barnstallcheckedcount" value="'+data.totalstallcount+'">');
+							var succ = data.success;
+						    var totalstallcount = succ.filter(function(itm, i, succ) {
+                                return i == succ.indexOf(itm);
+                            });
+
+                            $(".totalcountcheckedstall").append('<input type="hidden" id="barnstallcheckedcount" name="barnstallcheckedcount" value="'+totalstallcount.length+'">');
+							// $(".totalcountcheckedstall").append('<input type="hidden" id="barnstallcheckedcount" name="barnstallcheckedcount" value="'+data.totalstallcount+'">');
 
 							$(data.success).each(function(i,v){ 
 								$('.stallid[value='+v+']').prop('checked', true).attr('disabled', 'disabled');

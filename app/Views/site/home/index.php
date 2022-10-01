@@ -82,15 +82,20 @@
           </div>  
           <div class="tab-pane" id="profile" role="profile-tab" aria-labelledby="profile-tab">
           	<div class="MuiTabPanel-root css-13xfq8m-MuiTabPanel-root" role="tabpanel" aria-labelledby="mui-p-25453-T-1" id="mui-p-25453-P-1">
-                	<?php foreach($pastevents as $row){ 
+                	<?php foreach($pastevents as $row){
+                			$viewpath = base_url().'/myaccount/facility/view/'.$row['id']; 
+                			$event_on ='';
+                		if($row['type']!= '2'){
                 			$start_on = date("M d, Y", strtotime($row['start_date']));
                 			$end_on = date("M d, Y", strtotime($row['end_date']));
                 			$event_on = $start_on.' - '.$end_on;
+                			$viewpath = base_url().'/myaccount/events/view/'.$row['id']; 
+                		}
                 		?>
                 	<div class="ucEventInfo">
                 		<div class="EventFlex">
                 			<span class="wi-50">
-                				<p><?php echo $event_on;?>. <?php echo ucfirst($row['location']);?></p>
+                				<p><?php if(!empty($event_on)) echo $event_on;?>. <?php echo ucfirst($row['location']);?></p>
                 				<h5><?php echo ucfirst($row['name']);?></h5>
                 			</span>
                 			<div class="wi-50-2 justify-content-between">
@@ -102,7 +107,8 @@
                 					<p><img class="eventSecondIcon" src="<?php echo base_url();?>/assets/site/img/rvSpot.svg">RV Spot</p>
                 					<h6>from $<?php echo $row['rvspots_price'];?> / night</h6>
                 				</span>-->
-                				<a class="text-decoration-none text-white" href="<?php echo base_url()?>/events/detail/<?php echo $row['id']?>"><button class="ucEventBtn">View</button></a>
+
+                				<a class="text-decoration-none text-white" href="<?php echo $viewpath; ?>"><button class="ucEventBtn">View</button></a>
                 			</div>
                 		</div>
                 	</div>

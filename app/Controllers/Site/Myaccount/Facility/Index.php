@@ -129,7 +129,7 @@ class Index extends BaseController
 	
 	public function view($id)
     {  
-		$data['detail']  	= $this->event->getEvent('row', ['event', 'barn', 'stall','bookedstall'],['id' => $id, 'type' => '2']);
+		$data['detail']  	= $this->event->getEvent('row', ['event', 'barn', 'stall', 'rvbarn', 'rvstall','bookedstall','rvbookedstall'],['id' => $id, 'type' => '2']);
 		$data['occupied'] 	= getOccupied($id); 
 		$data['reserved'] 	= getReserved($id);
 		

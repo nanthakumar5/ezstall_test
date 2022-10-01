@@ -22,6 +22,7 @@
 		$stallmap      			= isset($result['stallmap']) ? $result['stallmap'] : '';
 		$stallmap 				= filedata($stallmap, base_url().'/assets/uploads/stallmap/');
 		$barn        			= isset($result['barn']) ? $result['barn'] : [];
+		$rvbarn        			= isset($result['rvbarn']) ? $result['rvbarn'] : [];
 	?>
 	<section class="content-header">
 		<div class="container-fluid">
@@ -131,6 +132,46 @@
 						
 						$tabcontent .= '</ul></div>';
 					}
+					
+					$rvtabbtn = '';
+					$rvtabcontent = '';
+					foreach ($rvbarn as $rvbarnkey => $rvbarndata) {
+						$rvbarnid = $rvbarndata['id'];
+						$rvbarnname = $rvbarndata['name'];
+						$rvbarnactive = $rvbarnkey=='0' ? ' show active' : '';
+						$rvtabbtn .= '<button class="nav-link'.$rvbarnactive.'" data-bs-toggle="tab" data-bs-target="#barn'.$rvbarnid.'" type="button" role="tab" aria-controls="barn'.$rvbarnid.'" aria-selected="true">'.$rvbarnname.'</button>';
+					
+						$rvtabcontent .= '<div class="tab-pane fade'.$rvbarnactive.'" id="barn'.$barnid.'" role="tabpanel" aria-labelledby="nav-home-tab">
+											<ul class="list-group">';
+							foreach($rvbarndata['rvstall'] as $rvstalldata){
+								$rvbookedstalldata = [];
+								if (!empty($rvstalldata['rvbookedstall'])) {
+									foreach($rvstalldata['rvbookedstall'] as $rvbookedstall){
+										if($rvbookedstall['status']=='1'){
+											$rvbookedstalldata[] ='<div class="col-custom-3 p-2 border rounded ad-stall-base mx-2">
+																	<table>
+																		<tr>
+																			<td class="p-0"><p class="fs-7 mb-0 text-bold px-2">Name</p></td>
+																			<td class="p-0"><p class="mb-0 fs-7 fw-normal">'.$rvbookedstall['name'].'</p></td>
+																		</tr>
+																		<tr>
+																			<td class="p-0"><p class="fs-7 mb-0 text-bold px-2">Date</p></td>
+																			<td class="p-0"><p class="mb-0 fs-7 fw-normal">'.formatdate($rvbookedstall['check_in'], 1).' to '.formatdate($rvbookedstall['check_out'], 1).'</p></td>
+																		</tr>
+																	</table>
+																</div>
+																';
+									}
+									}
+								}
+									$rvtabcontent .= 	'<li class="list-group-item px-4 py-3">
+														<p class="text-bold mb-1">
+														'.$rvstalldata['name'].'<div class="row">'.implode('', $rvbookedstalldata).'</div>
+														</p>
+													</li>';
+						}
+							$rvtabcontent .= '</ul></div>';
+					}
 				?>
 				<div class="barn-nav mt-4">
 					<nav>
@@ -140,6 +181,16 @@
 					</nav>
 					<div class="tab-content" id="nav-tabContent">
 						<?php echo $tabcontent; ?>
+					</div>    
+				</div>
+				<div class="rvbarn-nav mt-4">
+					<nav>
+						<div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
+							<?php echo $rvtabbtn; ?>
+						</div>
+					</nav>
+					<div class="tab-content" id="nav-tabContent">
+						<?php echo $rvtabcontent; ?>
 					</div>    
 				</div>
 			</div>

@@ -17,7 +17,7 @@ class Index extends BaseController
 		$this->users 			= new Users();
 		$this->stall    		= new Stall();	
 		$this->bookingdetails 	= new Bookingdetails();	
-		$this->booking 	= new Booking();	
+		$this->booking 			= new Booking();	
 	}
     
     public function lists()
@@ -82,19 +82,13 @@ class Index extends BaseController
 
 		if ($this->request->getMethod()=='post'){ 
 			$requestData 	= $this->request->getPost();
-			$datauncheckedstallid = $requestData['uncheckedstallid'];
-			$updatedbookingstall = $requestData['updatedbookingstall'];
-
 			foreach($requestData['uncheckedstallid'] as $akey => $bkids){
 				foreach($requestData['updatedbookingstall'] as $bkey => $ubstallid){
-					
 					if($akey==$bkey){
 						$bk = $this->bookingdetails->getBookingdetails('row', ['bookingdetails'],['booking_id' => $requestData['bookingid'],'id' => $bkids['bkid']]);
 						$result = $this->bookingdetails->action($bk);
-
-						
 						$this->bookingdetails->updatedbkstall(['bdid' => $bkids['bkid'], 'updastallid' => $ubstallid['stallid']]);
-						}
+					}
 				}
 			}
 
@@ -107,7 +101,7 @@ class Index extends BaseController
 
 		$event 		= $this->event->getEvent('row', ['event', 'barn', 'stall', 'rvbarn', 'rvstall', 'feed', 'shaving'],['id' => $id, 'type' =>'2']);
 
-		$bookings 	= $this->booking->getBooking('row', ['booking', 'event', 'users','barnstall', 'rvbarnstall', 'feed', 'shaving','payment','paymentmethod'],['user_id' => $userid, 'id' => $bookingid,'status'=> ['1']]);
+		$bookings 	= $this->booking->getBooking('row', ['booking', 'event', 'users','barnstall', 'rvbarnstall', 'feed', 'shaving','payment','paymentmethod'],['id' => $bookingid,'status'=> ['1']]);
 
 		$data['checkevent'] 		= checkEvent($event);
 		$data['detail']  			= $event;

@@ -48,7 +48,7 @@ class StripePayments extends BaseModel
 				$query->groupStart();
 					if($page=='stripepayments'){ 		
 						$query->like('u.name', $searchvalue);
-						$query->orLike('s.name', $searchvalue);
+						$query->orLike('s.amount', $searchvalue);
 					}
 				$query->groupEnd();
 			}			
