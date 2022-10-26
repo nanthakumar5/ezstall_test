@@ -11,7 +11,7 @@
 			<?php foreach ($aboutus as $key => $about) { if($key%2==0){?>
 		<div class="displayFlex">
 			<div class="flexOneLeft beforeRound">
-				<img class="flexoneImage" src="<?php echo base_url().'/assets/uploads/aboutus/'.$about['image']?>" />
+				<img class="flexoneImage" src="<?php echo base_url().'/assets/uploads/aboutus/'.'680x440_'.$about['image']?>" />
 			</div>
 				<div class="flexOneRight afterHorse">
 					<h1 class="commonTitle"><?php echo $about['title']; ?></h1>
@@ -30,7 +30,7 @@
 				<a class="text-white text-decoration-none" href="<?php echo base_url().'/aboutus/detail/'.$about['id']?>"><button class="greyButton">Read More</button></a>
 			</div>
 			<div class="flexOneLeft afterRound">
-				<img class="flexoneImage" src="<?php echo base_url().'/assets/uploads/aboutus/'.$about['image']?>" />
+				<img class="flexoneImage" src="<?php echo base_url().'/assets/uploads/aboutus/'.'680x440_'.$about['image']?>" />
 			</div>
 		</div>
 			<?php } } ?>

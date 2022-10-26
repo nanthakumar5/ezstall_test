@@ -40,7 +40,7 @@ $comments        	= (isset($comments)) ? $comments : [];
 					<div class="row myaccupevent1">
 						<div class="col-6">
 							<span class="edimg">
-								<img src="<?php echo base_url() ?>/assets/uploads/event/<?php echo $detail['image']?>" width="350px" height="auto">
+								<img src="<?php echo base_url() ?>/assets/uploads/event/<?php echo '559x371_'.$detail['image']?>">
 							</span>
 						</div>
 						<div class="col-6">

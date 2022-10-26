@@ -5,8 +5,11 @@
 	$rvbarnstall            = $cartdetail['rvbarnstall'];
 	$feed             		= $cartdetail['feed'];
 	$shaving             	= $cartdetail['shaving'];
-	$transactionfee 		= (($settings['transactionfee'] / 100) * $cartdetail['price']);
-	$cleaning_fee 			= $cartdetail['cleaning_fee'] ? $cartdetail['cleaning_fee'] : 0;
+	$cartprice				= number_format(floor($cartdetail['price']*100)/100, 2);
+	$transactionfee 		= number_format((($settings['transactionfee'] / 100) * $cartprice), 2);
+	$cleaningfee 			= $cartdetail['cleaning_fee'] ? number_format($cartdetail['cleaning_fee'], 2) : 0;
+	$tax					= number_format(floor($cartdetail['event_tax']*100)/100, 2);
+	$amount					= number_format($cartprice+$transactionfee+$cleaningfee+$tax, 2);
 ?>
 <section class="maxWidth">
 	<div class="pageInfo">
@@ -78,11 +81,12 @@
 					<input type="hidden" name="email" value="<?php echo $userdetail['email']; ?>" >
 					<input type="hidden" name="checkin" value="<?php echo formatdate($cartdetail['check_in']); ?>" >
 					<input type="hidden" name="checkout" value="<?php echo formatdate($cartdetail['check_out']); ?>" >
-					<input type="hidden" name="price" value="<?php echo $cartdetail['price']; ?>" >
+					<input type="hidden" name="price" value="<?php echo $cartprice; ?>" >
 					<input type="hidden" name="transactionfee" value="<?php echo $transactionfee; ?>" >
-					<input type="hidden" name="cleaningfee" value="<?php echo $cleaning_fee; ?>" >
-					<input type="hidden" name="amount" value="<?php echo $cartdetail['price']+$transactionfee+$cleaning_fee; ?>" >
+					<input type="hidden" name="cleaningfee" value="<?php echo $cleaningfee; ?>" >
+					<input type="hidden" name="amount" value="<?php echo $amount; ?>" >
 					<input type="hidden" name="eventid" value="<?php echo $cartdetail['event_id']; ?>" >
+					<input type="hidden" name="eventtax" value="<?php echo $cartdetail['event_tax']; ?>" >
 					<input type="hidden" name="type" value="<?php echo $cartdetail['type']; ?>" >
 					<input type="hidden" name="barnstall" value='<?php echo json_encode($barnstall); ?>'>
 					<input type="hidden" name="rvbarnstall" value='<?php echo json_encode($rvbarnstall); ?>'>
@@ -265,17 +269,21 @@
 				</div> 
 				<div class="row mb-2 event_border_top pt-4">
 					<div class="col-8 event_c_text">Total</div>
-					<div class="col-4 event_c_text text-end"><?php echo $currencysymbol.$cartdetail['price']; ?></div>
+					<div class="col-4 event_c_text text-end"><?php echo $currencysymbol.$cartprice; ?></div>
 					<div class="col-8 event_c_text">Transaction Fees</div>
 					<div class="col-4 event_c_text text-end"><?php echo $currencysymbol.$transactionfee; ?></div>
-					<?php if($cleaning_fee!=0){?> 
+					<?php if($cleaningfee!=0){?> 
 						<div class="col-8 event_c_text">Cleaning Fees</div>
-						<div class="col-4 event_c_text text-end"><?php echo $currencysymbol.$cleaning_fee; ?></div>
+						<div class="col-4 event_c_text text-end"><?php echo $currencysymbol.$cleaningfee; ?></div>
+					<?php } ?>
+					<?php if($tax!=0){?> 
+						<div class="col-8 event_c_text">Tax</div>
+						<div class="col-4 event_c_text text-end"><?php echo $currencysymbol.$tax; ?></div>
 					<?php } ?>
 				</div>
 				<div class="row mb-2 border-top mt-3 mb-3 pt-3">
 					<div class="col-8 fw-bold ">Total Due</div>
-					<div class="col-4 fw-bold totaldue"><?php echo $currencysymbol.($cartdetail['price']+$transactionfee+$cleaning_fee); ?></div>
+					<div class="col-4 fw-bold totaldue"><?php echo $currencysymbol.$amount; ?></div>
 				</div>
 			</div>
 		</div>

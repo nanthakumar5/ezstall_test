@@ -4,6 +4,7 @@
 <?php
 $id 					= isset($result['id']) ? $result['id'] : '';
 $name 					= isset($result['name']) ? $result['name'] : '';
+$zipcode 				= isset($result['zipcode']) ? $result['zipcode'] : '';
 $description 		    = isset($result['description']) ? $result['description'] : '';
 $image      			= isset($result['image']) ? $result['image'] : '';
 $image 				    = filedata($image, base_url().'/assets/uploads/event/');
@@ -44,6 +45,12 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 							<div class="form-group">
 								<label>Name</label>								
 								<input type="text" name="facility_name" class="form-control" id="name" placeholder="Enter Name" value="<?php echo $name; ?>">
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+							    <label>Zip Code</label>                      
+							    <input type="text" name="zipcode" class="form-control" id="zipcode" placeholder="Enter Zip Code" value="<?php echo $zipcode; ?>">
 							</div>
 						</div>
 						<div class="col-md-12 my-2">
@@ -151,7 +158,8 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 									<p class="fs-2 fw-bold mb-0 barntfont">Barn</p>
 								</div>
 								<div class="col-md-9 t-right p-0 respsm">
-									<button class="btn-stall barnbtn" value="4" name="tst" id="tes">Add Barn</button>
+									<input type="hidden" value="" name="barnvalidation" id="barnvalidation">
+									<button class="btn-stall barnbtn" value="4">Add Barn</button>
 								</div>
 							</div>
 							<ul class="nav nav-pills flex-column col-md-3 barntab" role="tablist"></ul>
@@ -165,6 +173,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 									<h4 class="fw-bold mb-0 barntfontfeed">Feed</h4>
 								</div>
 								<div class="col-md-9 t-right p-0 respsm">
+								<input type="hidden" value="" name="feedvalidation" id="feedvalidation">
 								<button class="btn-stall feedbtn">Add feed</button>
 								</div>
 							</div>
@@ -182,6 +191,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 									<h4 class="fw-bold mb-0 barntfontshavings">Shavings</h4>
 								</div>
 								<div class="col-md-9 t-right p-0 respsm">
+									<input type="hidden" value="" name="shavingsvalidation" id="shavingsvalidation">
 									<button class="btn-stall shavingsbtn">Add Shavings</button>
 								</div>
 							</div>
@@ -199,7 +209,6 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 								</div>
 								<div class="col-md-9 t-right p-0 respsm">
 									<input type="hidden" value="" name="rvhookupsvalidation" id="rvhookupsvalidation">
-									<a href="javascript:void(0);" class="btn btn-info bulkbtn_rvhookups">Add Bulk RV Hookups</a>
 									<input type="file" class="bulkfile_rvhookups" style="display:none;">
 									<button class="btn-stall rvhookupsbtn">Add RV Hookups</button>
 								</div>
@@ -323,7 +332,7 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 		}
  
 		editor('#description');
-		fileupload([".image_file"], ['.image_input', '.image_source','.image_msg']);
+		fileupload([".image_file"], ['.image_input', '.image_source','.image_msg'],['2']);
 		fileupload([".profileimage_file"], ['.profileimage_input', '.profileimage_source','.profileimage_msg']);
 		fileupload([".stallmap_file", ['jpg','jpeg','png','gif','tiff','tif','pdf']], ['.stallmap_input', '.stallmap_source','.stallmap_msg']);
 		fileupload([".stall_file"], ['.stall_input', '.stall_source','.stall_msg']);
@@ -356,8 +365,8 @@ $pageaction 			= $id=='' ? 'Add' : 'Update';
 
 		barnstall('barn', [['.barnbtn'], ['.barntab', '.stalltab'], [0, 0], ['#barnvalidation'],[chargingflag, 2]], [barn, occupied, reserved])
 		barnstall('rvhookups', [['.rvhookupsbtn'], ['.rvhookupsbarntab', '.rvhookupsstalltab'], [0, 0], ['#rvhookupsvalidation'], [chargingflag, 2]], [rvbarn, occupied, reserved])
-		products('feed', [['.feedbtn'], ['.feedlist'], [0]], [feed])
-		products('shavings', [['.shavingsbtn'], ['.shavingslist'], [0]], [shaving])
+		products('feed', [['.feedbtn'], ['.feedlist'], [0],['#feedvalidation']], [feed])
+		products('shavings', [['.shavingsbtn'], ['.shavingslist'], [0],['#shavingsvalidation']], [shaving])
 
 	});
 

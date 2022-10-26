@@ -103,11 +103,12 @@
 <div>	
 <?php 
  if($result['usertype']!='5'){
+ 	if($result['status']!='2'){
  	if($result['type']=='2'){?> 
 		<button class="btn btn-danger"><a style="color:white; text-decoration: none" href='<?php echo base_url().'/facility/updatereservation/'.$eventid.'/'.$bookingid; ?>'>Updated Stalls</a></button>
 	<?php }else if($result['type']=='1'){?>
 		<button class="btn btn-danger"><a style="color:white; text-decoration: none" href='<?php echo base_url().'/events/updatereservation/'.$eventid.'/'.$bookingid; ?>'>Updated Stalls</a></button>
-<?php }  } ?>
+<?php }  } } ?>
 </div>
 <section class="container-lg">
 	<div class="row">
@@ -221,6 +222,10 @@
 						<?php 
 						if($result['cleaning_fee']!=""){?>
 						<div class="summaryprc"><p><b>Cleaning Fee</b></p><p align="right"><?php echo $currencysymbol.$result['cleaning_fee'];?></div>
+						<?php } ?>
+						<?php 
+						if($result['event_tax']!="0"){?>
+						<div class="summaryprc"><p><b>Tax</b></p><p align="right"><?php echo $currencysymbol.$result['event_tax'];?></div>
 						<?php } ?>
 						</div>
 						<div class="summaryprcy"><p><b>Amount</b></p><p align="right"><?php echo $currencysymbol.$result['amount'];?></p></div>

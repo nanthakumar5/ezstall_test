@@ -249,7 +249,9 @@ function getCart($type=''){
     $condition 		= getSiteUserID() ? ['user_id' => getSiteUserID(), 'ip' => $request->getIPAddress()] : ['user_id' => 0, 'ip' =>$request->getIPAddress()] ;
 	if($type!='') $condition['type'] = $type;
 	$cart 		    = new \App\Models\Cart;
-	$result         = $cart->getCart('all', ['cart', 'event', 'barn', 'stall', 'product'], $condition);
+	$result         = $cart->getCart('all', ['cart', 'event', 'barn', 'stall', 'product', 'tax'], $condition);
+	 		
+
 	if($result){
 		$event_id 				= array_unique(array_column($result, 'event_id'))[0];
 		$event_name 			= array_unique(array_column($result, 'eventname'))[0];
@@ -263,6 +265,7 @@ function getCart($type=''){
 		$daydiff           		= ceil(abs($start - $end) / 86400);
 		$interval           	= $daydiff==0 ? 1 : $daydiff;
 		$type          			= array_unique(array_column($result, 'type'))[0];
+		$tax 					= isset($result[0]['tax']['tax_price']) ? $result[0]['tax']['tax_price'] : 0;
 
 		$barnstall = $rvbarnstall = $feed =  $shaving = [];
 
@@ -335,6 +338,7 @@ function getCart($type=''){
 		return [
 			'event_id'			=> $event_id, 
 			'event_name'		=> $event_name, 
+			'event_tax'			=> $tax, 
 			'event_location' 	=> $event_location, 
 			'event_description' => $event_description, 
 			'cleaning_fee' 		=> $cleaning_fee, 
@@ -552,7 +556,6 @@ function unlockedTemplate($data){
 
   	$message = $client->messages->create(
 
-		//'1(575) 936-6183',
 		'1'.$data['mobile'],
 
 		[

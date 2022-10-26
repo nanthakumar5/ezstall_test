@@ -21,10 +21,17 @@ class Index extends BaseController
     {	
 		if ($this->request->getMethod()=='post')
         {
-			$requestdata 	= $this->request->getPost();
-			$condition 		= ($requestdata['eventid']=='all') ? [] : ['id' => $requestdata['eventid']]; 
+			$requestdata 		= $this->request->getPost();
+			$condition 			= ($requestdata['eventid']=='all') ? ['status' => ['1'], 'type' => '1'] : ['id' => $requestdata['eventid'],['status' => ['1'], 'type' => '1']]; 
+			$bookingcondition 	= ($requestdata['eventid']=='all') ? ['status' => ['1'], 'type' => '1'] : ['eventid' => $requestdata['eventid'],['status' => ['1'], 'type' => '1']]; 
 			$data			= $this->event->getEvent('all', ['event', 'barn', 'stall', 'bookedstall'], $condition);
 
+			$bookingtotalamount	= $this->booking->getBooking('all', ['booking'], $bookingcondition);
+			$totalamount = 0;
+	    	foreach($bookingtotalamount as $bkam){
+				$totalamount +=  $bkam['amount'];
+	    	}
+	    	
 			$spreadsheet 	= new Spreadsheet();
 			$sheet 		 	= $spreadsheet->getActiveSheet();
 
@@ -39,8 +46,9 @@ class Index extends BaseController
 			$sheet->setCellValue('I1', 'stalls_price');
 			$sheet->setCellValue('J1', 'Total Amount');
 
-      		$totalamount 			= 0;
+      		//$totalamount 			= 0;
 			$row = 2;
+			$sheet->setCellValue('J' . $row, $totalamount);
 			foreach($data as $data){
 				$sheet->setCellValue('A' . $row, $data['name']);
 				$sheet->setCellValue('B' . $row, $data['description']);
@@ -51,6 +59,7 @@ class Index extends BaseController
 				$sheet->setCellValue('G' . $row, formattime($data['start_time']));
 				$sheet->setCellValue('H' . $row, formattime($data['end_time']));
 				$sheet->setCellValue('I' . $row, $data['stalls_price']);
+
 				
 				$row++;
 				foreach ($data['barn'] as $key => $barn) { 
@@ -61,12 +70,12 @@ class Index extends BaseController
 						$stallname  = $stall['name'];
 						
 						$bookedstall = '';
-						$totalbookingamount = 0;
+						//$totalbookingamount = 0;
 						foreach($stall['bookedstall'] as $keys=> $booking){
-							$totalbookingamount +=  $booking['amount'];
-							$sheet->setCellValue('J' . $row, $totalbookingamount);
-							$totalamount += $booking['amount'];
-							$bookedstall	.=   "\nName : ".$booking['name']."\nDate  : ".formatdate($booking['check_in'])." to ".formatdate($booking['check_out'])."\nPayment_Method : ".$booking['paymentmethod']."\nAmount : ".$booking['amount'];
+							//$totalbookingamount +=  $booking['amount'];
+							//$sheet->setCellValue('J' . $row, $totalbookingamount);
+							//$totalamount += $booking['amount'];
+							$bookedstall	.=   "\nName : ".$booking['name']."\nDate  : ".formatdate($booking['check_in'])." to ".formatdate($booking['check_out'])."\nPayment_Method : ".$booking['paymentmethod'];
 						}
 						
 						$sheet->setCellValue('A'.$row, $stallname.$bookedstall);
@@ -77,8 +86,8 @@ class Index extends BaseController
 				}
 				
 				$row++;
-
-				$sheet->setCellValue('J' . $row, $totalamount);
+				
+				//$sheet->setCellValue('J' . $row, $totalamount);
 			}
 
 			header('Content-Type: application/vnd.ms-excel');

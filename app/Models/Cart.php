@@ -16,7 +16,7 @@ class Cart extends BaseModel
 		}
 
 		if(in_array('event', $querydata)){
-			$data		= 	['e.name eventname, e.location eventlocation, e.description eventdescription, e.cleaning_fee eventcleaningfee'];							
+			$data		= 	['e.name eventname, e.location eventlocation, e.description eventdescription, e.cleaning_fee eventcleaningfee, e.zipcode eventzipcode'];							
 			$select[] 	= 	implode(',', $data);
 		}
 		
@@ -69,6 +69,22 @@ class Cart extends BaseModel
 			
 			if($type=='all') 		$result = $query->getResultArray();
 			elseif($type=='row') 	$result = $query->getRowArray();
+
+			if($type='all'){
+				foreach ($result as $key => $value) {
+					if(in_array('tax', $querydata)){ 
+						if($value['eventzipcode']){
+								$tax = 	$this->db->table('tax t')
+								->join('event e', 't.from_tax = e.zipcode', 'left')
+								->select('t.tax_price')
+								->groupStart()->where("'".$value['eventzipcode']."' BETWEEN t.from_tax AND t.to_tax")->groupEnd()
+								->get()
+								->getRowArray();
+								$result[$key]['tax'] = $tax;
+						}
+					}
+				}
+			}	
 		}
 		return $result;
     }

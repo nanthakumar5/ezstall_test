@@ -17,14 +17,15 @@ class Index extends BaseController
     { 
     	if($this->request->getMethod()=='post'){ 
     		$requestData 					= $this->request->getPost();
-    		$requestData['stallid'] 		= explode(',', $requestData['stallid']);
 
     		if(isset($requestData['lockunlock']) || isset($requestData['dirtyclean'])){
+    			$requestData['stallid'] 		= explode(',', $requestData['stallid']);
     			$result = $this->booking->updatedata($requestData);
     			$unlocksms = $this->booking->getBooking('row', ['booking','users', 'cleanbookingdetails', 'cleanstall'], ['stallid' => [$result]]);
-
 	    		unlockedTemplate($unlocksms);
-	    	}
+	    	}else{
+				$this->stripe->striperefunds($requestData);
+			}
 			return redirect()->to(base_url().'/myaccount/bookings'); 
         }
 

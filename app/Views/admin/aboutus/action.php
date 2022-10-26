@@ -82,7 +82,7 @@
 	<script>		
 		$(function(){
 			editor('#content');
-			fileupload([".image_file"], ['.image_input', '.image_source','.image_msg']);
+			fileupload([".image_file"], ['.image_input', '.image_source','.image_msg'],['aboutus']);
 			validation(
 				'#form',
 				{

@@ -223,11 +223,20 @@ $routes->group('administrator', ['filter' => 'adminauthentication2'], function($
 
     // Report
     $routes->match(['get','post'],'eventreport', 'Admin\Report\Index::eventreport');
+     
+    // Financial Report
+    $routes->match(['get','post'],'financialreport', 'Admin\FinancialReport\Index::financialreport'); 
 
     // Email Template
     $routes->match(['get', 'post'], 'emailtemplate', 'Admin\EmailTemplate\Index::index');
     $routes->match(['get', 'post'],'emailtemplate/action/(:num)', 'Admin\EmailTemplate\Index::action/$1');
     $routes->post('emailtemplate/DTtemplates', 'Admin\EmailTemplate\Index::DTtemplates');
+
+      // Tax
+    $routes->match(['get', 'post'], 'tax', 'Admin\Tax\Index::index');
+    $routes->match(['get', 'post'], 'tax/action', 'Admin\Tax\Index::action');
+    $routes->get('tax/action/(:num)', 'Admin\Tax\Index::action/$1');
+    $routes->post('tax/DTtax', 'Admin\Tax\Index::DTtax');
 
 	// Settings
     $routes->match(['get', 'post'], 'settings', 'Admin\Settings\Index::index');

@@ -81,7 +81,7 @@
 <?php $this->section('js') ?>
 	<script>		
 		$(function(){
-			fileupload([".image_file"], ['.image_input', '.image_source','.image_msg']);
+			fileupload([".image_file"], ['.image_input', '.image_source','.image_msg'],['banner']);
 			validation(
 				'#form',
 				{

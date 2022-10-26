@@ -19,8 +19,16 @@ $currentdate 					= date("Y-m-d");
 						<img src="<?php echo base_url() ?>/assets/uploads/event/<?php echo $data['image']?>" class="dash-event-image">
 					</div>
 					<div class="col-md-5">
-						<a class="text-decoration-none" href="<?php echo base_url() ?>/facility/detail/<?php echo $data['id']?>"><p class="fs-6 fw-bold"><?php echo $data['name']; ?><p></a></p>
-						<a class="text-decoration-none" href="<?php echo base_url() ?>/facility/detail/<?php echo $data['id']?>"><p class="fs-6 fw-bold"><?php echo substr($data['description'], 0,50); ?><p></a></p>
+						<a class="text-decoration-none" href="<?php echo base_url() ?>/facility/detail/<?php echo $data['id']?>">
+							<p class="fs-6 fw-bold">
+								<?php echo $data['name']; ?>									
+								</p>
+							</a>
+						<a class="text-decoration-none" href="<?php echo base_url() ?>/facility/detail/<?php echo $data['id']?>">
+							<p class="fs-6 fw-bold">
+								<?php echo substr($data['description'], 0,50); ?>
+							</p>
+						</a>
 					</div>
 				</div>
 				<div class="dash-event">

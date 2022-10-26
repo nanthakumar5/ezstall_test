@@ -14,7 +14,7 @@
 		<div class="wi-1200">
 			<div class="row d-flex justify-content-between">
 				<div class="col-md-5 beforeRound">
-					<img class="about-img" src="<?php echo base_url().'/assets/uploads/aboutus/'.$aboutus['image']?>" />
+					<img class="about-img" src="<?php echo base_url().'/assets/uploads/aboutus/'.'486x300_'.$aboutus['image']?>" />
 				</div>
 				<div class="col-md-6 afterHorse">
 					<p class="commonContent mt-0">
@@ -38,7 +38,7 @@
 					<button class="greyButton"><a class="text-white text-decoration-none" href="<?php echo base_url().'/aboutus/detail/'.$aboutus['id']?>">Read More</a></button>
 				</div>
 				<div class="col-md-6 afterHorse">
-					<img class="about-img" src="<?php echo base_url().'/assets/uploads/aboutus/'.$aboutus['image']?>" />
+					<img class="about-img" src="<?php echo base_url().'/assets/uploads/aboutus/'.'486x300_'.$aboutus['image']?>" />
 
 				</div>
 			</div>

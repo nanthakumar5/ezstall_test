@@ -117,6 +117,18 @@
 	</ul>
 </li>
 <li class="nav-item">
+	<a href="<?php echo getAdminUrl().'/financialreport'; ?>" class="nav-link nav-hov">
+		<i class="nav-icon far fa-newspaper"></i>
+		<p>Financial Report</p>
+	</a>
+</li>
+<li class="nav-item">
+	<a href="<?php echo getAdminUrl().'/tax'; ?>" class="nav-link nav-hov">
+		<i class="nav-icon far fa-newspaper"></i>
+		<p>Tax</p>
+	</a>
+</li>
+<li class="nav-item">
 	<a href="<?php echo getAdminUrl().'/emailtemplate'; ?>" class="nav-link nav-hov">
 		<i class="nav-icon fa fa-envelope"></i>
 		<p>SMS & Email Template</p>

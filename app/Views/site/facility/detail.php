@@ -7,7 +7,7 @@ $getcart 	 	= getCart('2');
 $cartevent 	 	= ($getcart && $getcart['event_id'] != $detail['id']) ? 1 : 0;
 $name 		 	= $detail['name'];
 $description 	= $detail['description'];
-$image 		 	= base_url().'/assets/uploads/event/'.$detail['image'];
+$image 		 	= base_url().'/assets/uploads/event/'.'1200x600_'.$detail['image'];
 $profileimage 	= isset($detail['profile_image']) ? $detail['profile_image'] : '';
 //$profileimage = filedata($profileimage, base_url().'/assets/uploads/profile/',['profile']);
 $profileimage 	= ($profileimage!="") ? base_url().'/assets/uploads/profile/'.$detail['profile_image'] : base_url().'/assets/images/profile.jpg';
@@ -656,10 +656,10 @@ $profileimage 	= ($profileimage!="") ? base_url().'/assets/uploads/profile/'.$de
 						var intervalss = v.interval
 					}
 					
-					if(v.chargingid=='4'){ console.log("e");
-						var intervaldays = currencysymbol+v.price;
+					if(v.chargingid=='4'){
+						var intervaldays = currencysymbol+v.price+'x'+intervalss;
 						var total 		 = currencysymbol+v.price;
-					}else{ console.log("e12");
+					}else{ 
 						var intervaldays = currencysymbol+v.price+'x'+intervalss;
 						var total 		 = currencysymbol+v.total;
 					}

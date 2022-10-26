@@ -14,21 +14,33 @@ class Ajax extends BaseController
 	}
 	
 	public function fileupload()
-	{
-
-		$file 	= $this->request->getFile('file');
-		$name 	= $file->getRandomName();
+	{ 
+		$file 		= $this->request->getFile('file'); 
+		$name 		= $file->getRandomName(); 
+		$postData 	= $this->request->getPost();
 
 		$file->move($this->request->getPost('path'), $name);
-
 		$this->db->table('fileupload')->insert(['name' => $name, 'date' => date('Y-m-d')]);
 
-		$imageresize = array(['120','90'],['400','350']);
-		if($this->request->getPost('resize')!=''){
+		if($postData['resize']!=''){
+			if($postData['resize']=='1'){
+				$imageresize = array(['120','90'],['559','371']);
+				$path = 'assets/uploads/event';
+			}else if($postData['resize']=='2'){
+				$imageresize = array(['120','90'],['1200','600']);
+				$path = 'assets/uploads/event';
+			}else if($postData['resize']=='aboutus'){
+				$imageresize = array(['680','440'],['486','300']);
+				$path = 'assets/uploads/aboutus';
+			}else if($postData['resize']=='banner'){
+				$imageresize = array(['1200','800']);
+				$path = 'assets/uploads/banner';
+			}
+
 			foreach($imageresize as $imageresize){ 
 				\Config\Services::image()->withFile('assets/uploads/temp/' . $name)
 	                        ->resize($imageresize[0],$imageresize[1])
-	         				->save('assets/uploads/event' . '/' . $imageresize[0].'x'.$imageresize[1].'_'.$name);
+	         				->save($path .'/' . $imageresize[0].'x'.$imageresize[1].'_'.$name);
 			}
 		}
 

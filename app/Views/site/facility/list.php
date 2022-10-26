@@ -46,7 +46,7 @@
 							<div class="EventFlex leftdata facility">
 								<span class="wi-30">
 									<span class="ucimg">
-										<img src="<?php echo base_url() ?>/assets/uploads/event/<?php echo $data['image']?>">
+										<img src="<?php echo base_url() ?>/assets/uploads/event/<?php echo '120x90_'.$data['image']?>">
 									</span>
 								</span>
 

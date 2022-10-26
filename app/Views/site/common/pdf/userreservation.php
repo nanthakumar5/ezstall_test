@@ -70,6 +70,7 @@
 	$lastname           = isset($reservationpdf['lastname']) ? $reservationpdf['lastname'] : '';
 	$mobile             = isset($reservationpdf['mobile']) ? $reservationpdf['mobile'] : '';
 	$eventname          = isset($reservationpdf['eventname']) ? $reservationpdf['eventname'] : '';
+	$eventtax         	= isset($reservationpdf['event_tax']) ? $reservationpdf['event_tax'] : '';
 	$checkin            = isset($reservationpdf['check_in']) ? formatdate($reservationpdf['check_in'], 1) : '';
 	$checkout           = isset($reservationpdf['check_out']) ? formatdate($reservationpdf['check_out'], 1) : '';
 	$createdat       	= isset($reservationpdf['created_at']) ? formatdate($reservationpdf['created_at'], 2) : '';
@@ -272,12 +273,34 @@
 					</tbody>
 					<thead>
 						<tr>
+							<td scope="col" class="ticket_title_tag" style="padding-left: 40px;">Transaction Fee</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th class="ticket_values" style="padding-left: 40px;"><?php if(!empty($reservationpdf['transaction_fee'])) { echo $currencysymbol.$reservationpdf['transaction_fee']; } ?></th>
+							<tr><td style="padding-bottom: 20px;"></td></tr>
+						</tr>
+					</tbody>
+					<thead>
+						<tr>
 							<td scope="col" class="ticket_title_tag" style="padding-left: 40px;">Cleaning Fee</td>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<th class="ticket_values" style="padding-left: 40px;"><?php if(!empty($reservationpdf['cleaning_fee'])) { echo $currencysymbol.$reservationpdf['cleaning_fee']; } ?></th>
+							<tr><td style="padding-bottom: 20px;"></td></tr>
+						</tr>
+					</tbody>
+					<thead>
+						<tr>
+							<td scope="col" class="ticket_title_tag" style="padding-left: 40px;">Tax</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th class="ticket_values" style="padding-left: 40px;"><?php if(!empty($reservationpdf['cleaning_fee'])) { echo $currencysymbol.$reservationpdf['event_tax']; } ?></th>
 							<tr><td style="padding-bottom: 20px;"></td></tr>
 						</tr>
 					</tbody>

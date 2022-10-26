@@ -15,7 +15,7 @@ class Booking extends BaseModel
 		}
 		
 		if(in_array('event', $querydata)){
-			$data		= 	['e.name eventname'];							
+			$data		= 	['e.name eventname, e.zipcode'];							
 			$select[] 	= 	implode(',', $data);
 		}
 
@@ -68,6 +68,8 @@ class Booking extends BaseModel
 		if(isset($requestdata['gtcheck_in'])) 			$query->where('b.check_in >=', $requestdata['gtcheck_in']);
 		if(isset($requestdata['ltcheck_out'])) 		    $query->where('b.check_out <=', $requestdata['ltcheck_out']);	
 		if(isset($requestdata['status'])) 				$query->where('b.status', $requestdata['status']);	
+		if(isset($requestdata['financialcheckin'])) 	$query->where('b.created_at >=', $requestdata['financialcheckin']);	
+		if(isset($requestdata['financialcheckout'])) 	$query->where('b.created_at <=', $requestdata['financialcheckout']);	
 
 		if(isset($requestdata['lockunlock'])) 			$query->where('s.lock_unlock', $requestdata['lockunlock']);
 		if(isset($requestdata['dirtyclean'])) 			$query->where('s.dirty_clean', $requestdata['dirtyclean']);
@@ -237,6 +239,7 @@ class Booking extends BaseModel
 		if(isset($data['price']) && $data['price']!='')      	           	 	$request['price'] 	      		= $data['price'];
 		if(isset($data['transactionfee']) && $data['transactionfee']!='')      	$request['transaction_fee'] 	= $data['transactionfee'];
 		if(isset($data['cleaningfee']) && $data['cleaningfee']!='')      		$request['cleaning_fee'] 	= $data['cleaningfee'];
+		if(isset($data['eventtax']) && $data['eventtax']!='')      	       	 	$request['event_tax'] 	      		= $data['eventtax'];
 		if(isset($data['amount']) && $data['amount']!='')      	           	 	$request['amount'] 	      		= $data['amount'];
 		if(isset($data['special_notice']) && $data['special_notice']!='')      	$request['special_notice'] 	      		= $data['special_notice'];
  		$request['status'] = '1';
