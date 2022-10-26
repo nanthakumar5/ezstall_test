@@ -21,8 +21,11 @@ class Index extends BaseController
     		if(isset($requestData['lockunlock']) || isset($requestData['dirtyclean'])){
     			$requestData['stallid'] 		= explode(',', $requestData['stallid']);
     			$result = $this->booking->updatedata($requestData);
-    			$unlocksms = $this->booking->getBooking('row', ['booking','users', 'cleanbookingdetails', 'cleanstall'], ['stallid' => [$result]]);
-	    		unlockedTemplate($unlocksms);
+    			$unlocksms = $this->booking->getBooking('row', ['users', 'event','booking', 'cleanbookingdetails', 'cleanstall'], ['stallid' => [$result]]);
+    			
+    			if($unlocksms['notification_flag']=='1'){
+	    			unlockedTemplate($unlocksms);
+    			}
 	    	}else{
 				$this->stripe->striperefunds($requestData);
 			}

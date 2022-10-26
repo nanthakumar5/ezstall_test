@@ -150,9 +150,10 @@ class Index extends BaseController
     		if(isset($requestData['lockunlock']) || isset($requestData['dirtyclean'])){
     			$result = $this->booking->updatedata($requestData);
 
-    			$unlocksms = $this->booking->getBooking('row', ['users', 'booking', 'cleanbookingdetails', 'cleanstall'], ['stallid' => [$result]]);
-    			
-	    		unlockedTemplate($unlocksms);
+    			$unlocksms = $this->booking->getBooking('row', ['users', 'event', 'booking', 'cleanbookingdetails', 'cleanstall'], ['stallid' => [$result]]);
+    			if($unlocksms['notification_flag']=='1'){ 
+	    			unlockedTemplate($unlocksms);
+    			}
 	    	}
 
 			return redirect()->to(base_url().'/myaccount/dashboard'); 

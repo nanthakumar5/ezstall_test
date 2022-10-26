@@ -15,7 +15,7 @@ class Booking extends BaseModel
 		}
 		
 		if(in_array('event', $querydata)){
-			$data		= 	['e.name eventname, e.zipcode'];							
+			$data		= 	['e.name eventname, e.zipcode, e.notification_flag'];							
 			$select[] 	= 	implode(',', $data);
 		}
 
